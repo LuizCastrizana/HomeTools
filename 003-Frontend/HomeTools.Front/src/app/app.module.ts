@@ -5,14 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CabecalhoComponent } from './components/cabecalho/cabecalho.component';
 import { RodapeComponent } from './components/rodape/rodape.component';
-import { MenuComponent } from './components/menu/menu.component';
+import { MenuComponent } from './components/menu/menu/menu.component';
+import { BotaoMenuComponent } from './components/menu/botao-menu/botao-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CabecalhoComponent,
     RodapeComponent,
-    MenuComponent
+    MenuComponent,
+    BotaoMenuComponent
   ],
   imports: [
     BrowserModule,

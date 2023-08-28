@@ -31,23 +31,7 @@ h2 {
   padding-bottom: 1rem;
   margin-right: auto;
   margin-left: auto;
-}
-
-.botao {
-  background: #154580;
-  color: #ffffff;
-  max-width: 270px;
-  width: 250px;
-  padding: 1rem;
-  margin: 0 auto;
-  border: 2px solid #154580;
-  border-radius: 10px;
-  transition: 0.5s ease;
-}
-
-.botao:hover {
-  border: 2px solid #84EEC1;
-  color: #84EEC1;
+  justify-content: center;
 }
 
 @media (min-width: 576px) {
