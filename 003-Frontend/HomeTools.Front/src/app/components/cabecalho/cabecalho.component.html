@@ -1,11 +1,18 @@
-<header class="cabecalho ff-verdana">
-  <div class="botao-cabecalho link" onClick="history.go(-1)">
-    <img src="../../../assets/img/voltar-icon.png" alt="Botão de voltar">
+<header class="cabecalho ff-verdana flex-center">
+  <div class="botao-cabecalho link flex-center" onClick="history.go(-1)">
+    <img src="../../../assets/img/voltar-icon.png" >
   </div>
-  <div class="logo link" routerLink="menu">
-    <img src="../../../assets/img/cabecalho.png" alt="Logo da aplicação Home Tools">
+  <div class="logo link flex-center" routerLink="menu">
+    <img src="../../../assets/img/cabecalho_02.png" alt="Logo da aplicação Home Tools">
   </div>
-  <div class="botao-cabecalho link">
-    <img src="../../../assets/img/menu-icon.png" alt="Botão de voltar">
+  <div class="botao-cabecalho botao-menu flex-center">
+    <div class="dropdown">
+      <a id="dropdown-btn" class="link flex-center" (click)="clickMenu()"><img src="../../../assets/img/menu-icon.png"></a>
+      <div id="dropdown-content" class="dropdown-content">
+        <a href="">Link 1</a>
+        <a href="">Link 2</a>
+        <a href="">Link 3</a>
+      </div>
+    </div>
   </div>
 </header>

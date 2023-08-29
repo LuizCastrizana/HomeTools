@@ -10,14 +10,14 @@ export class MenuFinancasComponent implements OnInit {
 
   listaItens: ItemMenu[] = [
     {
-      nome: 'Finanças 01',
-      link: 'financas',
-      icone: 'cifrao-icon.png'
+      nome: 'Contas',
+      link: 'contas',
+      icone: 'conta-icon.png'
     },
     {
-      nome: 'Finanças 02',
-      link: 'despensa',
-      icone: 'despensa-icon.png'
+      nome: 'Despesas',
+      link: 'Despesas',
+      icone: 'despesa-icon.png'
     },
   ];
 
