@@ -16,7 +16,7 @@ export class MenuFinancasComponent implements OnInit {
     },
     {
       nome: 'Despesas',
-      link: 'Despesas',
+      link: 'despesas',
       icone: 'despesa-icon.png'
     },
   ];

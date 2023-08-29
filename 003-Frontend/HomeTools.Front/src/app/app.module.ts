@@ -8,6 +8,8 @@ import { RodapeComponent } from './components/rodape/rodape.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { BotaoMenuComponent } from './components/menu/botao-menu/botao-menu.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
+import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
+import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { MenuFinancasComponent } from './components/financas/menu-financas/menu-
     RodapeComponent,
     MenuComponent,
     BotaoMenuComponent,
-    MenuFinancasComponent
+    MenuFinancasComponent,
+    PainelContasComponent,
+    PainelDespesasComponent
   ],
   imports: [
     BrowserModule,
