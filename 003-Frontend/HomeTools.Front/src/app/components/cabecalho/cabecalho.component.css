@@ -1,15 +1,32 @@
 .cabecalho {
   background-color: #699;
+  max-height: 111px;
   display: flex;
   justify-content: center;
 }
 
+.cabecalho .logo {
+  text-align: center;
+}
 .cabecalho .logo img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
   width: 30%;
   min-width: 250px;
+}
+
+.cabecalho .botao-cabecalho {
+  display: flex;
+  justify-content: center;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.cabecalho .botao-cabecalho img {
+  margin: auto;
+  width: 60px;
+}
+
+.link :hover {
+  cursor: pointer;
 }
 
 @media (max-width: 576px) {
