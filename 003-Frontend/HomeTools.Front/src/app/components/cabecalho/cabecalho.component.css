@@ -26,11 +26,6 @@
   cursor: pointer;
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-}
-
 @media (min-width: 350px) {
   .logo img {
     width: 190px;

@@ -1,1 +1,22 @@
-<p>painel-contas works!</p>
+<div class="container">
+  <div class="menu-painel">
+
+  </div>
+  <table class="table ff-verdana">
+    <tr>
+      <th>Descricao</th>
+      <th>Categoria</th>
+      <th>Valor</th>
+      <th>Vencimento</th>
+    </tr>
+    <tr *ngFor="let conta of Contas">
+      <td>{{conta.Descricao}}</td>
+      <td>{{conta.Categoria.Descricao}}</td>
+      <td class="right">{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
+      <td class="center">{{conta.DiaVencimento}}</td>
+    </tr>
+  </table>
+  <div class="paginador">
+
+  </div>
+</div>
