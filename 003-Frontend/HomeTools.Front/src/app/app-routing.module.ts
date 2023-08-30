@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MenuComponent } from './components/menu/menu/menu.component';
+import { HomeComponent } from './components/home/home.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
 import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
 import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
@@ -10,11 +10,11 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'menu'
+    redirectTo: 'home'
   },
   {
-    path: 'menu',
-    component: MenuComponent
+    path: 'home',
+    component: HomeComponent
   },
   //#endregion
   //#region Finanças

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CabecalhoComponent } from './components/cabecalho/cabecalho.component';
 import { RodapeComponent } from './components/rodape/rodape.component';
-import { MenuComponent } from './components/menu/menu/menu.component';
+import { HomeComponent } from './components/home/home.component';
 import { BotaoMenuComponent } from './components/menu/botao-menu/botao-menu.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
 import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
@@ -16,7 +16,7 @@ import { PainelDespesasComponent } from './components/financas/painel-despesas/p
     AppComponent,
     CabecalhoComponent,
     RodapeComponent,
-    MenuComponent,
+    HomeComponent,
     BotaoMenuComponent,
     MenuFinancasComponent,
     PainelContasComponent,
