@@ -1,15 +1,41 @@
 <div class="container">
-  <div class="menu-painel">
-
+  <div class="titulo-painel ff-verdana">
+    <h1>Contas</h1>
+  </div>
+  <br>
+  <div class="menu-painel row">
+    <div class="menu-painel-busca col col-flexible">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Buscar">
+        <span class="input-group-btn">
+          <button title="Buscar" id="btnBuscar" class="btn">
+            <img src="../../../../assets/img/lupa-icon.png">
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="menu-painel-botao col col-flexible">
+      <div class="input">
+        <button title="Novo" id="btnNovo" class="btn">
+          <img src="../../../../assets/img/plus-icon.png">
+        </button>
+      </div>
+    </div>
   </div>
   <table class="table ff-verdana">
     <tr>
-      <th>Descricao</th>
-      <th>Categoria</th>
-      <th>Valor</th>
-      <th>Vencimento</th>
+      <th class="campo-ordenacao" (click)="ordenarContas('Acoes')" id="thAcoes">Ações<span id="imgAcoes"></span></th>
+      <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descricao<span id="imgDescricao"></span></th>
+      <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
+      <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
+      <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Vencimento<span id="imgVencimento"></span></th>
     </tr>
     <tr *ngFor="let conta of Contas">
+      <td class="center">
+        <button title="Buscar" id="btnBuscar" class="btn btn-sm">
+          <img src="../../../../assets/img/pencil-icon.png">
+        </button>
+      </td>
       <td>{{conta.Descricao}}</td>
       <td>{{conta.Categoria.Descricao}}</td>
       <td class="right">{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
@@ -19,4 +45,5 @@
   <div class="paginador">
 
   </div>
+  <br>
 </div>

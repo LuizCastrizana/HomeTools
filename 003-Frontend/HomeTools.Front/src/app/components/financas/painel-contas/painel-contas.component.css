@@ -1,1 +1,19 @@
-
+.menu-painel {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  min-width: 650px;
+  width: 95%;
+  height: 100%;
+  background-color: #699;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.menu-painel-botao img:hover {
+  cursor: pointer;
+}
+.titulo-painel {
+  margin: auto;
+  width: 95%;
+  height: 100%;
+}
