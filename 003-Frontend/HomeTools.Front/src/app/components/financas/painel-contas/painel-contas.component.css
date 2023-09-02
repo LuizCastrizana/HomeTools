@@ -9,11 +9,11 @@
   border-radius: 0.5rem;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-.menu-painel-botao img:hover {
-  cursor: pointer;
-}
 .titulo-painel {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
   width: 95%;
   height: 100%;
+  min-width: 650px;
 }

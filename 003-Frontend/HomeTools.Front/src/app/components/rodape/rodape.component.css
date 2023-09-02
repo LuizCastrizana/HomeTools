@@ -1,7 +1,4 @@
 .rodape {
-  /* position: absolute;
-  bottom: 0; */
-  width: 100%;
   background-color: #699;
-  min-height: 50px;
+  height: 50px;
 }
