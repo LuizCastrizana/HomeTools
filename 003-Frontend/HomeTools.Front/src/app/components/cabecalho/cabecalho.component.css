@@ -14,9 +14,8 @@
   max-width: 60px;
   width: 100%;
 }
-.botao-cabecalho img {
+.botao-cabecalho button {
   margin: auto;
-  width: 100%;
 }
 .link :hover {
   cursor: pointer;
@@ -66,7 +65,7 @@
   border-radius: 5px;
 }
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #5e5e5e;}
+.dropdown-content a:hover {background-color: #111;}
 /* Show the dropdown menu on hover */
 /* .dropdown:hover .dropdown-content {display: block;} */
 

@@ -187,12 +187,10 @@ p {
 }
 /* BTN */
 .btn {
-  display: inline-block;
+  display: inline-flex;
   justify-content: center;
   font-weight: 400;
   color: #fff;
-  text-align: center;
-  vertical-align: middle;
   cursor: pointer;
   background-color: #333;
   border: 1px solid #333;
@@ -202,9 +200,11 @@ p {
   border-radius: 0.5rem;
   transition: all 0.15s ease-in-out;
   height: 38px;
+  min-width: 38px;
   width: fit-content;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
 }
+
 .btn:hover {
   color: #fff;
   background-color: #111;
@@ -222,18 +222,30 @@ p {
   border-color: rgb(110, 2, 2);
 }
 .btn-sm {
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0 0.5rem 0;
   font-size: 0.875rem;
   line-height: 1.5;
   height: 28px;
+  min-width: 28px;
+}
+.btn-lg {
+  padding: 0.4rem 0 1rem 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  height: 45px;
+  min-width: 45px;
 }
 .btn img {
   width: 24px;
-  height: 100%;
+  height: 24px;
 }
 .btn-sm img {
-  height: 100%;
+  height: 20px;
   width: 20px;
+}
+.btn-lg img {
+  height: 30px;
+  width: 30px;
 }
 /* TABLE */
 .table {
