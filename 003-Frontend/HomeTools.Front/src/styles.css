@@ -89,6 +89,9 @@ p {
   display: flex;
   justify-content: left;
 }
+.link :hover {
+  cursor: pointer;
+}
 /* COL */
 .col-1 {
   flex: 0 0 8.333333%;
@@ -204,7 +207,6 @@ p {
   width: fit-content;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
 }
-
 .btn:hover {
   color: #fff;
   background-color: #111;
@@ -249,15 +251,13 @@ p {
 }
 /* TABLE */
 .table {
-  width: 95%;
-  min-width: 650px;
-  margin: auto;
+  width: 100%;
   font-size: 14px;
   color: #212121;
   background-color: #fff;
+  border: 1px solid #699;
   border-spacing: 0;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 .table th, td {
 padding: 5px 7px;
@@ -293,24 +293,32 @@ border-right: 1px solid #699;
   height: 15px;
   margin-left: 5px;
 }
-/* MEDIA QUERY */
-/* @media (min-width: 576px) {
-  .container {
-      width: 540px;
-  }
+/* PAINEL */
+.menu-painel {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  min-width: 650px;
+  width: 95%;
+  height: 100%;
+  background-color: #699;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-@media (min-width: 768px) {
-  .container {
-      width: 720px;
-  }
+.titulo-painel {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  width: 95%;
+  height: 100%;
+  min-width: 650px;
 }
-@media (min-width: 992px) {
-  .container {
-      width: 960px;
-  }
+.conteudo-painel {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  width: 95%;
+  min-width: 650px;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-@media (min-width: 1200px) {
-  .container {
-      width: 1140px;
-  }
-} */
