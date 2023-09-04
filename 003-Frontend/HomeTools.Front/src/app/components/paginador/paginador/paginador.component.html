@@ -1,0 +1,20 @@
+<div class="paginador-component">
+  <span>
+    <button class="btn btn-anterior" (click)="goToPreviousPage()">
+      <img src="../../../../assets/img/arrow-left-icon.png">
+    </button>
+  </span>
+  <input
+    type="text"
+    class="campo-pagina"
+    id="pagina"
+    name="pagina"
+    [(ngModel)]="DadosPaginador.PaginaAtual"
+    (keydown.enter)="goToPage()"
+  >
+  <span>
+    <button class="btn btn-proximo" (click)="goToNextPage()">
+      <img src="../../../../assets/img/arrow-right-icon.png">
+    </button>
+  </span>
+</div>

@@ -10,6 +10,8 @@ import { BotaoMenuComponent } from './components/menu/botao-menu/botao-menu.comp
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
 import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
 import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
+import { PaginadorComponent } from './components/paginador/paginador/paginador.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,11 +22,13 @@ import { PainelDespesasComponent } from './components/financas/painel-despesas/p
     BotaoMenuComponent,
     MenuFinancasComponent,
     PainelContasComponent,
-    PainelDespesasComponent
+    PainelDespesasComponent,
+    PaginadorComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

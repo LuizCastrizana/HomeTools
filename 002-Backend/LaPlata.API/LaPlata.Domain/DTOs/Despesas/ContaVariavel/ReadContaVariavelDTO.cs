@@ -6,5 +6,6 @@
         public string Descricao { get; set; }
         public int DiaVencimento { get; set; }
         public ReadCategoriaDTO Categoria { get; set; }
+        public List<ReadPagamentoContaVariavelDTO> Pagamentos { get; set; }
     }
 }

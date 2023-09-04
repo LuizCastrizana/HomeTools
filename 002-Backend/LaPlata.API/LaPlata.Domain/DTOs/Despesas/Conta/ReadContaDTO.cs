@@ -8,5 +8,6 @@
         public int? ValorCentavos { get; set; }
         public int DiaVencimento { get; set; }
         public ReadCategoriaDTO Categoria { get; set; }
+        public List<ReadPagamentoContaDTO> Pagamentos { get; set; }
     }
 }

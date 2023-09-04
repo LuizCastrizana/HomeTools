@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemMenu } from 'src/app/interfaces/item-menu';
+import { ItemMenu } from 'src/app/interfaces/itemMenu';
 
 @Component({
   selector: 'app-home',

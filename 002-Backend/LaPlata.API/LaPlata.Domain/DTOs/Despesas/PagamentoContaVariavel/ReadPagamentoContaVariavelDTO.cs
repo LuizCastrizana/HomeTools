@@ -6,6 +6,6 @@
         public int ValorInteiro { get; set; }
         public int? ValorCentavos { get; set; }
         public DateTime DataPagamento { get; set; }
-        public ReadContaVariavelDTO ContaVariavel { get; set; }
+        public int ContaVariavelId { get; set; }
     }
 }

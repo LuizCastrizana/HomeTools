@@ -31,7 +31,8 @@ const routes: Routes = [
     component: PainelDespesasComponent
   },
   //#endregion
-  //#region Despesas
+  //#region Despensa
+
   //#endregion
 ];
 

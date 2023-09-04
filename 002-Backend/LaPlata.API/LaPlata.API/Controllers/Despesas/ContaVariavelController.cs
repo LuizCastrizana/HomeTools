@@ -44,7 +44,7 @@ namespace LaPlata.API.Controllers.Despesas
         }
 
         [HttpGet]
-        public IActionResult ObterContaVariavels([FromQuery] string? busca)
+        public IActionResult ObterContasVariaveis([FromQuery] string? busca)
         {
             try
             {

@@ -6,7 +6,7 @@
     <div class="menu-painel-busca col col-flexible">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Buscar">
-        <span class="input-group-btn">
+        <span>
           <button title="Buscar" id="btnBuscar" class="btn">
             <img src="../../../../assets/img/lupa-icon.png">
           </button>
@@ -30,7 +30,7 @@
         <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Vencimento<span id="imgVencimento"></span></th>
       </tr>
-      <tr *ngFor="let conta of Contas">
+      <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">
           <button title="Buscar" id="btnBuscar" class="btn btn-sm">
             <img src="../../../../assets/img/pencil-icon.png">
@@ -44,6 +44,6 @@
     </table>
   </div>
   <div class="paginador">
-
+    <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>

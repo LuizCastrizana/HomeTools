@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ItemMenu } from 'src/app/interfaces/item-menu';
+import { ItemMenu } from 'src/app/interfaces/itemMenu';
 
 @Component({
   selector: 'app-botao-menu',

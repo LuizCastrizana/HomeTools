@@ -158,7 +158,6 @@ p {
   margin-left: -0.5rem;
 }
 /* INPUT / FORM */
-.input,
 .input-group {
   display: flex;
   height: 38px;
@@ -174,7 +173,6 @@ p {
   height: 100%;
 }
 .form-control {
-  display: block;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
@@ -184,7 +182,6 @@ p {
   border: 1px solid #333;
   border-radius: 0.5rem;
   width: 100%;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
   outline: none;
 }
@@ -214,9 +211,6 @@ p {
 }
 .btn:focus {
   outline: 1px solid rgb(57, 88, 88);
-}
-.btn:focus::after {
-  outline: none;
 }
 .btn-red {
   color: #ffffff;

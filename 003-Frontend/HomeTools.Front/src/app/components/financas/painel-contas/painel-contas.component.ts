@@ -1,5 +1,9 @@
+import { DadosPaginador } from '../../../interfaces/paginacao/dadosPaginador';
 import { Component, OnInit } from '@angular/core';
-import { ReadConta } from 'src/app/interfaces/financas/read-conta';
+import { ReadConta } from 'src/app/interfaces/financas/readConta';
+import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
+import { concatMap, groupBy, map, mergeMap, of, tap, toArray, zip } from 'rxjs';
+import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 
 @Component({
   selector: 'app-painel-contas',
@@ -9,6 +13,17 @@ import { ReadConta } from 'src/app/interfaces/financas/read-conta';
 export class PainelContasComponent implements OnInit {
   Ordem: string = 'asc';
   NomeCampo: string = '';
+  DadosPaginador: DadosPaginador = {
+    PaginaAtual: 1,
+    ItensPorPagina: 2,
+    TotalItens: 4,
+  };
+  DadosPaginados: DadosPaginados<ReadConta> = {
+    Pagina: 1,
+    ItensPorPagina: 15,
+    TotalItens: 2,
+    Itens: [],
+  };
   Contas: ReadConta[] = [
     {
       Id: 1,
@@ -32,11 +47,34 @@ export class PainelContasComponent implements OnInit {
         Descricao: 'Casa',
       },
     },
+    {
+      Id: 3,
+      Descricao: 'Intenet',
+      ValorInteiro: 120,
+      ValorCentavos: 0,
+      DiaVencimento: 12,
+      Categoria: {
+        Id: 1,
+        Descricao: 'Casa',
+      },
+    },
+    {
+      Id: 4,
+      Descricao: 'Vigia',
+      ValorInteiro: 40,
+      ValorCentavos: 0,
+      DiaVencimento: 15,
+      Categoria: {
+        Id: 2,
+        Descricao: 'Segurança',
+      },
+    },
   ];
   constructor() {}
 
   ngOnInit(): void {
     this.ordenarContas();
+    this.paginarContas();
   }
 
   ordenarContas(nomeCampo?: string) {
@@ -95,6 +133,8 @@ export class PainelContasComponent implements OnInit {
         break;
     }
     this.tratarIconeOrdenacao();
+    this.DadosPaginador.PaginaAtual = 1;
+    this.paginarContas();
   }
 
   tratarIconeOrdenacao() {
@@ -144,5 +184,27 @@ export class PainelContasComponent implements OnInit {
       default:
         break;
       }
+  }
+
+  paginarContas() {
+    this.DadosPaginados.Pagina = this.DadosPaginador.PaginaAtual;
+    this.DadosPaginados.ItensPorPagina = this.DadosPaginador.ItensPorPagina;
+    this.DadosPaginados.TotalItens = this.DadosPaginador.TotalItens;
+
+    let itensPagina: ItemPagina<ReadConta>[] = [];
+    let pagina = 1;
+    this.Contas.forEach(item => {
+      itensPagina.push({  Pagina: pagina, Item: item });
+      if (itensPagina.length == this.DadosPaginados.ItensPorPagina * pagina) {
+        pagina++;
+      }
+    });
+
+    this.DadosPaginados.Itens = itensPagina.filter(item => item.Pagina == this.DadosPaginados.Pagina).map(item => item.Item);
+  }
+
+  receiveMessage($event: DadosPaginador) {
+    this.DadosPaginador = $event
+    this.paginarContas();
   }
 }

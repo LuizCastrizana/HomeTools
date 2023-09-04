@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public DateTime DataPagamento { get; set; }
-        public ReadContaDTO Conta { get; set; }
+        public int ContaId { get; set; }
+
     }
 }
