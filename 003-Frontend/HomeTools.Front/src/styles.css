@@ -287,6 +287,14 @@ border-right: 1px solid #699;
   height: 15px;
   margin-left: 5px;
 }
+.legenda-painel {
+  border: 1px solid #699;
+}
+.legenda-painel-item {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
+}
 /* PAINEL */
 .menu-painel {
   margin-left: auto;

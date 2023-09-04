@@ -103,7 +103,8 @@ export class PainelContasComponent implements OnInit {
         DiaVencimento: contaDto.DiaVencimento,
         Categoria: contaDto.Categoria,
         Pagamentos: [],
-        UltimoPagamento: undefined
+        UltimoPagamento: undefined,
+        Variavel: false
       }
       contaDto.Pagamentos.forEach(pagamentoDto => {
         let pagamento: PagamentoConta = {
@@ -135,7 +136,8 @@ export class PainelContasComponent implements OnInit {
         DiaVencimento: contaDto.DiaVencimento,
         Categoria: contaDto.Categoria,
         Pagamentos: [],
-        UltimoPagamento: undefined
+        UltimoPagamento: undefined,
+        Variavel: true
       }
       contaDto.Pagamentos.forEach(pagamentoDto => {
         let pagamento: PagamentoConta = {

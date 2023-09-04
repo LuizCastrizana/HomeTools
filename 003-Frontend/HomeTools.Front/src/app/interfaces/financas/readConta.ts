@@ -10,4 +10,5 @@ export interface ReadConta {
   Categoria: Categoria;
   Pagamentos: PagamentoConta[];
   UltimoPagamento?: Date;
+  Variavel: boolean;
 }

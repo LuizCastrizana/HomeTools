@@ -39,11 +39,14 @@
         </td>
         <td>{{conta.Descricao}}</td>
         <td>{{conta.Categoria.Descricao}}</td>
-        <td class="right">{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
+        <td class="right"><span *ngIf="conta.Variavel">μ </span>{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
         <td class="center">{{conta.DiaVencimento}}</td>
         <td class="center">{{conta.UltimoPagamento}}</td>
       </tr>
     </table>
+  </div>
+  <div class="legenda-painel conteudo-painel ff-verdana">
+    <div class="legenda-painel-item">μ: Valor Médio </div>
   </div>
   <div class="paginador">
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
