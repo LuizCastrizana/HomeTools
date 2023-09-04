@@ -154,8 +154,6 @@ p {
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -0.5rem;
-  margin-left: -0.5rem;
 }
 /* INPUT / FORM */
 .input-group {
@@ -287,13 +285,9 @@ border-right: 1px solid #699;
   height: 15px;
   margin-left: 5px;
 }
-.legenda-painel {
-  border: 1px solid #699;
-}
-.legenda-painel-item {
-  display: flex;
-  align-items: center;
-  margin: 0.5rem;
+.img-status img {
+  width: 26px;
+  height: 26px;
 }
 /* PAINEL */
 .menu-painel {
@@ -323,4 +317,19 @@ border-right: 1px solid #699;
   min-width: 650px;
   border-radius: 0.5rem;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.legenda-painel {
+  border: 1px solid #699;
+}
+.legenda-painel-item {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0.375rem;
+  font-size: 0.75rem;
+}
+.legenda-painel-item img {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.25rem;
 }

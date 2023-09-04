@@ -9,6 +9,7 @@ import { ReadContaDto } from 'src/app/interfaces/api-dto/Financas/readConta';
 import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/Financas/readContaVariavel';
+import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 
 @Component({
   selector: 'app-painel-contas',
@@ -104,7 +105,8 @@ export class PainelContasComponent implements OnInit {
         Categoria: contaDto.Categoria,
         Pagamentos: [],
         UltimoPagamento: undefined,
-        Variavel: false
+        Variavel: false,
+        StatusId: StatusContaEnum.Pendente,
       }
       contaDto.Pagamentos.forEach(pagamentoDto => {
         let pagamento: PagamentoConta = {
@@ -118,6 +120,17 @@ export class PainelContasComponent implements OnInit {
       });
       if (conta.Pagamentos.length > 0) {
         conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
+        let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
+        if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
+          conta.StatusId = StatusContaEnum.Paga;
+        }
+        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth()
+          && conta.DiaVencimento < new Date(Date.now()).getDay()) {
+          conta.StatusId = StatusContaEnum.Atrasada;
+        }
+        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
+          conta.StatusId = StatusContaEnum.Atrasada;
+        }
       }
       this.Contas.push(conta);
     });
@@ -137,7 +150,8 @@ export class PainelContasComponent implements OnInit {
         Categoria: contaDto.Categoria,
         Pagamentos: [],
         UltimoPagamento: undefined,
-        Variavel: true
+        Variavel: true,
+        StatusId: StatusContaEnum.Pendente,
       }
       contaDto.Pagamentos.forEach(pagamentoDto => {
         let pagamento: PagamentoConta = {
@@ -153,6 +167,17 @@ export class PainelContasComponent implements OnInit {
       conta.ValorCentavos = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorCentavos, 0) / conta.Pagamentos.length;
       if (conta.Pagamentos.length > 0) {
         conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
+        let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
+        if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
+          conta.StatusId = StatusContaEnum.Paga;
+        }
+        else if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth() -1
+          && conta.DiaVencimento < new Date(Date.now()).getDay()) {
+          conta.StatusId = StatusContaEnum.Atrasada;
+        }
+        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
+          conta.StatusId = StatusContaEnum.Atrasada;
+        }
       }
       this.Contas.push(conta);
     });

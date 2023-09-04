@@ -28,8 +28,9 @@
         <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descricao<span id="imgDescricao"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Vencimento<span id="imgVencimento"></span></th>
+        <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Venc.<span id="imgVencimento"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('UltimoPagamento')" id="thUltimoPagamento">Ult. Pagamento<span id="imgUltPagamento"></span></th>
+        <th class="campo-ordenacao" (click)="ordenarContas('Status')" id="thStatus">Status<span id="imgStatus"></span></th>
       </tr>
       <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">
@@ -42,11 +43,25 @@
         <td class="right"><span *ngIf="conta.Variavel">μ </span>{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
         <td class="center">{{conta.DiaVencimento}}</td>
         <td class="center">{{conta.UltimoPagamento}}</td>
+        <td class="center">
+          <span class="img-status" *ngIf="conta.StatusId == 1"><img src="../../../../assets/img/status-verde.png"></span>
+          <span class="img-status" *ngIf="conta.StatusId == 2"><img src="../../../../assets/img/status-amarelo.png"></span>
+          <span class="img-status" *ngIf="conta.StatusId == 3"><img src="../../../../assets/img/status-vermelho.png"></span>
+        </td>
       </tr>
     </table>
   </div>
   <div class="legenda-painel conteudo-painel ff-verdana">
-    <div class="legenda-painel-item">μ: Valor Médio </div>
+    <div class="row">
+      <div class="legenda-painel-item"><strong>Status: </strong></div>
+      <div class="legenda-painel-item"><span class="img-status"><img src="../../../../assets/img/status-verde.png"></span>: Paga</div>
+      <div class="legenda-painel-item"><span class="img-status"><img src="../../../../assets/img/status-amarelo.png"></span>: Pendente</div>
+      <div class="legenda-painel-item"><span class="img-status"><img src="../../../../assets/img/status-vermelho.png"></span>: Atrasada</div>
+    </div>
+    <div class="row">
+      <div class="legenda-painel-item"><strong>Valor: </strong></div>
+      <div class="legenda-painel-item">μ: Valor médio dos pagamentos</div>
+    </div>
   </div>
   <div class="paginador">
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>

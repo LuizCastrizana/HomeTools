@@ -1,3 +1,4 @@
+import { StatusContaEnum } from "src/app/enums/statusContaEnum";
 import { Categoria } from "../categoria";
 import { PagamentoConta } from "./readPagamentoConta";
 
@@ -11,4 +12,5 @@ export interface ReadConta {
   Pagamentos: PagamentoConta[];
   UltimoPagamento?: Date;
   Variavel: boolean;
+  StatusId: number;
 }
