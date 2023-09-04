@@ -29,6 +29,7 @@
         <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Vencimento<span id="imgVencimento"></span></th>
+        <th class="campo-ordenacao" (click)="ordenarContas('UltimoPagamento')" id="thUltimoPagamento">Ult. Pagamento<span id="imgUltPagamento"></span></th>
       </tr>
       <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">
@@ -40,6 +41,7 @@
         <td>{{conta.Categoria.Descricao}}</td>
         <td class="right">{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
         <td class="center">{{conta.DiaVencimento}}</td>
+        <td class="center">{{conta.UltimoPagamento}}</td>
       </tr>
     </table>
   </div>

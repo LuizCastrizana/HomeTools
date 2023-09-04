@@ -1,4 +1,5 @@
 import { Categoria } from "../categoria";
+import { PagamentoConta } from "./readPagamentoConta";
 
 export interface ReadConta {
   Id: number;
@@ -7,4 +8,6 @@ export interface ReadConta {
   ValorCentavos: number;
   DiaVencimento: number;
   Categoria: Categoria;
+  Pagamentos: PagamentoConta[];
+  UltimoPagamento?: Date;
 }

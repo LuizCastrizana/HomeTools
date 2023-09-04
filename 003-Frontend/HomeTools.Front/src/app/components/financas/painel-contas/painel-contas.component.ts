@@ -1,9 +1,14 @@
+import { RespostaApi } from './../../../interfaces/api-dto/respostaApi';
 import { DadosPaginador } from '../../../interfaces/paginacao/dadosPaginador';
 import { Component, OnInit } from '@angular/core';
 import { ReadConta } from 'src/app/interfaces/financas/readConta';
 import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
-import { concatMap, groupBy, map, mergeMap, of, tap, toArray, zip } from 'rxjs';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
+import { ContaService } from 'src/app/services/Financas/conta.service';
+import { ReadContaDto } from 'src/app/interfaces/api-dto/Financas/readConta';
+import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
+import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
+import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/Financas/readContaVariavel';
 
 @Component({
   selector: 'app-painel-contas',
@@ -11,72 +16,146 @@ import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
   styleUrls: ['./painel-contas.component.css'],
 })
 export class PainelContasComponent implements OnInit {
+
+  constructor(private contaService: ContaService, private contaVariavelService: ContaVariavelService) {}
+
   Ordem: string = 'asc';
   NomeCampo: string = '';
   DadosPaginador: DadosPaginador = {
     PaginaAtual: 1,
     ItensPorPagina: 2,
-    TotalItens: 4,
+    TotalItens: 0,
   };
   DadosPaginados: DadosPaginados<ReadConta> = {
     Pagina: 1,
     ItensPorPagina: 15,
-    TotalItens: 2,
+    TotalItens: 0,
     Itens: [],
   };
   Contas: ReadConta[] = [
-    {
-      Id: 1,
-      Descricao: 'Conta de Luz',
-      ValorInteiro: 100,
-      ValorCentavos: 0,
-      DiaVencimento: 10,
-      Categoria: {
-        Id: 1,
-        Descricao: 'Casa',
-      },
-    },
-    {
-      Id: 2,
-      Descricao: 'Conta de Água',
-      ValorInteiro: 50,
-      ValorCentavos: 0,
-      DiaVencimento: 15,
-      Categoria: {
-        Id: 1,
-        Descricao: 'Casa',
-      },
-    },
-    {
-      Id: 3,
-      Descricao: 'Intenet',
-      ValorInteiro: 120,
-      ValorCentavos: 0,
-      DiaVencimento: 12,
-      Categoria: {
-        Id: 1,
-        Descricao: 'Casa',
-      },
-    },
-    {
-      Id: 4,
-      Descricao: 'Vigia',
-      ValorInteiro: 40,
-      ValorCentavos: 0,
-      DiaVencimento: 15,
-      Categoria: {
-        Id: 2,
-        Descricao: 'Segurança',
-      },
-    },
+    // {
+    //   Id: 1,
+    //   Descricao: 'Conta de Luz',
+    //   ValorInteiro: 100,
+    //   ValorCentavos: 0,
+    //   DiaVencimento: 10,
+    //   Categoria: {
+    //     Id: 1,
+    //     Descricao: 'Casa',
+    //   },
+    // },
+    // {
+    //   Id: 2,
+    //   Descricao: 'Conta de Água',
+    //   ValorInteiro: 50,
+    //   ValorCentavos: 0,
+    //   DiaVencimento: 15,
+    //   Categoria: {
+    //     Id: 1,
+    //     Descricao: 'Casa',
+    //   },
+    // },
+    // {
+    //   Id: 3,
+    //   Descricao: 'Intenet',
+    //   ValorInteiro: 120,
+    //   ValorCentavos: 0,
+    //   DiaVencimento: 12,
+    //   Categoria: {
+    //     Id: 1,
+    //     Descricao: 'Casa',
+    //   },
+    // },
+    // {
+    //   Id: 4,
+    //   Descricao: 'Vigia',
+    //   ValorInteiro: 40,
+    //   ValorCentavos: 0,
+    //   DiaVencimento: 15,
+    //   Categoria: {
+    //     Id: 2,
+    //     Descricao: 'Segurança',
+    //   },
+    // },
   ];
-  constructor() {}
 
   ngOnInit(): void {
-    this.ordenarContas();
-    this.paginarContas();
+    this.contaService.listar().subscribe((respostaApi) => {
+      this.incluirContas(respostaApi);
+      this.contaVariavelService.listar().subscribe((respostaApi2) => {
+        this.incluirContasVariaveis(respostaApi2);
+        this.DadosPaginador.TotalItens = this.Contas.length;
+        this.ordenarContas();
+        this.paginarContas();
+      });
+    });
   }
 
+  incluirContas(respostaApi: RespostaApi<ReadContaDto[]>) {
+    let index = 0;
+    respostaApi.Valor.forEach((contaDto) => {
+      index++;
+      let conta: ReadConta = {
+        Id: index,
+        Descricao: contaDto.Descricao,
+        ValorInteiro: contaDto.ValorInteiro,
+        ValorCentavos: contaDto.ValorCentavos,
+        DiaVencimento: contaDto.DiaVencimento,
+        Categoria: contaDto.Categoria,
+        Pagamentos: [],
+        UltimoPagamento: undefined
+      }
+      contaDto.Pagamentos.forEach(pagamentoDto => {
+        let pagamento: PagamentoConta = {
+          Id: pagamentoDto.Id,
+          ValorInteiro: 0,
+          ValorCentavos: 0,
+          DataPagamento: pagamentoDto.DataPagamento,
+          ContaId: pagamentoDto.ContaId
+        }
+        conta.Pagamentos.push(pagamento);
+      });
+      if (conta.Pagamentos.length > 0) {
+        conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
+      }
+      this.Contas.push(conta);
+    });
+    this.DadosPaginador.TotalItens = this.Contas.length;
+  }
+
+  incluirContasVariaveis(respostaApi: RespostaApi<ReadContaVariavelDto[]>) {
+    let index = 0;
+    respostaApi.Valor.forEach((contaDto) => {
+      index++;
+      let conta: ReadConta = {
+        Id: index,
+        Descricao: contaDto.Descricao,
+        ValorInteiro: 0,
+        ValorCentavos: 0,
+        DiaVencimento: contaDto.DiaVencimento,
+        Categoria: contaDto.Categoria,
+        Pagamentos: [],
+        UltimoPagamento: undefined
+      }
+      contaDto.Pagamentos.forEach(pagamentoDto => {
+        let pagamento: PagamentoConta = {
+          Id: pagamentoDto.Id,
+          ValorInteiro: pagamentoDto.ValorInteiro,
+          ValorCentavos: pagamentoDto.ValorCentavos,
+          DataPagamento: pagamentoDto.DataPagamento,
+          ContaId: pagamentoDto.ContaId
+        }
+        conta.Pagamentos.push(pagamento);
+      });
+      conta.ValorInteiro = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorInteiro, 0) / conta.Pagamentos.length;
+      conta.ValorCentavos = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorCentavos, 0) / conta.Pagamentos.length;
+      if (conta.Pagamentos.length > 0) {
+        conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
+      }
+      this.Contas.push(conta);
+    });
+    this.DadosPaginador.TotalItens = this.Contas.length;
+  }
   ordenarContas(nomeCampo?: string) {
     if (this.Ordem == 'asc') {
       this.Ordem = 'desc';
@@ -126,6 +205,14 @@ export class PainelContasComponent implements OnInit {
           this.Contas.sort((a, b) => b.DiaVencimento - a.DiaVencimento);
         }
         break;
+      case 'UltimoPagamento':
+        this.NomeCampo = 'UltimoPagamento';
+        if (this.Ordem == 'asc') {
+          this.Contas.sort((a, b) => new Date(a.UltimoPagamento != undefined ? a.UltimoPagamento : 0).getTime() - new Date(b.UltimoPagamento != undefined ? b.UltimoPagamento : 0).getTime());
+        } else {
+          this.Contas.sort((a, b) => new Date(b.UltimoPagamento != undefined ? b.UltimoPagamento : 0).getTime() - new Date(a.UltimoPagamento != undefined ? a.UltimoPagamento : 0).getTime());
+        }
+        break;
       default:
         this.NomeCampo = 'Id';
         this.Ordem = 'desc';
@@ -144,11 +231,13 @@ export class PainelContasComponent implements OnInit {
     let imgCategoria = document.getElementById('imgCategoria');
     let imgValor = document.getElementById('imgValor');
     let imgVencimento = document.getElementById('imgVencimento');
+    let imgUltPagamento = document.getElementById('imgUltPagamento');
 
     imgDescricao!.innerHTML = '';
     imgCategoria!.innerHTML = '';
     imgValor!.innerHTML = '';
     imgVencimento!.innerHTML = '';
+    imgUltPagamento!.innerHTML = '';
 
     switch (this.NomeCampo) {
       case 'Descricao':
@@ -180,6 +269,14 @@ export class PainelContasComponent implements OnInit {
         else {
           imgVencimento!.innerHTML = imgDesc;
         }
+        break;
+      case 'UltimoPagamento':
+        if (this.Ordem == 'asc') {
+          imgUltPagamento!.innerHTML = imgAsc;
+        }
+        else {
+          imgUltPagamento!.innerHTML = imgDesc;
+          }
         break;
       default:
         break;
