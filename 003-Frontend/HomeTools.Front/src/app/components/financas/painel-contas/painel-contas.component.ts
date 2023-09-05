@@ -246,6 +246,22 @@ export class PainelContasComponent implements OnInit {
           this.Contas.sort((a, b) => new Date(b.UltimoPagamento != undefined ? b.UltimoPagamento : 0).getTime() - new Date(a.UltimoPagamento != undefined ? a.UltimoPagamento : 0).getTime());
         }
         break;
+      case  'Status':
+        this.NomeCampo = 'Status';
+        if (this.Ordem == 'asc') {
+          this.Contas.sort((a, b) => a.StatusId - b.StatusId);
+        } else {
+          this.Contas.sort((a, b) => b.StatusId - a.StatusId);
+        }
+        break;
+      case 'Tipo':
+        this.NomeCampo = 'Tipo';
+        if (this.Ordem == 'asc') {
+          this.Contas.sort((a, b) => a.Variavel == b.Variavel ? 0 : a.Variavel ? -1 : 1);
+        } else {
+          this.Contas.sort((a, b) => a.Variavel == b.Variavel ? 0 : a.Variavel ? 1 : -1);
+        }
+        break;
       default:
         this.NomeCampo = 'Id';
         this.Ordem = 'desc';
@@ -265,12 +281,16 @@ export class PainelContasComponent implements OnInit {
     let imgValor = document.getElementById('imgValor');
     let imgVencimento = document.getElementById('imgVencimento');
     let imgUltPagamento = document.getElementById('imgUltPagamento');
+    let imgStatus = document.getElementById('imgStatus');
+    let imgTipo = document.getElementById('imgTipo');
 
     imgDescricao!.innerHTML = '';
     imgCategoria!.innerHTML = '';
     imgValor!.innerHTML = '';
     imgVencimento!.innerHTML = '';
     imgUltPagamento!.innerHTML = '';
+    imgStatus!.innerHTML = '';
+    imgTipo!.innerHTML = '';
 
     switch (this.NomeCampo) {
       case 'Descricao':
@@ -311,6 +331,22 @@ export class PainelContasComponent implements OnInit {
           imgUltPagamento!.innerHTML = imgDesc;
           }
         break;
+      case 'Status':
+        if (this.Ordem == 'asc') {
+          imgStatus!.innerHTML = imgAsc;
+        }
+        else {
+          imgStatus!.innerHTML = imgDesc;
+        }
+        break;
+      case 'Tipo':
+          if (this.Ordem == 'asc') {
+            imgTipo!.innerHTML = imgAsc;
+          }
+          else {
+            imgTipo!.innerHTML = imgDesc;
+          }
+          break;
       default:
         break;
       }

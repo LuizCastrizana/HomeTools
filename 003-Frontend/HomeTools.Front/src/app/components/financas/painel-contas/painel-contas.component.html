@@ -27,6 +27,7 @@
         <th class="campo-ordenacao" (click)="ordenarContas('Acoes')" id="thAcoes">Ações<span id="imgAcoes"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descricao<span id="imgDescricao"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
+        <th class="campo-ordenacao" (click)="ordenarContas('Tipo')" id="thTipo">Tipo<span id="imgTipo"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Venc.<span id="imgVencimento"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('UltimoPagamento')" id="thUltimoPagamento">Ult. Pagamento<span id="imgUltPagamento"></span></th>
@@ -40,6 +41,10 @@
         </td>
         <td>{{conta.Descricao}}</td>
         <td>{{conta.Categoria.Descricao}}</td>
+        <td>
+          <span *ngIf="conta.Variavel">Variável</span>
+          <span *ngIf="!conta.Variavel">Fixa</span>
+        </td>
         <td class="right"><span *ngIf="conta.Variavel">μ </span>{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
         <td class="center">{{conta.DiaVencimento}}</td>
         <td class="center">{{conta.UltimoPagamento}}</td>
