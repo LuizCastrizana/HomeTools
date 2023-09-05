@@ -5,10 +5,10 @@ import { ReadConta } from 'src/app/interfaces/financas/readConta';
 import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ContaService } from 'src/app/services/Financas/conta.service';
-import { ReadContaDto } from 'src/app/interfaces/api-dto/Financas/readConta';
+import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readConta';
 import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
-import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/Financas/readContaVariavel';
+import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavel';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 
 @Component({
@@ -24,7 +24,7 @@ export class PainelContasComponent implements OnInit {
   NomeCampo: string = '';
   DadosPaginador: DadosPaginador = {
     PaginaAtual: 1,
-    ItensPorPagina: 2,
+    ItensPorPagina: 5,
     TotalItens: 0,
   };
   DadosPaginados: DadosPaginados<ReadConta> = {
@@ -83,12 +83,15 @@ export class PainelContasComponent implements OnInit {
   ngOnInit(): void {
     this.contaService.listar().subscribe((respostaApi) => {
       this.incluirContas(respostaApi);
-      this.contaVariavelService.listar().subscribe((respostaApi2) => {
-        this.incluirContasVariaveis(respostaApi2);
-        this.DadosPaginador.TotalItens = this.Contas.length;
-        this.ordenarContas();
-        this.paginarContas();
-      });
+      this.DadosPaginador.TotalItens = this.Contas.length;
+      this.ordenarContas();
+      this.paginarContas();
+    });
+    this.contaVariavelService.listar().subscribe((respostaApi2) => {
+      this.incluirContasVariaveis(respostaApi2);
+      this.DadosPaginador.TotalItens = this.Contas.length;
+      this.ordenarContas();
+      this.paginarContas();
     });
   }
 
@@ -163,8 +166,10 @@ export class PainelContasComponent implements OnInit {
         }
         conta.Pagamentos.push(pagamento);
       });
-      conta.ValorInteiro = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorInteiro, 0) / conta.Pagamentos.length;
-      conta.ValorCentavos = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorCentavos, 0) / conta.Pagamentos.length;
+      let mediaInteiro = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorInteiro, 0) / conta.Pagamentos.length;
+      let mediaCentavos = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorCentavos, 0) / conta.Pagamentos.length;
+      conta.ValorInteiro = Number.isNaN(mediaInteiro) ? 0 : mediaInteiro;
+      conta.ValorCentavos = Number.isNaN(mediaInteiro) ? 0 : mediaCentavos;
       if (conta.Pagamentos.length > 0) {
         conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
         let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
@@ -183,6 +188,7 @@ export class PainelContasComponent implements OnInit {
     });
     this.DadosPaginador.TotalItens = this.Contas.length;
   }
+
   ordenarContas(nomeCampo?: string) {
     if (this.Ordem == 'asc') {
       this.Ordem = 'desc';

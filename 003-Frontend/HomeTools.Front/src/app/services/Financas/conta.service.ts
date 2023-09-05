@@ -1,7 +1,8 @@
+import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
 import { RespostaApi } from './../../interfaces/api-dto/respostaApi';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ReadContaDto } from '../../interfaces/api-dto/Financas/readConta';
+import { ReadContaDto } from '../../interfaces/api-dto/financas/readConta';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,14 +12,18 @@ export class ContaService {
 
   constructor(private http: HttpClient) { }
 
-  private readonly ContaAPI = "https://localhost:7012/api/Conta";
+  private readonly API = "https://localhost:7012/api/Conta";
 
   listar(): Observable<RespostaApi<ReadContaDto[]>> {
-    return this.http.get<RespostaApi<ReadContaDto[]>>(this.ContaAPI);
+    return this.http.get<RespostaApi<ReadContaDto[]>>(this.API);
   }
 
   buscar(busca: string): Observable<RespostaApi<ReadContaDto[]>> {
-    const url = `${this.ContaAPI}/${busca}`
+    const url = `${this.API}/${busca}`
     return this.http.get<RespostaApi<ReadContaDto[]>>(url)
+  }
+
+  incluir (CreateContaDto: CreateContaDto): Observable<RespostaApi<ReadContaDto>> {
+    return this.http.post<RespostaApi<ReadContaDto>>(this.API, CreateContaDto)
   }
 }

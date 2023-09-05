@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
 import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
 import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
+import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
 
 const routes: Routes = [
   //#region Home
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'despesas',
     component: PainelDespesasComponent
+  },
+  {
+    path: 'contas/incluir-conta',
+    component: IncluirContaComponent
   },
   //#endregion
   //#region Despensa

@@ -13,6 +13,7 @@ import { PainelDespesasComponent } from './components/financas/painel-despesas/p
 import { PaginadorComponent } from './components/paginador/paginador/paginador.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
     MenuFinancasComponent,
     PainelContasComponent,
     PainelDespesasComponent,
-    PaginadorComponent
+    PaginadorComponent,
+    IncluirContaComponent
   ],
   imports: [
     BrowserModule,

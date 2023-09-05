@@ -1,0 +1,6 @@
+.conteudo-pagina, .titulo-pagina {
+  min-width: 0 !important;
+}
+#divValor {
+  display: none;
+}

@@ -155,6 +155,9 @@ p {
   display: flex;
   flex-wrap: wrap;
 }
+.form-row {
+  padding: 0 0.5rem 0 0.5rem;
+}
 /* INPUT / FORM */
 .input-group {
   display: flex;
@@ -180,8 +183,37 @@ p {
   border: 1px solid #333;
   border-radius: 0.5rem;
   width: 100%;
+  box-sizing: border-box;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
   outline: none;
+}
+.form-group {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+.form-group label {
+  display: block;
+  margin: 0 0 0.2rem 0.325rem;
+  font-size: 0.875rem;
+}
+.form-group button {
+  margin-right: 0.5rem;
+}
+.form-group > .form-control {
+  display: block;
+  height: calc(1.5em + 0.75rem + 2px);
+}
+@media (max-width: 700px) {
+  .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .row {
+    flex-direction: column;
+  }
+  .legenda-painel {
+    width: 100% !important;
+  }
 }
 /* BTN */
 .btn {
@@ -208,12 +240,17 @@ p {
   border-color: #111;
 }
 .btn:focus {
-  outline: 1px solid rgb(57, 88, 88);
+  outline: 1px solid #111;
 }
 .btn-red {
   color: #ffffff;
-  background-color: #ff3c3c;
-  border-color: rgb(110, 2, 2);
+  background-color: #e63333;
+  border-color: #971c1c;
+}
+.btn-red:hover {
+  color: #ffffff;
+  background-color: #ff2727;
+  border-color: #971c1c;
 }
 .btn-sm {
   padding: 0.25rem 0 0.5rem 0;
@@ -248,6 +285,7 @@ p {
   color: #212121;
   background-color: #fff;
   border: 1px solid #699;
+  min-width: 0;
   border-spacing: 0;
   border-radius: 0.5rem;
 }
@@ -258,6 +296,7 @@ padding: 5px 7px;
 background-color: #699;
 color: #fff;
 font-weight: bold;
+border: 1px solid #699;
 }
 .table td {
 border-right: 1px solid #699;
@@ -291,35 +330,32 @@ border-right: 1px solid #699;
 }
 /* PAINEL */
 .menu-painel {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
-  min-width: 650px;
-  width: 95%;
+  width: 100% !important;
   height: 100%;
+  min-width: 0 !important;
   background-color: #699;
-  border-radius: 0.5rem;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-.titulo-painel {
+.titulo-pagina {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1rem;
-  width: 95%;
+  max-width: 100%;
   height: 100%;
-  min-width: 650px;
 }
-.conteudo-painel {
+.conteudo-pagina {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1rem;
+  box-sizing: border-box;
   width: 95%;
-  min-width: 650px;
+  min-width: 600px;
+  border: 1px solid #699;
   border-radius: 0.5rem;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 .legenda-painel {
-  border: 1px solid #699;
+  height: 100%;
+  min-width: 0;
 }
 .legenda-painel-item {
   display: inline-flex;
