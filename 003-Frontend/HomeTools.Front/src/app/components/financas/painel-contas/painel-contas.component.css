@@ -1,4 +1,7 @@
 .div-tabela{
   border: 0;
+  min-width: min-content;
 }
-
+#thAcoes {
+  min-width: 80px;
+}

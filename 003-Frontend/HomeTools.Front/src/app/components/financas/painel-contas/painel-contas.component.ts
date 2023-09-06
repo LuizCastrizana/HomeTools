@@ -1,3 +1,4 @@
+import { FeedbackService } from './../../../services/feedback.service';
 import { RespostaApi } from './../../../interfaces/api-dto/respostaApi';
 import { DadosPaginador } from '../../../interfaces/paginacao/dadosPaginador';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +10,8 @@ import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
 import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
+import { TipoAlertaEnum } from 'src/app/enums/tipoAlertaEnum';
+import { DadosFeedbackAlerta } from 'src/app/interfaces/dadosFeedbackAlerta';
 
 @Component({
   selector: 'app-painel-contas',
@@ -17,7 +20,7 @@ import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 })
 export class PainelContasComponent implements OnInit {
 
-  Ordem: string = 'asc';
+  Ordem: string = '';
   NomeCampo: string = '';
 
   DadosPaginador: DadosPaginador = {
@@ -35,18 +38,40 @@ export class PainelContasComponent implements OnInit {
 
   Contas: ReadConta[] = [];
 
-  constructor(private contaService: ContaService, private contaVariavelService: ContaVariavelService) {}
+  constructor(
+    private contaService: ContaService,
+    private contaVariavelService: ContaVariavelService,
+    private FeedbackService: FeedbackService
+    ) {}
 
   ngOnInit(): void {
-    this.contaService.listar().subscribe((respostaApi) => {
-      this.incluirContas(respostaApi);
-      this.ordenarContas();
-      this.paginarContas();
+    this.contaService.listar().subscribe({
+      next: (respostaApi) => {
+        this.incluirContas(respostaApi);
+        this.ordenarContas();
+      }, error: (err) => {
+        let dadosFeedback = {
+          Id: "feedback1",
+          TipoAlerta: TipoAlertaEnum.Erro,
+          Titulo: "Erro",
+          Mensagem: "Erro ao carregar contas!"
+        } as DadosFeedbackAlerta;
+        FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
+      }
     });
-    this.contaVariavelService.listar().subscribe((respostaApi2) => {
-      this.incluirContasVariaveis(respostaApi2);
-      this.ordenarContas();
-      this.paginarContas();
+    this.contaVariavelService.listar().subscribe({
+      next: (respostaApi2) => {
+        this.incluirContasVariaveis(respostaApi2);
+        this.ordenarContas();
+      }, error: (err) => {
+        let dadosFeedback = {
+          Id: "feedback2",
+          TipoAlerta: TipoAlertaEnum.Erro,
+          Titulo: "Erro",
+          Mensagem: "Erro ao carregar contas variáveis!"
+        } as DadosFeedbackAlerta;
+        FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
+      }
     });
   }
 
@@ -67,11 +92,16 @@ export class PainelContasComponent implements OnInit {
   }
 
   ordenarContas(nomeCampo?: string) {
-    if (this.Ordem == 'asc') {
-      this.Ordem = 'desc';
-    }
-    else {
-      this.Ordem = 'asc';
+    if (nomeCampo == this.NomeCampo) {
+      if (this.Ordem == 'desc') {
+        this.Ordem = 'asc';
+      } else if (this.Ordem == 'asc') {
+        this.Ordem = '';
+        this.NomeCampo = '';
+        nomeCampo = '';
+      }
+    } else {
+      this.Ordem = '';
     }
 
     switch (nomeCampo) {
@@ -82,6 +112,7 @@ export class PainelContasComponent implements OnInit {
             a.Descricao.localeCompare(b.Descricao, 'pt-BR')
           );
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) =>
             b.Descricao.localeCompare(a.Descricao, 'pt-BR')
           );
@@ -94,6 +125,7 @@ export class PainelContasComponent implements OnInit {
             a.Categoria.Descricao.localeCompare(b.Categoria.Descricao, 'pt-BR')
           );
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) =>
             b.Categoria.Descricao.localeCompare(a.Categoria.Descricao, 'pt-BR')
           );
@@ -104,6 +136,7 @@ export class PainelContasComponent implements OnInit {
         if (this.Ordem == 'asc') {
           this.Contas.sort((a, b) => a.ValorInteiro - b.ValorInteiro);
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) => b.ValorInteiro - a.ValorInteiro);
         }
         break;
@@ -112,6 +145,7 @@ export class PainelContasComponent implements OnInit {
         if (this.Ordem == 'asc') {
           this.Contas.sort((a, b) => a.DiaVencimento - b.DiaVencimento);
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) => b.DiaVencimento - a.DiaVencimento);
         }
         break;
@@ -120,6 +154,7 @@ export class PainelContasComponent implements OnInit {
         if (this.Ordem == 'asc') {
           this.Contas.sort((a, b) => new Date(a.UltimoPagamento != undefined ? a.UltimoPagamento : 0).getTime() - new Date(b.UltimoPagamento != undefined ? b.UltimoPagamento : 0).getTime());
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) => new Date(b.UltimoPagamento != undefined ? b.UltimoPagamento : 0).getTime() - new Date(a.UltimoPagamento != undefined ? a.UltimoPagamento : 0).getTime());
         }
         break;
@@ -128,6 +163,7 @@ export class PainelContasComponent implements OnInit {
         if (this.Ordem == 'asc') {
           this.Contas.sort((a, b) => a.StatusId - b.StatusId);
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) => b.StatusId - a.StatusId);
         }
         break;
@@ -136,12 +172,12 @@ export class PainelContasComponent implements OnInit {
         if (this.Ordem == 'asc') {
           this.Contas.sort((a, b) => a.Variavel == b.Variavel ? 0 : a.Variavel ? -1 : 1);
         } else {
+          this.Ordem = 'desc';
           this.Contas.sort((a, b) => a.Variavel == b.Variavel ? 0 : a.Variavel ? 1 : -1);
         }
         break;
       default:
-        this.NomeCampo = 'Id';
-        this.Ordem = 'desc';
+        this.NomeCampo = '';
         this.Contas.sort((a, b) => b.Id - a.Id);
         break;
     }
@@ -250,4 +286,7 @@ export class PainelContasComponent implements OnInit {
     this.DadosPaginador = $event
     this.paginarContas();
   }
+
 }
+
+

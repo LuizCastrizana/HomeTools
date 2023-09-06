@@ -1,5 +1,8 @@
 <app-cabecalho></app-cabecalho>
 <main>
+  <div *ngFor="let item of DadosFeedbackAlerta">
+    <app-feedback-alerta [DadosFeedbackAlerta]="item"></app-feedback-alerta>
+  </div>
   <router-outlet></router-outlet>
 </main>
 <app-rodape></app-rodape>

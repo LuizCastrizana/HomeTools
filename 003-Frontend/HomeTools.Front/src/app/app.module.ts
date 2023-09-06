@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
 import { EditarContaComponent } from './components/financas/editar-conta/editar-conta.component';
 import { ExcluirContaComponent } from './components/financas/excluir-conta/excluir-conta.component';
+import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-alerta.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ExcluirContaComponent } from './components/financas/excluir-conta/exclu
     PaginadorComponent,
     IncluirContaComponent,
     EditarContaComponent,
-    ExcluirContaComponent
+    ExcluirContaComponent,
+    FeedbackAlertaComponent,
   ],
   imports: [
     BrowserModule,
