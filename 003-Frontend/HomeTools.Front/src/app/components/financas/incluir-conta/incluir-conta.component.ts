@@ -14,13 +14,6 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 })
 export class IncluirContaComponent implements OnInit {
 
-  constructor(
-    private serviceConta: ContaService,
-    private serviceContaVariavel: ContaVariavelService,
-    private serviceCategoria: CategoriaService,
-    private router: Router
-    ) { }
-
   Conta: CreateContaDto = {
     Descricao: '',
     ValorInteiro: 0,
@@ -28,8 +21,16 @@ export class IncluirContaComponent implements OnInit {
     DiaVencimento: 0,
     CategoriaId: 0
   }
+
   TipoContaId: number = 0;
   Categorias$ = this.serviceCategoria.listar();
+
+  constructor(
+    private serviceConta: ContaService,
+    private serviceContaVariavel: ContaVariavelService,
+    private serviceCategoria: CategoriaService,
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
   }

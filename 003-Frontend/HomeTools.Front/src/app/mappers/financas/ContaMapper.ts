@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
+import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
+import { CreateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/createContaVariavelDto';
 import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
 import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
+import { UpdateContaDto } from 'src/app/interfaces/api-dto/financas/updateContaDto';
+import { UpdateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/updateContaVariavelDto';
 import { ReadConta } from 'src/app/interfaces/financas/readConta';
 import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
 
@@ -92,4 +96,43 @@ export class ContaMapper {
     return conta;
   }
 
+  public static ContaToUpdateContaDto(Conta: ReadConta): UpdateContaDto {
+    let conta: UpdateContaDto = {
+      Descricao: Conta.Descricao,
+      ValorInteiro: Conta.ValorInteiro,
+      ValorCentavos: Conta.ValorCentavos,
+      DiaVencimento: Conta.DiaVencimento,
+      CategoriaId: Conta.Categoria.Id
+    };
+    return conta;
+  }
+
+  public static ContaToUpdateContaVariavelDto(Conta: ReadConta): UpdateContaVariavelDto {
+    let conta: UpdateContaVariavelDto = {
+      Descricao: Conta.Descricao,
+      DiaVencimento: Conta.DiaVencimento,
+      CategoriaId: Conta.Categoria.Id
+    };
+    return conta;
+  }
+
+  public static ContaToCreateContaDto(Conta: ReadConta): CreateContaDto {
+    let conta: CreateContaDto = {
+      Descricao: Conta.Descricao,
+      ValorInteiro: Conta.ValorInteiro,
+      ValorCentavos: Conta.ValorCentavos,
+      DiaVencimento: Conta.DiaVencimento,
+      CategoriaId: Conta.Categoria.Id
+    };
+    return conta;
+  }
+
+  public static ContaToCreateContaVariavelDto(Conta: ReadConta): CreateContaVariavelDto {
+    let conta: CreateContaVariavelDto = {
+      Descricao: Conta.Descricao,
+      DiaVencimento: Conta.DiaVencimento,
+      CategoriaId: Conta.Categoria.Id
+    };
+    return conta;
+  }
 }

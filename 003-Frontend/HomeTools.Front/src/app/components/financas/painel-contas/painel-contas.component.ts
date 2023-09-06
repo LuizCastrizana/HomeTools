@@ -6,10 +6,9 @@ import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
-import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
-import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
+import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 
 @Component({
   selector: 'app-painel-contas',
@@ -18,78 +17,34 @@ import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 })
 export class PainelContasComponent implements OnInit {
 
-  constructor(private contaService: ContaService, private contaVariavelService: ContaVariavelService) {}
-
   Ordem: string = 'asc';
   NomeCampo: string = '';
+
   DadosPaginador: DadosPaginador = {
     PaginaAtual: 1,
     ItensPorPagina: 5,
     TotalItens: 0,
   };
+
   DadosPaginados: DadosPaginados<ReadConta> = {
     Pagina: 1,
     ItensPorPagina: 15,
     TotalItens: 0,
     Itens: [],
   };
-  Contas: ReadConta[] = [
-    // {
-    //   Id: 1,
-    //   Descricao: 'Conta de Luz',
-    //   ValorInteiro: 100,
-    //   ValorCentavos: 0,
-    //   DiaVencimento: 10,
-    //   Categoria: {
-    //     Id: 1,
-    //     Descricao: 'Casa',
-    //   },
-    // },
-    // {
-    //   Id: 2,
-    //   Descricao: 'Conta de Água',
-    //   ValorInteiro: 50,
-    //   ValorCentavos: 0,
-    //   DiaVencimento: 15,
-    //   Categoria: {
-    //     Id: 1,
-    //     Descricao: 'Casa',
-    //   },
-    // },
-    // {
-    //   Id: 3,
-    //   Descricao: 'Intenet',
-    //   ValorInteiro: 120,
-    //   ValorCentavos: 0,
-    //   DiaVencimento: 12,
-    //   Categoria: {
-    //     Id: 1,
-    //     Descricao: 'Casa',
-    //   },
-    // },
-    // {
-    //   Id: 4,
-    //   Descricao: 'Vigia',
-    //   ValorInteiro: 40,
-    //   ValorCentavos: 0,
-    //   DiaVencimento: 15,
-    //   Categoria: {
-    //     Id: 2,
-    //     Descricao: 'Segurança',
-    //   },
-    // },
-  ];
+
+  Contas: ReadConta[] = [];
+
+  constructor(private contaService: ContaService, private contaVariavelService: ContaVariavelService) {}
 
   ngOnInit(): void {
     this.contaService.listar().subscribe((respostaApi) => {
       this.incluirContas(respostaApi);
-      this.DadosPaginador.TotalItens = this.Contas.length;
       this.ordenarContas();
       this.paginarContas();
     });
     this.contaVariavelService.listar().subscribe((respostaApi2) => {
       this.incluirContasVariaveis(respostaApi2);
-      this.DadosPaginador.TotalItens = this.Contas.length;
       this.ordenarContas();
       this.paginarContas();
     });
@@ -97,42 +52,7 @@ export class PainelContasComponent implements OnInit {
 
   incluirContas(respostaApi: RespostaApi<ReadContaDto[]>) {
     respostaApi.Valor.forEach((contaDto) => {
-      let conta: ReadConta = {
-        Id: contaDto.Id,
-        Descricao: contaDto.Descricao,
-        ValorInteiro: contaDto.ValorInteiro,
-        ValorCentavos: contaDto.ValorCentavos,
-        DiaVencimento: contaDto.DiaVencimento,
-        Categoria: contaDto.Categoria,
-        Pagamentos: [],
-        UltimoPagamento: undefined,
-        Variavel: false,
-        StatusId: StatusContaEnum.Pendente,
-      };
-      contaDto.Pagamentos.forEach(pagamentoDto => {
-        let pagamento: PagamentoConta = {
-          Id: pagamentoDto.Id,
-          ValorInteiro: 0,
-          ValorCentavos: 0,
-          DataPagamento: pagamentoDto.DataPagamento,
-          ContaId: pagamentoDto.ContaId
-        };
-        conta.Pagamentos.push(pagamento);
-      });
-      if (conta.Pagamentos.length > 0) {
-        conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
-        let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
-        if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
-          conta.StatusId = StatusContaEnum.Paga;
-        }
-        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth()
-          && conta.DiaVencimento < new Date(Date.now()).getDay()) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-        }
-        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-        }
-      }
+      let conta = ContaMapper.ContaDtoToConta(contaDto);
       this.Contas.push(conta);
     });
     this.DadosPaginador.TotalItens = this.Contas.length;
@@ -140,46 +60,7 @@ export class PainelContasComponent implements OnInit {
 
   incluirContasVariaveis(respostaApi: RespostaApi<ReadContaVariavelDto[]>) {
     respostaApi.Valor.forEach((contaDto) => {
-      let conta: ReadConta = {
-        Id: contaDto.Id,
-        Descricao: contaDto.Descricao,
-        ValorInteiro: 0,
-        ValorCentavos: 0,
-        DiaVencimento: contaDto.DiaVencimento,
-        Categoria: contaDto.Categoria,
-        Pagamentos: [],
-        UltimoPagamento: undefined,
-        Variavel: true,
-        StatusId: StatusContaEnum.Pendente,
-      }
-      contaDto.Pagamentos.forEach(pagamentoDto => {
-        let pagamento: PagamentoConta = {
-          Id: pagamentoDto.Id,
-          ValorInteiro: pagamentoDto.ValorInteiro,
-          ValorCentavos: pagamentoDto.ValorCentavos,
-          DataPagamento: pagamentoDto.DataPagamento,
-          ContaId: pagamentoDto.ContaId
-        }
-        conta.Pagamentos.push(pagamento);
-      });
-      let mediaInteiro = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorInteiro, 0) / conta.Pagamentos.length;
-      let mediaCentavos = conta.Pagamentos.reduce((total, pagamento) => total + pagamento.ValorCentavos, 0) / conta.Pagamentos.length;
-      conta.ValorInteiro = Number.isNaN(mediaInteiro) ? 0 : mediaInteiro;
-      conta.ValorCentavos = Number.isNaN(mediaInteiro) ? 0 : mediaCentavos;
-      if (conta.Pagamentos.length > 0) {
-        conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
-        let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
-        if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
-          conta.StatusId = StatusContaEnum.Paga;
-        }
-        else if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth() -1
-          && conta.DiaVencimento < new Date(Date.now()).getDay()) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-        }
-        else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-        }
-      }
+      let conta = ContaMapper.ContaVariavelDtoToConta(contaDto);
       this.Contas.push(conta);
     });
     this.DadosPaginador.TotalItens = this.Contas.length;
