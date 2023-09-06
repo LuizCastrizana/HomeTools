@@ -1,10 +1,10 @@
 import { Categoria } from "../../categoria";
-import { PagamentoContaVariavel } from "./readPagamentoContaVariavel";
+import { PagamentoContaVariavelDto } from "./readPagamentoContaVariavelDto";
 
 export interface ReadContaVariavelDto {
   Id: number;
   Descricao: string;
   DiaVencimento: number;
   Categoria: Categoria;
-  Pagamentos: PagamentoContaVariavel[];
+  Pagamentos: PagamentoContaVariavelDto[];
 }

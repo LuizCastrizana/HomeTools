@@ -1,8 +1,9 @@
 import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
+import { UpdateContaDto } from 'src/app/interfaces/api-dto/financas/updateContaDto';
 import { RespostaApi } from './../../interfaces/api-dto/respostaApi';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ReadContaDto } from '../../interfaces/api-dto/financas/readConta';
+import { ReadContaDto } from '../../interfaces/api-dto/financas/readContaDto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,7 +24,17 @@ export class ContaService {
     return this.http.get<RespostaApi<ReadContaDto[]>>(url)
   }
 
+  buscarPorId(id: string): Observable<RespostaApi<ReadContaDto>> {
+    const url = `${this.API}/${id}`
+    return this.http.get<RespostaApi<ReadContaDto>>(url)
+  }
+
   incluir (CreateContaDto: CreateContaDto): Observable<RespostaApi<ReadContaDto>> {
     return this.http.post<RespostaApi<ReadContaDto>>(this.API, CreateContaDto)
+  }
+
+  atualizar (id: string, UpdateContaDto: UpdateContaDto): Observable<RespostaApi<ReadContaDto>> {
+    const url = `${this.API}/${id}`
+    return this.http.put<RespostaApi<ReadContaDto>>(url, UpdateContaDto)
   }
 }

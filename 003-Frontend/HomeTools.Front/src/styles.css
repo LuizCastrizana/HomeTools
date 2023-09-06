@@ -159,6 +159,10 @@ p {
   padding: 0 0.5rem 0 0.5rem;
 }
 /* INPUT / FORM */
+input:disabled,
+input:read-only {
+  background-color: #eee;
+}
 .input-group {
   display: flex;
   height: 38px;

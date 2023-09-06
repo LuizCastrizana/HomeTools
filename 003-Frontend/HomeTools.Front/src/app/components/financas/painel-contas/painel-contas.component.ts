@@ -5,10 +5,10 @@ import { ReadConta } from 'src/app/interfaces/financas/readConta';
 import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ContaService } from 'src/app/services/Financas/conta.service';
-import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readConta';
+import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
 import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
-import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavel';
+import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 
 @Component({
@@ -96,11 +96,9 @@ export class PainelContasComponent implements OnInit {
   }
 
   incluirContas(respostaApi: RespostaApi<ReadContaDto[]>) {
-    let index = 0;
     respostaApi.Valor.forEach((contaDto) => {
-      index++;
       let conta: ReadConta = {
-        Id: index,
+        Id: contaDto.Id,
         Descricao: contaDto.Descricao,
         ValorInteiro: contaDto.ValorInteiro,
         ValorCentavos: contaDto.ValorCentavos,
@@ -110,7 +108,7 @@ export class PainelContasComponent implements OnInit {
         UltimoPagamento: undefined,
         Variavel: false,
         StatusId: StatusContaEnum.Pendente,
-      }
+      };
       contaDto.Pagamentos.forEach(pagamentoDto => {
         let pagamento: PagamentoConta = {
           Id: pagamentoDto.Id,
@@ -118,7 +116,7 @@ export class PainelContasComponent implements OnInit {
           ValorCentavos: 0,
           DataPagamento: pagamentoDto.DataPagamento,
           ContaId: pagamentoDto.ContaId
-        }
+        };
         conta.Pagamentos.push(pagamento);
       });
       if (conta.Pagamentos.length > 0) {
@@ -141,11 +139,9 @@ export class PainelContasComponent implements OnInit {
   }
 
   incluirContasVariaveis(respostaApi: RespostaApi<ReadContaVariavelDto[]>) {
-    let index = 0;
     respostaApi.Valor.forEach((contaDto) => {
-      index++;
       let conta: ReadConta = {
-        Id: index,
+        Id: contaDto.Id,
         Descricao: contaDto.Descricao,
         ValorInteiro: 0,
         ValorCentavos: 0,

@@ -35,7 +35,7 @@
       </tr>
       <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">
-          <button title="Buscar" id="btnBuscar" class="btn btn-sm">
+          <button title="Editar" id="btnEditar{{conta.Id}}" class="btn btn-sm" routerLink="editar-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
             <img src="../../../../assets/img/pencil-icon.png">
           </button>
         </td>

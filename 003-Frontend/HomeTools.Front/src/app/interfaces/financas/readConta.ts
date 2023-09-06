@@ -1,4 +1,3 @@
-import { StatusContaEnum } from "src/app/enums/statusContaEnum";
 import { Categoria } from "../categoria";
 import { PagamentoConta } from "./readPagamentoConta";
 

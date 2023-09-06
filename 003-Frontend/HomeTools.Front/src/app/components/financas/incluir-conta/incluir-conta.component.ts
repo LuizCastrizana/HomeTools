@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TipoContaEnum } from 'src/app/enums/tipoContaEnum';
 import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
 import { CreateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/createContaVariavelDto';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
@@ -43,12 +44,12 @@ export class IncluirContaComponent implements OnInit {
   }
 
   salvarConta() {
-    if (this.TipoContaId == 1) {
+    if (this.TipoContaId == TipoContaEnum.Fixa) {
       this.serviceConta.incluir(this.Conta).subscribe(() => {
         this.router.navigate(['/contas']);
       });
     }
-    else if (this.TipoContaId == 2){
+    else if (this.TipoContaId == TipoContaEnum.Variavel){
       let contaVariavel: CreateContaVariavelDto = {
         Descricao: this.Conta.Descricao,
         DiaVencimento: this.Conta.DiaVencimento,

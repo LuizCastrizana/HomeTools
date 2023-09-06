@@ -1,4 +1,4 @@
-export interface PagamentoContaVariavel {
+export interface PagamentoContaVariavelDto {
   Id: number;
   ValorInteiro: number;
   ValorCentavos: number;

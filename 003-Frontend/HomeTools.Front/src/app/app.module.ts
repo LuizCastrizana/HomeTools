@@ -14,6 +14,7 @@ import { PaginadorComponent } from './components/paginador/paginador/paginador.c
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
+import { EditarContaComponent } from './components/financas/editar-conta/editar-conta.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { IncluirContaComponent } from './components/financas/incluir-conta/inclu
     PainelContasComponent,
     PainelDespesasComponent,
     PaginadorComponent,
-    IncluirContaComponent
+    IncluirContaComponent,
+    EditarContaComponent
   ],
   imports: [
     BrowserModule,
