@@ -1,0 +1,11 @@
+<section class="container excluir-contas ff-verdana">
+  <div class="modal">
+      <p>A conta '{{Conta.Descricao}}' será excluida. <br/> Confirma a exclusão?</p>
+      <div class="acoes">
+          <button class="btn" (click)="excluirConta()">Excluir</button>
+          &nbsp;
+          <button class="btn btn-red" (click)="cancelar()">Cancelar</button>
+      </div>
+  </div>
+  <div class="overlay"></div>
+</section>

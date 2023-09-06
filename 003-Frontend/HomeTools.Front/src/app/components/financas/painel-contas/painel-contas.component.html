@@ -38,6 +38,10 @@
           <button title="Editar" id="btnEditar{{conta.Id}}" class="btn btn-sm" routerLink="editar-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
             <img src="../../../../assets/img/pencil-icon.png">
           </button>
+          &nbsp;
+          <button title="Excluir" id="btnExcluir{{conta.Id}}" class="btn btn-sm" routerLink="excluir-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
+            <img src="../../../../assets/img/lixeira-icon.png">
+          </button>
         </td>
         <td>{{conta.Descricao}}</td>
         <td>{{conta.Categoria.Descricao}}</td>

@@ -37,4 +37,9 @@ export class ContaService {
     const url = `${this.API}/${id}`
     return this.http.put<RespostaApi<ReadContaDto>>(url, UpdateContaDto)
   }
+
+  excluir (id: string): Observable<RespostaApi<ReadContaDto>> {
+    const url = `${this.API}/${id}`
+    return this.http.delete<RespostaApi<ReadContaDto>>(url)
+  }
 }

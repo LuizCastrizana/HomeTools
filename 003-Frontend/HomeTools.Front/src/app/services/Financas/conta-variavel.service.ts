@@ -37,4 +37,9 @@ export class ContaVariavelService {
     const url = `${this.API}/${id}`
     return this.http.put<RespostaApi<ReadContaVariavelDto>>(url, UpdateContaVariavelDto)
   }
+
+  excluir(id: string): Observable<RespostaApi<ReadContaVariavelDto>> {
+    const url = `${this.API}/${id}`
+    return this.http.delete<RespostaApi<ReadContaVariavelDto>>(url)
+  }
 }
