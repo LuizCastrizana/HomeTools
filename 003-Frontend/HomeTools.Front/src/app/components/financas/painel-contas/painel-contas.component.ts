@@ -36,6 +36,8 @@ export class PainelContasComponent implements OnInit {
     Itens: [],
   };
 
+  ContaExcluir: ReadConta = { } as ReadConta;
+
   Contas: ReadConta[] = [];
 
   constructor(
@@ -280,6 +282,11 @@ export class PainelContasComponent implements OnInit {
     });
 
     this.DadosPaginados.Itens = itensPagina.filter(item => item.Pagina == this.DadosPaginados.Pagina).map(item => item.Item);
+  }
+
+  exibirModalExcluir(Conta: ReadConta) {
+    this.ContaExcluir = Conta;
+    document.getElementById('modalExcluir')!.style.display = 'block';
   }
 
   receiveMessage($event: DadosPaginador) {

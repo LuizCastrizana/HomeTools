@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col col-flexible">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar">
+          <input type="text" class="form-control" placeholder="Buscar" name="Busca" id="txtBusca">
           <span>
             <button title="Buscar" id="btnBuscar" class="btn">
               <img src="../../../../assets/img/lupa-icon.png">
@@ -39,7 +39,7 @@
             <img src="../../../../assets/img/pencil-icon.png">
           </button>
           &nbsp;
-          <button title="Excluir" id="btnExcluir{{conta.Id}}" class="btn btn-sm" routerLink="excluir-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
+          <button title="Excluir" id="btnExcluir{{conta.Id}}" class="btn btn-sm" (click)="exibirModalExcluir(conta)">
             <img src="../../../../assets/img/lixeira-icon.png">
           </button>
         </td>
@@ -76,3 +76,4 @@
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>
+<app-excluir-conta [Conta]="ContaExcluir"></app-excluir-conta>

@@ -36,8 +36,8 @@ export class IncluirContaComponent implements OnInit {
   }
 
   selecionaTipoConta() {
-    let tipoConta = (<HTMLInputElement>document.getElementById("tipoConta")).value;
-    if (tipoConta == '1') {
+    let tipoConta = (<HTMLInputElement>document.getElementById("selTipoConta")).value;
+    if (tipoConta == TipoContaEnum.Fixa.toLocaleString()) {
       document.getElementById("divValor")!.style.display = "flex";
     } else {
       document.getElementById("divValor")!.style.display = "none";

@@ -2,24 +2,24 @@
   <div class="titulo-pagina ff-verdana">
     <h1>Inlcuir Conta</h1>
   </div>
-  <div class="conteudo-pagina">
-    <div class="row form-row">
+  <form (ngSubmit)="salvarConta()" class="form conteudo-pagina">
+    <div class="row">
       <div class="col-4">
         <div class="form-group">
           <label for="descricao">Descrição</label>
-          <input type="text" class="form-control" id="descricao" placeholder="Descrição" [(ngModel)]="Conta.Descricao">
+          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao" [(ngModel)]="Conta.Descricao">
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="diaVencimento">Dia venc.:</label>
-          <input type="number" class="form-control" id="diaVencimento" placeholder="Dia vencimento" [(ngModel)]="Conta.DiaVencimento">
+          <input type="number" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento" [(ngModel)]="Conta.DiaVencimento">
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="tipoCconta">Tipo</label>
-          <select name="tipoConta" id="tipoConta" class="form-control" (change)="selecionaTipoConta()" [(ngModel)]="TipoContaId">
+          <select name="tipoConta" id="selTipoConta" class="form-control" (change)="selecionaTipoConta()" name="TipoContaId" [(ngModel)]="TipoContaId">
             <option value="0">Selecione...</option>
             <option value="1">Variável</option>
             <option value="2">Fixa</option>
@@ -29,33 +29,33 @@
       <div class="col-3">
         <div class="form-group">
           <label for="CategoriaId">Categoria</label>
-          <select *ngIf="Categorias$ | async as categorias" name="CategoriaId" id="CategoriaId" class="form-control" [(ngModel)]="Conta.CategoriaId">
+          <select *ngIf="Categorias$ | async as categorias" name="CategoriaId" id="selCategoriaId" class="form-control" [(ngModel)]="Conta.CategoriaId">
             <option value="0">Selecione...</option>
             <option *ngFor="let categoria of categorias.Valor" [value]="categoria.Id">{{ categoria.Descricao}}</option>
           </select>
         </div>
       </div>
     </div>
-    <div class="row form-row" id="divValor">
+    <div class="row" id="divValor">
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor inteiro</label>
-          <input type="number" class="form-control" id="valorInteiro" placeholder="Valor" [(ngModel)]="Conta.ValorInteiro">
+          <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro" [(ngModel)]="Conta.ValorInteiro">
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor centavos</label>
-          <input type="number" class="form-control" id="valorCentavos" placeholder="Valor Centavos" [(ngModel)]="Conta.ValorCentavos">
+          <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos" [(ngModel)]="Conta.ValorCentavos">
         </div>
       </div>
     </div>
-    <div class="row form-row">
+    <div class="row">
       <div class="col-12">
         <div class="form-group">
-          <button type="button" class="btn" (click)="salvarConta()">Salvar</button>
-          <button type="button" class="btn btn-red" (click)="cancelar()">Cancelar</button>
+          <button type="submit" id="btnSumbit" class="btn">Salvar</button>
+          <button type="button" id="btnCancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
         </div>
       </div>
   </div>
-</div>
+</form>

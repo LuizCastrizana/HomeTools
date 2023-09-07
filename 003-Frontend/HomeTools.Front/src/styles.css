@@ -144,18 +144,18 @@ p {
 .col-flexible {
   width: fit-content;
 }
+/* ROW */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
 .row .col {
   padding: 0.5rem 0 0.5rem 0.5rem;
 }
 .row .col:last-child {
   padding: 0.5rem 0.5rem;
 }
-/* ROW */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
-.form-row {
+.form > .row {
   padding: 0 0.5rem 0 0.5rem;
 }
 /* INPUT / FORM */
@@ -212,7 +212,7 @@ input:read-only {
     flex: 0 0 100%;
     max-width: 100%;
   }
-  .form-row {
+  .form > .row {
     flex-direction: column;
   }
 }
