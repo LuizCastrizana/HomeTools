@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     FeedbackService.FeedbackAlertaEmitter.subscribe({
       next: (dadosFeedback: DadosFeedbackAlerta) => {
         this.DadosFeedbackAlerta.push(dadosFeedback);
-        this.feedbackService.exibirFeedbackAlerta();
+        this.feedbackService.exibirFeedbackAlerta(dadosFeedback.Id);
       }
     });
   }

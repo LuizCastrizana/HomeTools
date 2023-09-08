@@ -14,13 +14,7 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 })
 export class IncluirContaComponent implements OnInit {
 
-  Conta: CreateContaDto = {
-    Descricao: '',
-    ValorInteiro: 0,
-    ValorCentavos: 0,
-    DiaVencimento: 0,
-    CategoriaId: 0
-  }
+  Conta: CreateContaDto = { } as CreateContaDto;
 
   TipoContaId: number = 0;
   Categorias$ = this.serviceCategoria.listar();
@@ -33,6 +27,7 @@ export class IncluirContaComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.Conta.CategoriaId = 0;
   }
 
   selecionaTipoConta() {

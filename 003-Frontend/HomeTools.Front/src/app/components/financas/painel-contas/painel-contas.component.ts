@@ -55,8 +55,8 @@ export class PainelContasComponent implements OnInit {
         let dadosFeedback = {
           Id: "feedback1",
           TipoAlerta: TipoAlertaEnum.Erro,
-          Titulo: "Erro",
-          Mensagem: "Erro ao carregar contas!"
+          Titulo: "Erro!",
+          Mensagem: "Não foi possível obter as contas."
         } as DadosFeedbackAlerta;
         FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
       }
@@ -69,8 +69,8 @@ export class PainelContasComponent implements OnInit {
         let dadosFeedback = {
           Id: "feedback2",
           TipoAlerta: TipoAlertaEnum.Erro,
-          Titulo: "Erro",
-          Mensagem: "Erro ao carregar contas variáveis!"
+          Titulo: "Erro!",
+          Mensagem: "Não foi possível obter as contas variáveis."
         } as DadosFeedbackAlerta;
         FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
       }

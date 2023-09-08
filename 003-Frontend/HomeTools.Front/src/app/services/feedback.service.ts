@@ -10,11 +10,17 @@ export class FeedbackService {
 
   constructor() { }
 
-  exibirFeedbackAlerta() {
-    let alertas = document.getElementsByClassName("feedback-alerta");
-    for (let i = 0; i < alertas.length; i++) {
-      alertas[i].classList.remove("hide");
-      alertas[i].classList.add("show");
+  exibirFeedbackAlerta(Id?: string) {
+    let alerta = document.getElementById(Id!);
+    if (alerta != null) {
+      alerta.classList.remove('hide');
+      alerta.classList.add('show');
+    } else {
+      let alertas = document.getElementsByClassName('feedback-alerta');
+      for (let i = 0; i < alertas.length; i++) {
+        alertas[i].classList.remove('hide');
+        alertas[i].classList.add('show');
+      }
     }
   }
 
