@@ -8,9 +8,9 @@ namespace LaPlata.Domain.Models
 {
     public class RespostaApi<T>
     {
-        public T? Valor { get; set; }
-        public string? Mensagem { get; set; }
-        public List<string>? Erros { get; set; }
+        public T? valor { get; set; }
+        public string? mensagem { get; set; }
+        public List<string>? erros { get; set; }
 
         public RespostaApi()
         {
@@ -18,7 +18,7 @@ namespace LaPlata.Domain.Models
 
         public RespostaApi(string mensagem)
         {
-            Mensagem = mensagem;
+            this.mensagem = mensagem;
         }
     }
 }

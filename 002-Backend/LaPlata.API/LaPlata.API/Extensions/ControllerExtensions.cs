@@ -10,9 +10,9 @@ namespace LaPlata.API.Extensions
         public static IActionResult TratarRespostaServico<T>(this ControllerBase controllerBase, RespostaServico<T> respostaServico)
         {
             var respostaApi = new RespostaApi<T>();
-            respostaApi.Valor = respostaServico.Valor;
-            respostaApi.Mensagem = respostaServico.Mensagem;
-            respostaApi.Erros = respostaServico.Erros;
+            respostaApi.valor = respostaServico.Valor;
+            respostaApi.mensagem = respostaServico.Mensagem;
+            respostaApi.erros = respostaServico.Erros;
             switch (respostaServico.Status)
             {
                 case EnumStatusResposta.SUCESSO:

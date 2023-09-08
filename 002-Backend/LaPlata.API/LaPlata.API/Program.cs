@@ -1,3 +1,4 @@
+using LaPlata.API;
 using LaPlata.Domain.Configuration;
 using LaPlata.Infrastructure.Configuration;
 
@@ -11,7 +12,8 @@ builder.Services.AddCors();
 
 builder.Services.ConfigureServicesInjections()
                 .ConfigureRepositoriesInjections()
-                .ConfigureDataBase(builder.Configuration);
+                .ConfigureDataBase(builder.Configuration)
+                .ConfigureModelStateResponse();
 
 var app = builder.Build();
 
