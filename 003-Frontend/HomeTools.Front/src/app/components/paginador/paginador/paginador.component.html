@@ -10,7 +10,10 @@
     id="txtPaginaAtual"
     name="PaginaAtual"
     [(ngModel)]="DadosPaginador.PaginaAtual"
+    (keypress)="apenasNumeros($event)"
+    (paste)="apenasNumeros($event)"
     (keydown.enter)="goToPage()"
+    (keydown.return)="goToPage()"
   >
   <span>
     <button class="btn btn-proximo" id="btnProximo" (click)="goToNextPage()">

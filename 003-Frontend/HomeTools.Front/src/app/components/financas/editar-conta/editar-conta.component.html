@@ -13,7 +13,8 @@
       <div class="col-2">
         <div class="form-group">
           <label for="diaVencimento">Dia venc.:</label>
-          <input type="number" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento" [(ngModel)]="Conta.DiaVencimento">
+          <input type="text" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.DiaVencimento">
         </div>
       </div>
       <div class="col-3">
@@ -37,13 +38,15 @@
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor inteiro</label>
-          <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro" [(ngModel)]="Conta.ValorInteiro">
+          <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorInteiro">
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor centavos</label>
-          <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos" [(ngModel)]="Conta.ValorCentavos">
+          <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorCentavos">
         </div>
       </div>
     </div>

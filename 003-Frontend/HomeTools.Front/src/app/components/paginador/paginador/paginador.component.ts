@@ -1,3 +1,4 @@
+import { ValidacaoService } from 'src/app/services/validacao.service';
 import { DadosPaginador } from '../../../interfaces/paginacao/dadosPaginador';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
@@ -13,7 +14,7 @@ export class PaginadorComponent implements OnInit {
     PaginaAtual: 0
   };
 
-  constructor() { }
+  constructor(private serviceValidacao: ValidacaoService) { }
 
   @Output() messageEvent = new EventEmitter<DadosPaginador>();
 
@@ -45,6 +46,12 @@ export class PaginadorComponent implements OnInit {
 
   sendMessege() {
     this.messageEvent.emit(this.DadosPaginador);
+  }
+
+  apenasNumeros(event: any) {
+    if (!this.serviceValidacao.apenasNumeros(event)) {
+      event.preventDefault();
+    }
   }
 
 }

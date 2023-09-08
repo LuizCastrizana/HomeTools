@@ -10,6 +10,7 @@ import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { CategoriaService } from 'src/app/services/categoria.service';
+import { ValidacaoService } from 'src/app/services/validacao.service';
 
 @Component({
   selector: 'app-editar-conta',
@@ -38,6 +39,7 @@ export class EditarContaComponent implements OnInit {
     private serviceConta: ContaService,
     private serviceContaVariavel: ContaVariavelService,
     private serviceCategoria: CategoriaService,
+    private serviceValidacao: ValidacaoService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
@@ -88,5 +90,17 @@ export class EditarContaComponent implements OnInit {
   }
   cancelar() {
     this.router.navigate(['/contas']);
+  }
+
+  apenasNumeros(event: any) {
+    if (!this.serviceValidacao.apenasNumeros(event)) {
+      event.preventDefault();
+    }
+  }
+
+  diaMes(event: any) {
+    if (!this.serviceValidacao.diaMes(event)) {
+      event.preventDefault();
+    }
   }
 }

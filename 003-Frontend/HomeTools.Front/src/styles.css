@@ -191,6 +191,9 @@ input:read-only {
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
   outline: none;
 }
+.form-control:focus{
+  outline: 2px solid rgb(144, 212, 212);
+}
 .form-group {
   margin-bottom: 0.5rem;
   padding: 0.5rem;
