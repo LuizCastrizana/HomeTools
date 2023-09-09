@@ -43,7 +43,7 @@ export class PainelContasComponent implements OnInit {
   constructor(
     private contaService: ContaService,
     private contaVariavelService: ContaVariavelService,
-    private FeedbackService: FeedbackService
+    private feedbackService: FeedbackService
     ) {}
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class PainelContasComponent implements OnInit {
           Titulo: "Erro!",
           Mensagem: "Não foi possível obter as contas."
         } as DadosFeedbackAlerta;
-        FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
+        this.feedbackService.gerarFeedbackAlerta(dadosFeedback);
       }
     });
     this.contaVariavelService.listar().subscribe({
@@ -72,13 +72,13 @@ export class PainelContasComponent implements OnInit {
           Titulo: "Erro!",
           Mensagem: "Não foi possível obter as contas variáveis."
         } as DadosFeedbackAlerta;
-        FeedbackService.FeedbackAlertaEmitter.emit(dadosFeedback);
+        this.feedbackService.gerarFeedbackAlerta(dadosFeedback);
       }
     });
   }
 
   incluirContas(respostaApi: RespostaApi<ReadContaDto[]>) {
-    respostaApi.Valor.forEach((contaDto) => {
+    respostaApi.valor.forEach((contaDto) => {
       let conta = ContaMapper.ContaDtoToConta(contaDto);
       this.Contas.push(conta);
     });
@@ -86,7 +86,7 @@ export class PainelContasComponent implements OnInit {
   }
 
   incluirContasVariaveis(respostaApi: RespostaApi<ReadContaVariavelDto[]>) {
-    respostaApi.Valor.forEach((contaDto) => {
+    respostaApi.valor.forEach((contaDto) => {
       let conta = ContaMapper.ContaVariavelDtoToConta(contaDto);
       this.Contas.push(conta);
     });

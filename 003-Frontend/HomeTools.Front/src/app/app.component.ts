@@ -12,14 +12,19 @@ export class AppComponent implements OnInit {
   DadosFeedbackAlerta: DadosFeedbackAlerta[] = [];
 
   constructor(
-    private feedbackService: FeedbackService
+    private FeedbackService: FeedbackService
   ) { }
 
   ngOnInit(): void {
-    FeedbackService.FeedbackAlertaEmitter.subscribe({
+    this.FeedbackService.FeedbackAlertaEmitter.subscribe({
       next: (dadosFeedback: DadosFeedbackAlerta) => {
+        dadosFeedback.Id = "feedback" + this.DadosFeedbackAlerta.length;
         this.DadosFeedbackAlerta.push(dadosFeedback);
-        this.feedbackService.exibirFeedbackAlerta(dadosFeedback.Id);
+      }
+    });
+    this.FeedbackService.FecharAletaEmitter.subscribe({
+      next: (Id: string) => {
+        this.DadosFeedbackAlerta = this.DadosFeedbackAlerta.filter(x=>x.Id != Id);
       }
     });
   }

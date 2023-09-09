@@ -36,7 +36,6 @@ export class FeedbackAlertaComponent implements OnInit {
   }
 
   ocultar(Id: string) {
-    document.getElementById(Id)?.classList.remove("show");
-    document.getElementById(Id)?.classList.add("hide");
+    this.feedbackService.ocultarFeedbackAlerta(Id);
   }
 }

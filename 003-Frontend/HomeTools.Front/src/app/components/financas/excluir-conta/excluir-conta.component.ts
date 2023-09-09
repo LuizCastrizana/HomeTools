@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ReadConta } from 'src/app/interfaces/financas/readConta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
+import { RespostaApiService } from 'src/app/services/resposta-api.service';
 
 @Component({
   selector: 'app-excluir-conta',
@@ -16,8 +17,8 @@ export class ExcluirContaComponent implements OnInit {
   constructor(
     private serviceConta: ContaService,
     private serviceContaVariavel: ContaVariavelService,
+    private serviceRespostaApi: RespostaApiService,
     private router: Router,
-    private route: ActivatedRoute,
     ) { }
 
   ngOnInit(): void {
@@ -25,21 +26,34 @@ export class ExcluirContaComponent implements OnInit {
 
   excluirConta() {
     if (this.Conta.Variavel) {
-      this.serviceContaVariavel.excluir(this.Conta.Id.toString()).subscribe(() => {
-        document.getElementById('modalExcluir')!.style.display = 'none';
-        this.router.navigate(['contas']);
+      this.serviceContaVariavel.excluir(this.Conta.Id.toString()).subscribe({
+        next: (resposta) => {
+          this.serviceRespostaApi.tratarRespostaApi(resposta)
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/contas']);
+          });
+        }, error: (err) => {
+          this.serviceRespostaApi.tratarRespostaApi(err)
+          document.getElementById('modalExcluir')!.style.display = 'none';
+        }
       });
     }
     else {
-      this.serviceConta.excluir(this.Conta.Id.toString()).subscribe(() => {
-        document.getElementById('modalExcluir')!.style.display = 'none';
-        this.router.navigate(['contas']);
+      this.serviceConta.excluir(this.Conta.Id.toString()).subscribe({
+        next: (resposta) => {
+          this.serviceRespostaApi.tratarRespostaApi(resposta)
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/contas']);
+          });
+        }, error: (err) => {
+          this.serviceRespostaApi.tratarRespostaApi(err)
+          document.getElementById('modalExcluir')!.style.display = 'none';
+        }
       });
     }
   }
 
   cancelar() {
-    //this.router.navigate(['contas']);
     document.getElementById('modalExcluir')!.style.display = 'none';
   }
 

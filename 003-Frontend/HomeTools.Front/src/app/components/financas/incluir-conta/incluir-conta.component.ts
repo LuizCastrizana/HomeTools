@@ -7,54 +7,78 @@ import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.s
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { ValidacaoService } from 'src/app/services/validacao.service';
+import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { Categoria } from 'src/app/interfaces/categoria';
+import { RespostaApiService } from 'src/app/services/resposta-api.service';
 
 @Component({
   selector: 'app-incluir-conta',
   templateUrl: './incluir-conta.component.html',
-  styleUrls: ['./incluir-conta.component.css']
+  styleUrls: ['./incluir-conta.component.css'],
 })
 export class IncluirContaComponent implements OnInit {
-
-  Conta: CreateContaDto = { } as CreateContaDto;
+  Conta: CreateContaDto = {} as CreateContaDto;
 
   TipoContaId: number = 0;
-  Categorias$ = this.serviceCategoria.listar();
+  Categorias: RespostaApi<Categoria[]> = {} as RespostaApi<Categoria[]>;
 
   constructor(
-    private serviceConta: ContaService,
-    private serviceContaVariavel: ContaVariavelService,
-    private serviceCategoria: CategoriaService,
-    private serviceValidacao: ValidacaoService,
+    private contaService: ContaService,
+    private contaVariavelService: ContaVariavelService,
+    private categoriaService: CategoriaService,
+    private validacaoService: ValidacaoService,
+    private respostaApiService: RespostaApiService,
     private router: Router
-    ) { }
+  ) {}
 
   ngOnInit(): void {
     this.Conta.CategoriaId = 0;
+    this.categoriaService.listar().subscribe({
+      next: (result) => {
+        this.Categorias = result;
+      },
+      error: (err) => {
+        this.respostaApiService.tratarRespostaApi(err);
+        this.router.navigate(['/contas']);
+      }
+    });
   }
 
   selecionaTipoConta() {
-    let tipoConta = (<HTMLInputElement>document.getElementById("selTipoConta")).value;
+    let tipoConta = (<HTMLInputElement>document.getElementById('selTipoConta'))
+      .value;
     if (tipoConta == TipoContaEnum.Fixa.toLocaleString()) {
-      document.getElementById("divValor")!.style.display = "flex";
+      document.getElementById('divValor')!.style.display = 'flex';
     } else {
-      document.getElementById("divValor")!.style.display = "none";
+      document.getElementById('divValor')!.style.display = 'none';
     }
   }
 
   salvarConta() {
     if (this.TipoContaId == TipoContaEnum.Fixa) {
-      this.serviceConta.incluir(this.Conta).subscribe(() => {
-        this.router.navigate(['/contas']);
+      this.contaService.incluir(this.Conta).subscribe({
+        next: (result) => {
+          this.respostaApiService.tratarRespostaApi(result);
+          this.router.navigate(['/contas']);
+        },
+        error: (err) => {
+          this.respostaApiService.tratarRespostaApi(err);
+        }
       });
-    }
-    else if (this.TipoContaId == TipoContaEnum.Variavel){
+    } else if (this.TipoContaId == TipoContaEnum.Variavel) {
       let contaVariavel: CreateContaVariavelDto = {
         Descricao: this.Conta.Descricao,
         DiaVencimento: this.Conta.DiaVencimento,
-        CategoriaId: this.Conta.CategoriaId
+        CategoriaId: this.Conta.CategoriaId,
       };
-      this.serviceContaVariavel.incluir(contaVariavel).subscribe(() => {
-        this.router.navigate(['/contas']);
+      this.contaVariavelService.incluir(contaVariavel).subscribe({
+        next: (result) => {
+          this.respostaApiService.tratarRespostaApi(result);
+          this.router.navigate(['/contas']);
+        },
+        error: (err) => {
+          this.respostaApiService.tratarRespostaApi(err);
+        }
       });
     }
   }
@@ -64,13 +88,13 @@ export class IncluirContaComponent implements OnInit {
   }
 
   apenasNumeros(event: any) {
-    if (!this.serviceValidacao.apenasNumeros(event)) {
+    if (!this.validacaoService.apenasNumeros(event)) {
       event.preventDefault();
     }
   }
 
   diaMes(event: any) {
-    if (!this.serviceValidacao.diaMes(event)) {
+    if (!this.validacaoService.diaMes(event)) {
       event.preventDefault();
     }
   }

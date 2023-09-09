@@ -30,9 +30,9 @@
       <div class="col-3">
         <div class="form-group">
           <label for="CategoriaId">Categoria</label>
-          <select *ngIf="Categorias$ | async as categorias" name="CategoriaId" id="selCategoriaId" class="form-control" [(ngModel)]="Conta.CategoriaId">
+          <select name="CategoriaId" id="selCategoriaId" class="form-control" [(ngModel)]="Conta.CategoriaId">
             <option value="0">Selecione...</option>
-            <option *ngFor="let categoria of categorias.Valor" [value]="categoria.Id">{{ categoria.Descricao}}</option>
+            <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao}}</option>
           </select>
         </div>
       </div>

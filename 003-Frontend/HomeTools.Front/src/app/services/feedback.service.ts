@@ -6,29 +6,16 @@ import { EventEmitter, Injectable } from '@angular/core';
 })
 export class FeedbackService {
 
-  public static FeedbackAlertaEmitter = new EventEmitter<DadosFeedbackAlerta>();
+  public FeedbackAlertaEmitter = new EventEmitter<DadosFeedbackAlerta>();
+  public FecharAletaEmitter = new EventEmitter<string>();
 
   constructor() { }
 
-  exibirFeedbackAlerta(Id?: string) {
-    let alerta = document.getElementById(Id!);
-    if (alerta != null) {
-      alerta.classList.remove('hide');
-      alerta.classList.add('show');
-    } else {
-      let alertas = document.getElementsByClassName('feedback-alerta');
-      for (let i = 0; i < alertas.length; i++) {
-        alertas[i].classList.remove('hide');
-        alertas[i].classList.add('show');
-      }
-    }
+  gerarFeedbackAlerta(Dados: DadosFeedbackAlerta) {
+    this.FeedbackAlertaEmitter.emit(Dados);
   }
 
-  ocultarFeedbackAlerta() {
-    let alertas = document.getElementsByClassName("feedback-alerta");
-    for (let i = 0; i < alertas.length; i++) {
-      alertas[i].classList.remove("show");
-      alertas[i].classList.add("hide");
-    }
+  ocultarFeedbackAlerta(Id: string) {
+    this.FecharAletaEmitter.emit(Id);
   }
 }
