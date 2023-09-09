@@ -72,7 +72,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;
@@ -101,7 +101,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;
@@ -126,24 +126,24 @@ namespace LaPlata.Domain.Services
                 var mensagensValidacao = new List<string>();
                 if (model == null)
                 {
-                    mensagensValidacao.Add("Cartão não encontrado.");
+                    mensagensValidacao.Add("Cartão não encontrado");
                     exclusaoValida = false;
                 }
                 else
                 {
                     if (model.Compras != null && model.Compras.Count > 0)
                     {
-                        mensagensValidacao.Add("Não é possível excluir um cartão com compras cadastradas.");
+                        mensagensValidacao.Add("Não é possível excluir um cartão com compras cadastradas");
                         exclusaoValida = false;
                     }
                     if (model.Assinaturas != null && model.Assinaturas.Count > 0)
                     {
-                        mensagensValidacao.Add("Não é possível excluir um cartão com assinaturas cadastradas.");
+                        mensagensValidacao.Add("Não é possível excluir um cartão com assinaturas cadastradas");
                         exclusaoValida = false;
                     }
                     if (model.Faturas != null && model.Faturas.Count > 0)
                     {
-                        mensagensValidacao.Add("Não é possível excluir um cartão com faturas cadastradas.");
+                        mensagensValidacao.Add("Não é possível excluir um cartão com faturas cadastradas");
                         exclusaoValida = false;
                     }
                 }
@@ -160,7 +160,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Validação rejeitada.";
+                    retorno.Mensagem = "Validação rejeitada";
                     retorno.Erros = mensagensValidacao;
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }

@@ -59,14 +59,14 @@ namespace LaPlata.Domain.Services
                 var cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
                 if (cartao == null)
                 {
-                    resultadoValidacao.Mensagens.Add("Cartão não encontrado.");
+                    resultadoValidacao.Mensagens.Add("Cartão não encontrado");
                     resultadoValidacao.Valido = false;
                 }
                 // Validar fatura existente
                 var faturaExistente = _context.Obter(x => x.CartaoId == fatura.CartaoId && x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
                 if (faturaExistente != null)
                 {
-                    resultadoValidacao.Mensagens.Add("Já existe fatura para o cartão, mês e ano informados.");
+                    resultadoValidacao.Mensagens.Add("Já existe fatura para o cartão, mês e ano informados");
                     resultadoValidacao.Valido = false;
                 }
 
@@ -217,7 +217,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Validação rejeitada.";
+                    retorno.Mensagem = "Validação rejeitada";
                     retorno.Erros = resultadoValidacao.Mensagens;
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
@@ -272,7 +272,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;
@@ -318,7 +318,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 

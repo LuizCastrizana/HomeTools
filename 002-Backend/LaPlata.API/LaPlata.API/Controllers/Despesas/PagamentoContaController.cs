@@ -28,7 +28,7 @@ namespace LaPlata.API.Controllers.Despesas
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
             }
         }
 
@@ -41,7 +41,7 @@ namespace LaPlata.API.Controllers.Despesas
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
             }
         }
 
@@ -54,7 +54,7 @@ namespace LaPlata.API.Controllers.Despesas
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
             }
         }
 
@@ -69,7 +69,7 @@ namespace LaPlata.API.Controllers.Despesas
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
             }
         }
 
@@ -84,7 +84,7 @@ namespace LaPlata.API.Controllers.Despesas
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
             }
         }
     }

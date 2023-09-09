@@ -16,14 +16,19 @@ namespace LaPlata.API.Extensions
             switch (respostaServico.Status)
             {
                 case EnumStatusResposta.SUCESSO:
+                    respostaApi.status = StatusCodes.Status200OK;
                     return controllerBase.Ok(JsonConvert.SerializeObject(respostaApi));
                 case EnumStatusResposta.VALIDACAO_REJEITADA:
+                    respostaApi.status = StatusCodes.Status400BadRequest;
                     return controllerBase.BadRequest(JsonConvert.SerializeObject(respostaApi));
                 case EnumStatusResposta.ERRO:
+                    respostaApi.status = StatusCodes.Status500InternalServerError;
                     return controllerBase.StatusCode(StatusCodes.Status500InternalServerError, JsonConvert.SerializeObject(respostaApi));
                 case EnumStatusResposta.NAO_ENCONTRADO:
+                    respostaApi.status = StatusCodes.Status404NotFound;
                     return controllerBase.NotFound(JsonConvert.SerializeObject(respostaApi));
                 default:
+                    respostaApi.status = StatusCodes.Status204NoContent;
                     return controllerBase.NoContent();
             }
         }

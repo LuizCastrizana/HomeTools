@@ -41,7 +41,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Conta não encontrada.";
+                    retorno.Erros = new List<string>() { "Conta não encontrada" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
 
@@ -85,7 +85,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;
@@ -114,7 +114,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;
@@ -142,7 +142,7 @@ namespace LaPlata.Domain.Services
                 }
                 else
                 {
-                    retorno.Mensagem = "Registro não encontrado.";
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
                     retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
                 }
                 return retorno;

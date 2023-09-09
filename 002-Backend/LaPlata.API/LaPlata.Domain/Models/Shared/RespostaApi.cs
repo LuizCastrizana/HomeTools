@@ -11,6 +11,7 @@ namespace LaPlata.Domain.Models
         public T? valor { get; set; }
         public string? mensagem { get; set; }
         public List<string>? erros { get; set; }
+        public int status { get; set; }
 
         public RespostaApi()
         {

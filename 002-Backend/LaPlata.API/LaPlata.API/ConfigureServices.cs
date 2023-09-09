@@ -22,7 +22,7 @@ namespace LaPlata.API
                     var result = new RespostaApi<string>
                     {
                         valor = null,
-                        mensagem = "Erro de validação",
+                        mensagem = null,
                         erros = errors
                     };
 
