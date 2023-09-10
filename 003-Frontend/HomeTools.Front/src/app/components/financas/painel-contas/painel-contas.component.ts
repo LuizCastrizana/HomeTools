@@ -12,6 +12,7 @@ import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readCo
 import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 import { TipoAlertaEnum } from 'src/app/enums/tipoAlertaEnum';
 import { DadosFeedbackAlerta } from 'src/app/interfaces/dadosFeedbackAlerta';
+import { RespostaApiService } from 'src/app/services/resposta-api.service';
 
 @Component({
   selector: 'app-painel-contas',
@@ -43,7 +44,8 @@ export class PainelContasComponent implements OnInit {
   constructor(
     private contaService: ContaService,
     private contaVariavelService: ContaVariavelService,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    private respostaApiService: RespostaApiService,
     ) {}
 
   ngOnInit(): void {
@@ -91,6 +93,27 @@ export class PainelContasComponent implements OnInit {
       this.Contas.push(conta);
     });
     this.DadosPaginador.TotalItens = this.Contas.length;
+  }
+
+  buscarContas() {
+    let busca = (document.getElementById('txtBusca') as HTMLInputElement).value;
+    this.Contas = [];
+    this.contaService.buscar(busca).subscribe({
+      next: (respostaApi) => {
+        this.incluirContas(respostaApi);
+        this.ordenarContas();
+      }, error: (err) => {
+        this.respostaApiService.tratarRespostaApi(err);
+      }
+    });
+    this.contaVariavelService.buscar(busca).subscribe({
+      next: (respostaApi2) => {
+        this.incluirContasVariaveis(respostaApi2);
+        this.ordenarContas();
+      }, error: (err) => {
+        this.respostaApiService.tratarRespostaApi(err);
+      }
+    });
   }
 
   ordenarContas(nomeCampo?: string) {

@@ -20,7 +20,7 @@ export class ContaService {
   }
 
   buscar(busca: string): Observable<RespostaApi<ReadContaDto[]>> {
-    const url = `${this.API}/${busca}`
+    const url = `${this.API}/?busca=${busca}`
     return this.http.get<RespostaApi<ReadContaDto[]>>(url)
   }
 

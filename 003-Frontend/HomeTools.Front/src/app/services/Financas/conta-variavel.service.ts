@@ -20,7 +20,7 @@ export class ContaVariavelService {
   }
 
   buscar(busca: string): Observable<RespostaApi<ReadContaVariavelDto[]>> {
-    const url = `${this.API}/${busca}`
+    const url = `${this.API}/?busca=${busca}`
     return this.http.get<RespostaApi<ReadContaVariavelDto[]>>(url)
   }
 

@@ -6,9 +6,9 @@
     <div class="row">
       <div class="col col-flexible">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar" name="Busca" id="txtBusca">
+          <input type="text" class="form-control" placeholder="Buscar" name="Busca" id="txtBusca" (keydown.enter)="buscarContas()" (keydown.return)="buscarContas()">
           <span>
-            <button title="Buscar" id="btnBuscar" class="btn">
+            <button title="Buscar" id="btnBuscar" class="btn" (click)="buscarContas()">
               <img src="../../../../assets/img/lupa-icon.png">
             </button>
           </span>
