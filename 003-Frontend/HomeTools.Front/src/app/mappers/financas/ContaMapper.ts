@@ -6,8 +6,8 @@ import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
 import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
 import { UpdateContaDto } from 'src/app/interfaces/api-dto/financas/updateContaDto';
 import { UpdateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/updateContaVariavelDto';
-import { ReadConta } from 'src/app/interfaces/financas/readConta';
-import { PagamentoConta } from 'src/app/interfaces/financas/readPagamentoConta';
+import { ReadConta } from 'src/app/interfaces/financas/Conta';
+import { PagamentoConta } from 'src/app/interfaces/financas/PagamentoConta';
 
 @Injectable({
   providedIn: 'root'
@@ -35,24 +35,13 @@ export class ContaMapper {
         ValorInteiro: 0,
         ValorCentavos: 0,
         DataPagamento: pagamentoDto.DataPagamento,
+        MesReferencia: pagamentoDto.MesReferencia,
+        AnoReferencia: pagamentoDto.AnoReferencia,
         ContaId: pagamentoDto.ContaId
       }
       conta.Pagamentos.push(pagamento);
     });
-    if (conta.Pagamentos.length > 0) {
-      conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
-      let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
-      if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
-        conta.StatusId = StatusContaEnum.Paga;
-      }
-      else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth()
-        && conta.DiaVencimento < new Date(Date.now()).getDay()) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-      }
-      else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
-        conta.StatusId = StatusContaEnum.Atrasada;
-      }
-    }
+    this.PreecherStatusConta(conta);
     return conta;
   }
 
@@ -75,24 +64,14 @@ export class ContaMapper {
         ValorInteiro: pagamentoDto.ValorInteiro,
         ValorCentavos: pagamentoDto.ValorCentavos,
         DataPagamento: pagamentoDto.DataPagamento,
+        MesReferencia: pagamentoDto.MesReferencia,
+        AnoReferencia: pagamentoDto.AnoReferencia,
         ContaId: pagamentoDto.ContaId
       }
       conta.Pagamentos.push(pagamento);
     });
-    if (conta.Pagamentos.length > 0) {
-      conta.UltimoPagamento = conta.Pagamentos.sort((a, b) => b.Id - a.Id)[0].DataPagamento;
-      let UltimoPagamento = new Date(conta.UltimoPagamento != undefined ? conta.UltimoPagamento : 0);
-      if (UltimoPagamento.getMonth() == new Date(Date.now()).getMonth()) {
-        conta.StatusId = StatusContaEnum.Paga;
-      }
-      else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth()
-        && conta.DiaVencimento < new Date(Date.now()).getDay()) {
-          conta.StatusId = StatusContaEnum.Atrasada;
-      }
-      else if (UltimoPagamento.getMonth() < new Date(Date.now()).getMonth() -1) {
-        conta.StatusId = StatusContaEnum.Atrasada;
-      }
-    }
+    this.CalcularValorMedio(conta);
+    this.PreecherStatusConta(conta);
     return conta;
   }
 
@@ -134,5 +113,40 @@ export class ContaMapper {
       CategoriaId: Conta.Categoria.Id
     };
     return conta;
+  }
+
+  private static CalcularValorMedio(Conta: ReadConta) {
+    let totalPagamentos = Conta.Pagamentos.reduce((acc, cur) => acc + cur.ValorInteiro, 0) + Conta.Pagamentos.reduce((acc, cur) => acc + cur.ValorCentavos, 0) / 100;
+    let mediaPagamentos = totalPagamentos / Conta.Pagamentos.length;
+    Conta.ValorInteiro = Math.trunc(mediaPagamentos);
+    Conta.ValorCentavos = Math.round((mediaPagamentos - Conta.ValorInteiro) * 100);
+    if (Number.isNaN(Conta.ValorInteiro)) Conta.ValorInteiro = 0;
+    if (Number.isNaN(Conta.ValorCentavos)) Conta.ValorCentavos = 0;
+  }
+
+  private static PreecherStatusConta(Conta: ReadConta) {
+    if (Conta.Pagamentos.length > 0) {
+      Conta.UltimoPagamento = Conta.Pagamentos
+      .sort((a, b) => new Date(b.DataPagamento != undefined ? b.DataPagamento : 0).getTime() - new Date(a.DataPagamento != undefined ? a.DataPagamento : 0).getTime())[0].DataPagamento;
+      let UltimoPagamento = new Date(Conta.UltimoPagamento != undefined ? Conta.UltimoPagamento : 0)
+      let mesReferencia = UltimoPagamento.getMonth() + 1;
+      let anoReferencia = UltimoPagamento.getFullYear();
+      let mesAtual = new Date(Date.now()).getMonth() + 1;
+      let anoAtual = new Date(Date.now()).getFullYear();
+      let diaAtual = new Date(Date.now()).getDate();
+      if (mesReferencia == mesAtual && anoReferencia == anoAtual) {
+        Conta.StatusId = StatusContaEnum.Paga;
+      }
+      else {
+        if ((mesReferencia == mesAtual -1 && anoReferencia == anoAtual && diaAtual < Conta.DiaVencimento)
+              ||
+            (anoReferencia == anoAtual -1 && mesReferencia == 12 && mesAtual == 1 && diaAtual < Conta.DiaVencimento)) {
+          Conta.StatusId = StatusContaEnum.Pendente;
+        }
+        else {
+          Conta.StatusId = StatusContaEnum.Atrasada
+        }
+      }
+    }
   }
 }

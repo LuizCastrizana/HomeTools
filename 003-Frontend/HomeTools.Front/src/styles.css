@@ -210,6 +210,15 @@ input:read-only {
   display: block;
   height: calc(1.5em + 0.75rem + 2px);
 }
+.form-validation {
+  display: none;
+  margin: 0.2rem 0 0 0.325rem;
+  font-size: 0.875rem;
+  color: #e63333;
+}
+.campo-obrigatorio {
+  border: 2px solid #e63333;
+}
 @media (max-width: 700px) {
   .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
     flex: 0 0 100%;
@@ -243,8 +252,9 @@ input:read-only {
   background-color: #111;
   border-color: #111;
 }
-.btn:focus {
-  outline: 1px solid #111;
+.btn:active {
+  background-color: #474747;
+  border-color: #111;
 }
 .btn-red {
   color: #ffffff;
@@ -254,6 +264,10 @@ input:read-only {
 .btn-red:hover {
   color: #ffffff;
   background-color: #ff2727;
+  border-color: #971c1c;
+}
+.btn-red:active {
+  background-color: #ff5757;
   border-color: #971c1c;
 }
 .btn-sm {

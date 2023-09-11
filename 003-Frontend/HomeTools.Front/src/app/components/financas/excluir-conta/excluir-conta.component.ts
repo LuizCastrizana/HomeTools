@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReadConta } from 'src/app/interfaces/financas/readConta';
+import { ReadConta } from 'src/app/interfaces/financas/Conta';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';

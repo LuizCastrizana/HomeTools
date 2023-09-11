@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,11 @@ import { EditarContaComponent } from './components/financas/editar-conta/editar-
 import { ExcluirContaComponent } from './components/financas/excluir-conta/excluir-conta.component';
 import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-alerta.component';
 
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+import { IncluirPagamentoContaComponent } from './components/financas/incluir-pagamento-conta/incluir-pagamento-conta.component';
+registerLocaleData(localePT);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +39,7 @@ import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-a
     EditarContaComponent,
     ExcluirContaComponent,
     FeedbackAlertaComponent,
+    IncluirPagamentoContaComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +47,9 @@ import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-a
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-br' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

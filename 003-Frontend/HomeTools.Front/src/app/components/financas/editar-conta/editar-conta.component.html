@@ -7,14 +7,18 @@
       <div class="col-4">
         <div class="form-group">
           <label for="descricao">Descrição</label>
-          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao" [(ngModel)]="Conta.Descricao">
+          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
+          (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Conta.Descricao">
+          <label class="form-validation" id="erro_txtDescricao"></label>
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="diaVencimento">Dia venc.:</label>
           <input type="text" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento"
-          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.DiaVencimento">
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)"
+          (focusout)="campoObrigatorio('txtDiaVencimento')" [(ngModel)]="Conta.DiaVencimento">
+          <label class="form-validation" id="erro_txtDiaVencimento"></label>
         </div>
       </div>
       <div class="col-3">
@@ -27,10 +31,11 @@
       <div class="col-3">
         <div class="form-group">
           <label for="CategoriaId">Categoria</label>
-          <select id="selCategoriaId" class="form-control" name="CategoriaId" [(ngModel)]="Conta.Categoria.Id">
-            <option value="0">Selecione...</option>
+          <select id="selCategoriaId" class="form-control" name="CategoriaId" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="Conta.Categoria.Id">
+            <option value="">Selecione...</option>
             <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao }}</option>
           </select>
+          <label class="form-validation" id="erro_selCategoriaId"></label>
         </div>
       </div>
     </div>
@@ -39,14 +44,18 @@
         <div class="form-group">
           <label for="descricao">Valor inteiro</label>
           <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+          (focusout)="campoObrigatorio('txtValorInteiro')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorInteiro">
+          <label class="form-validation" id="erro_txtValorInteiro"></label>
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor centavos</label>
           <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
+          (focusout)="campoObrigatorio('txtValorCentavos')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorCentavos">
+          <label class="form-validation" id="erro_txtValorCentavos"></label>
         </div>
       </div>
     </div>

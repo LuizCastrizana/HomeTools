@@ -2,7 +2,7 @@ import { FeedbackService } from './../../../services/feedback.service';
 import { RespostaApi } from './../../../interfaces/api-dto/respostaApi';
 import { DadosPaginador } from '../../../interfaces/paginacao/dadosPaginador';
 import { Component, OnInit } from '@angular/core';
-import { ReadConta } from 'src/app/interfaces/financas/readConta';
+import { ReadConta } from 'src/app/interfaces/financas/Conta';
 import { DadosPaginados } from '../../../interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ContaService } from 'src/app/services/Financas/conta.service';
@@ -26,19 +26,12 @@ export class PainelContasComponent implements OnInit {
 
   DadosPaginador: DadosPaginador = {
     PaginaAtual: 1,
-    ItensPorPagina: 5,
-    TotalItens: 0,
-  };
-
-  DadosPaginados: DadosPaginados<ReadConta> = {
-    Pagina: 1,
     ItensPorPagina: 15,
     TotalItens: 0,
-    Itens: [],
   };
 
-  ContaExcluir: ReadConta = { } as ReadConta;
-
+  DadosPaginados: DadosPaginados<ReadConta> = { } as DadosPaginados<ReadConta>;
+  ContaAcao: ReadConta = { } as ReadConta;
   Contas: ReadConta[] = [];
 
   constructor(
@@ -308,8 +301,13 @@ export class PainelContasComponent implements OnInit {
   }
 
   exibirModalExcluir(Conta: ReadConta) {
-    this.ContaExcluir = Conta;
+    this.ContaAcao = Conta;
     document.getElementById('modalExcluir')!.style.display = 'block';
+  }
+
+  exibirModalIncluirPagamento(Conta: ReadConta) {
+    this.ContaAcao = Conta;
+    document.getElementById('modalIncluirPagamento')!.style.display = 'block';
   }
 
   receiveMessage($event: DadosPaginador) {

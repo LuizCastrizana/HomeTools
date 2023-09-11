@@ -1,0 +1,86 @@
+<section class="incluir-pagamento-modal ff-verdana" id="modalIncluirPagamento">
+  <div class="modal">
+    <div class="cabecalho-modal">
+      <span class="texto">Incluir Pagamento</span>
+    </div>
+    <div class="conteudo-modal">
+      <div class="form">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Mês referência</label>
+              <select class="form-control" id="selMes" name="Mes" [(ngModel)]="MesReferencia">
+                <option value="1">Janeiro</option>
+                <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Ano referência</label>
+              <input type="text" class="form-control" id="txtAno" placeholder="Ano" name="Ano"
+              (focusout)="campoObrigatorio('txtAno')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="AnoReferencia">
+              <label class="form-validation" id="erro_txtAno"></label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6" id="divData">
+            <div class="form-group">
+              <label for="descricao">Data do pagamento</label>
+              <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
+              (focusout)="campoObrigatorio('txtData')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="DataPagamento">
+              <label class="form-validation" id="erro_txtData"></label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Conta</label>
+              <input type="text" class="form-control" id="txtConta" name="Conta" [(ngModel)]="Conta.Descricao" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="divValores">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Valor inteiro</label>
+              <input *ngIf="Conta.Variavel" type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+              (focusout)="campoObrigatorio('txtValorInteiro')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="PagamentoContaVariavel.ValorInteiro">
+              <input *ngIf="!Conta.Variavel" type="text" class="form-control" id="txtValorInteiro" name="ValorInteiro" [(ngModel)]="Conta.ValorInteiro" disabled>
+              <label class="form-validation" id="erro_txtValorInteiro"></label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Valor centavos</label>
+              <input *ngIf="Conta.Variavel" type="text" class="form-control" id="txtValorCentavos" placeholder="Valor" name="ValorCentavos"
+              (focusout)="campoObrigatorio('txtValorCentavos')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="PagamentoContaVariavel.ValorCentavos">
+              <input *ngIf="!Conta.Variavel" type="text" class="form-control" id="txtValorCentavos" name="ValorCentavos" [(ngModel)]="Conta.ValorCentavos" disabled>
+              <label class="form-validation" id="erro_txtValorCentavos"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="acoes-modal">
+      <button class="btn" id="btnCofirmar" (click)="incluirPagamento()">Incluir</button>
+      &nbsp;
+      <button class="btn btn-red" id="btnCancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+  </div>
+  <div class="overlay"></div>
+</section>

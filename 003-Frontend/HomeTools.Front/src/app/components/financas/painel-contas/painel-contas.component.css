@@ -5,3 +5,11 @@
 #thAcoes {
   min-width: 80px;
 }
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.acoes-item {
+  padding: 0 2px 0 2px;
+}

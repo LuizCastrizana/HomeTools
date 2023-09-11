@@ -7,33 +7,40 @@
       <div class="col-4">
         <div class="form-group">
           <label for="descricao">Descrição</label>
-          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao" [(ngModel)]="Conta.Descricao">
+          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
+          (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Conta.Descricao">
+          <label class="form-validation" id="erro_txtDescricao"></label>
         </div>
       </div>
       <div class="col-2">
         <div class="form-group">
           <label for="diaVencimento">Dia venc.:</label>
           <input type="text" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento"
+          (focusout)="campoObrigatorio('txtDiaVencimento')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.DiaVencimento">
+          <label class="form-validation" id="erro_txtDiaVencimento"></label>
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="tipoCconta">Tipo</label>
-          <select name="tipoConta" id="selTipoConta" class="form-control" (change)="selecionaTipoConta()" name="TipoContaId" [(ngModel)]="TipoContaId">
+          <select name="tipoConta" id="selTipoContaId" class="form-control" name="TipoContaId"
+          (change)="selecionaTipoConta()" (focusout)="campoObrigatorio('selTipoContaId')" [(ngModel)]="TipoContaId">
             <option value="0">Selecione...</option>
             <option value="1">Variável</option>
             <option value="2">Fixa</option>
           </select>
+          <label class="form-validation" id="erro_selTipoContaId"></label>
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="CategoriaId">Categoria</label>
-          <select name="CategoriaId" id="selCategoriaId" class="form-control" [(ngModel)]="Conta.CategoriaId">
+          <select name="CategoriaId" id="selCategoriaId" class="form-control" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="Conta.CategoriaId">
             <option value="0">Selecione...</option>
-            <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao}}</option>
+            <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao }}</option>
           </select>
+          <label class="form-validation" id="erro_selCategoriaId"></label>
         </div>
       </div>
     </div>
@@ -42,14 +49,18 @@
         <div class="form-group">
           <label for="descricao">Valor inteiro</label>
           <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+          (focusout)="campoObrigatorio('txtValorInteiro')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorInteiro">
+          <label class="form-validation" id="erro_txtValorInteiro"></label>
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
           <label for="descricao">Valor centavos</label>
           <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
+          (focusout)="campoObrigatorio('txtValorCentavos')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorCentavos">
+          <label class="form-validation" id="erro_txtValorCentavos"></label>
         </div>
       </div>
     </div>

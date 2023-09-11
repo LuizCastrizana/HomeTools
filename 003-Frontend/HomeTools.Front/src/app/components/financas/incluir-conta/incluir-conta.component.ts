@@ -55,6 +55,9 @@ export class IncluirContaComponent implements OnInit {
   }
 
   salvarConta() {
+    if (!this.validarCamposObrigatorios(this.TipoContaId == TipoContaEnum.Variavel)) {
+      return;
+    }
     if (this.TipoContaId == TipoContaEnum.Fixa) {
       this.contaService.incluir(this.Conta).subscribe({
         next: (result) => {
@@ -85,6 +88,37 @@ export class IncluirContaComponent implements OnInit {
 
   cancelar() {
     this.router.navigate(['/contas']);
+  }
+
+  validarCamposObrigatorios(variavel: boolean): boolean {
+    let erros: number = 0;
+    let camposObrigatorios = ['txtDescricao', 'txtDiaVencimento', 'selCategoriaId', 'selTipoContaId'];
+    if (!variavel) {
+      camposObrigatorios.push('txtValorInteiro');
+      camposObrigatorios.push('txtValorCentavos');
+    }
+    camposObrigatorios.forEach(campo => {
+      if (!this.campoObrigatorio(campo)) {
+        erros++;
+      }
+    });
+    return erros == 0 ? true : false;
+  }
+
+  campoObrigatorio(campoId: string): boolean {
+    let campo = <HTMLInputElement>document.getElementById(campoId)!;
+    let campoErro = document.getElementById('erro_' + campoId)!;
+    if (campo.value === "" || campo.value == null || campo.value == undefined || (campo.tagName == 'SELECT' && campo.value == '0')) {
+      campo.classList.add('campo-obrigatorio');
+      campoErro.style.display = 'block';
+      campoErro.innerHTML = "Campo obrigatório";
+      return false;
+    }
+    else {
+      campoErro.style.display = 'none';
+      campo.classList.remove('campo-obrigatorio');
+      return true;
+    }
   }
 
   apenasNumeros(event: any) {

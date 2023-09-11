@@ -15,7 +15,7 @@
         </div>
       </div>
       <div class="col col-flexible">
-        <button title="Novo" id="btnNovo" class="btn" routerLink="incluir-conta">
+        <button title="Nova Conta" id="btnNovaConta" class="btn" routerLink="incluir-conta">
           <img src="../../../../assets/img/plus-icon.png">
         </button>
       </div>
@@ -25,7 +25,7 @@
     <table class="table ff-verdana">
       <tr>
         <th class="campo-ordenacao" (click)="ordenarContas('Acoes')" id="thAcoes">Ações<span id="imgAcoes"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descricao<span id="imgDescricao"></span></th>
+        <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descrição<span id="imgDescricao"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Tipo')" id="thTipo">Tipo<span id="imgTipo"></span></th>
         <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
@@ -35,23 +35,36 @@
       </tr>
       <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">
-          <button title="Editar" id="btnEditar{{conta.Id}}" class="btn btn-sm" routerLink="editar-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
-            <img src="../../../../assets/img/pencil-icon.png">
-          </button>
-          &nbsp;
-          <button title="Excluir" id="btnExcluir{{conta.Id}}" class="btn btn-sm" (click)="exibirModalExcluir(conta)">
-            <img src="../../../../assets/img/lixeira-icon.png">
-          </button>
+          <div class="acoes">
+            <span class="acoes-item">
+              <button title="Editar" id="btnEditar{{conta.Id}}" class="btn btn-sm" routerLink="editar-conta/{{conta.Id}}/{{conta.Variavel ? 1 : 2}}">
+                <img src="../../../../assets/img/pencil-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Incluir Pagamento" id="btnIncluirPagamento{{conta.Id}}" class="btn btn-sm btn-pagamento" (click)="exibirModalIncluirPagamento(conta)">
+                <img src="../../../../assets/img/add-pagamento-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Excluir" id="btnExcluir{{conta.Id}}" class="btn btn-sm" (click)="exibirModalExcluir(conta)">
+                <img src="../../../../assets/img/lixeira-icon.png">
+              </button>
+            </span>
+          </div>
         </td>
         <td>{{conta.Descricao}}</td>
-        <td>{{conta.Categoria.Descricao}}</td>
+        <td>{{conta.Categoria!.Descricao}}</td>
         <td>
           <span *ngIf="conta.Variavel">Variável</span>
           <span *ngIf="!conta.Variavel">Fixa</span>
         </td>
-        <td class="right"><span *ngIf="conta.Variavel">μ </span>{{conta.ValorInteiro}},{{conta.ValorCentavos}}</td>
+        <td class="right"><span *ngIf="conta.Variavel">μ </span>{{conta.ValorInteiro!.toFixed()}},{{conta.ValorCentavos!.toFixed()}}</td>
         <td class="center">{{conta.DiaVencimento}}</td>
-        <td class="center">{{conta.UltimoPagamento}}</td>
+        <td class="center">
+          <span *ngIf="conta.UltimoPagamento == null">-</span>
+          <span *ngIf="conta.UltimoPagamento != null">{{conta.UltimoPagamento  | date : 'shortDate'}}</span>
+        </td>
         <td class="center">
           <span class="img-status" *ngIf="conta.StatusId == 1"><img src="../../../../assets/img/status-verde.png"></span>
           <span class="img-status" *ngIf="conta.StatusId == 2"><img src="../../../../assets/img/status-amarelo.png"></span>
@@ -76,4 +89,5 @@
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>
-<app-excluir-conta [Conta]="ContaExcluir"></app-excluir-conta>
+<app-excluir-conta [Conta]="ContaAcao"></app-excluir-conta>
+<app-incluir-pagamento-conta [Conta]="ContaAcao"></app-incluir-pagamento-conta>
