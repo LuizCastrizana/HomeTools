@@ -4,7 +4,7 @@ namespace LaPlata.Domain.DTOs
 {
     public class CreateCategoriaDTO
     {
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         public string? Descricao { get; set; }
     }
 }

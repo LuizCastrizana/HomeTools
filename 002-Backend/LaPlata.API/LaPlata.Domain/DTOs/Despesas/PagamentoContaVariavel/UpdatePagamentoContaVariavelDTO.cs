@@ -9,7 +9,11 @@ namespace LaPlata.Domain.DTOs
 
         [Range(0, 99, ErrorMessage = "Valor inválido")]
         public int? ValorCentavos { get; set; }
-
         public DateTime? DataPagamento { get; set; }
+        [Range(1, 12, ErrorMessage = "Valor inválido")]
+        public int? MesReferencia { get; set; }
+        [Range(1, 9999, ErrorMessage = "Valor inválido")]
+
+        public int? AnoReferencia { get; set; }
     }
 }

@@ -4,16 +4,16 @@ namespace LaPlata.Domain.DTOs
 {
     public class CreateCartaoDTO
     {
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         [MinLength(1, ErrorMessage = "Valor inválido")]
         [MaxLength(50, ErrorMessage = "Valor inválido")]
         public string? Nome { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         [Range(1, 31, ErrorMessage = "Valor inválido")]
         public int? DiaVencimento { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         [Range(1, 31, ErrorMessage = "Valor inválido")]
         public int? DiaFechamento { get; set; }
     }

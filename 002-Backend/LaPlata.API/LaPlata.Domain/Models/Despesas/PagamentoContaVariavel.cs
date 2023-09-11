@@ -17,6 +17,10 @@ namespace LaPlata.Domain.Models
         public virtual ContaVariavel ContaVariavel { get; set; }
         [Required]
         public int ContaVariavelId { get; set; }
+        [Required]
+        public int MesReferencia { get; set; }
+        [Required]
+        public int AnoReferencia { get; set; }
         [JsonIgnore]
         public virtual Compra? Compra { get; set; }
         public int? CompraId { get; set; }

@@ -4,11 +4,11 @@ namespace LaPlata.Domain.DTOs
 {
     public class DespesasMesDTO
     {
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         [Range(1, 12, ErrorMessage = "Valor inválido")]
         public int? Mes { get; set; }
 
-        [Required(ErrorMessage = "Campo obrigatório.")]
+        [Required(ErrorMessage = "Campo obrigatório")]
         [Range(1, 9999, ErrorMessage = "Valor inválido")]
         public int? Ano { get; set; }
         public decimal TotalMes { get; set; }
