@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TipoContaEnum } from 'src/app/enums/tipoContaEnum';
-import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
-import { CreateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/createContaVariavelDto';
+import { CreateContaDto } from 'src/app/dto/financas/contas/createContaDto';
+import { CreateContaVariavelDto } from 'src/app/dto/financas/contas/createContaVariavelDto';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { ValidacaoService } from 'src/app/services/validacao.service';
-import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { RespostaApi } from 'src/app/dto/respostaApi';
 import { Categoria } from 'src/app/interfaces/categoria';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';
 

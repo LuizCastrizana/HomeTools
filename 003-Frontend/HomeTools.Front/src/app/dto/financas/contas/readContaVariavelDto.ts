@@ -1,4 +1,4 @@
-import { Categoria } from "../../categoria";
+import { Categoria } from "../../../interfaces/categoria";
 import { PagamentoContaVariavelDto } from "./readPagamentoContaVariavelDto";
 
 export interface ReadContaVariavelDto {

@@ -1,9 +1,9 @@
-import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
-import { UpdateContaDto } from 'src/app/interfaces/api-dto/financas/updateContaDto';
-import { RespostaApi } from './../../interfaces/api-dto/respostaApi';
+import { CreateContaDto } from 'src/app/dto/financas/contas/createContaDto';
+import { UpdateContaDto } from 'src/app/dto/financas/contas/updateContaDto';
+import { RespostaApi } from '../../dto/respostaApi';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ReadContaDto } from '../../interfaces/api-dto/financas/readContaDto';
+import { ReadContaDto } from '../../dto/financas/contas/readContaDto';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -1,16 +1,16 @@
-import { Categoria } from './../../../interfaces/categoria';
+import { Categoria } from '../../../../interfaces/categoria';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 import { TipoContaEnum } from 'src/app/enums/tipoContaEnum';
-import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { RespostaApi } from 'src/app/dto/respostaApi';
 import { ReadConta } from 'src/app/interfaces/financas/Conta';
 import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { ValidacaoService } from 'src/app/services/validacao.service';
-import { FeedbackService } from './../../../services/feedback.service';
+import { FeedbackService } from '../../../../services/feedback.service';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';
 
 @Component({

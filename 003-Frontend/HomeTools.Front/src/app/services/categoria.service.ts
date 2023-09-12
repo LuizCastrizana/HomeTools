@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Categoria } from '../interfaces/categoria';
 import { Observable } from 'rxjs';
-import { RespostaApi } from '../interfaces/api-dto/respostaApi';
+import { RespostaApi } from '../dto/respostaApi';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CreatePagamentoContaDto } from 'src/app/interfaces/api-dto/financas/createPagamentoContaDto';
-import { PagamentoContaDto } from 'src/app/interfaces/api-dto/financas/readPagamentoContaDto';
-import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { CreatePagamentoContaDto } from 'src/app/dto/financas/contas/createPagamentoContaDto';
+import { PagamentoContaDto } from 'src/app/dto/financas/contas/readPagamentoContaDto';
+import { RespostaApi } from 'src/app/dto/respostaApi';
 
 @Injectable({
   providedIn: 'root'

@@ -1,9 +1,9 @@
 import { Router } from '@angular/router';
 import { TipoAlertaEnum } from 'src/app/enums/tipoAlertaEnum';
-import { PagamentoConta } from '../../../interfaces/financas/PagamentoConta';
+import { PagamentoConta } from '../../../../interfaces/financas/PagamentoConta';
 import { Component, Input, OnInit } from '@angular/core';
-import { CreatePagamentoContaDto } from 'src/app/interfaces/api-dto/financas/createPagamentoContaDto';
-import { CreatePagamentoContaVariavelDto } from 'src/app/interfaces/api-dto/financas/createPagamentoContaVariavelDto';
+import { CreatePagamentoContaDto } from 'src/app/dto/financas/contas/createPagamentoContaDto';
+import { CreatePagamentoContaVariavelDto } from 'src/app/dto/financas/contas/createPagamentoContaVariavelDto';
 import { DadosFeedbackAlerta } from 'src/app/interfaces/dadosFeedbackAlerta';
 import { ReadConta } from 'src/app/interfaces/financas/Conta';
 import { PagamentoContaVariavelService } from 'src/app/services/Financas/pagamento-conta-variavel.service';

@@ -1,10 +1,10 @@
-import { UpdateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/updateContaVariavelDto';
-import { CreateContaVariavelDto } from './../../interfaces/api-dto/financas/createContaVariavelDto';
+import { UpdateContaVariavelDto } from 'src/app/dto/financas/contas/updateContaVariavelDto';
+import { CreateContaVariavelDto } from '../../dto/financas/contas/createContaVariavelDto';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
-import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { ReadContaVariavelDto } from 'src/app/dto/financas/contas/readContaVariavelDto';
+import { RespostaApi } from 'src/app/dto/respostaApi';
 
 @Injectable({
   providedIn: 'root'

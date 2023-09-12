@@ -9,19 +9,19 @@ import { RodapeComponent } from './components/rodape/rodape.component';
 import { HomeComponent } from './components/home/home.component';
 import { BotaoMenuComponent } from './components/menu/botao-menu/botao-menu.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
-import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
-import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
+import { PainelContasComponent } from './components/financas/contas/painel-contas/painel-contas.component';
+import { PainelDespesasComponent } from './components/financas/despesas/painel-despesas/painel-despesas.component';
 import { PaginadorComponent } from './components/paginador/paginador/paginador.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
-import { EditarContaComponent } from './components/financas/editar-conta/editar-conta.component';
-import { ExcluirContaComponent } from './components/financas/excluir-conta/excluir-conta.component';
+import { IncluirContaComponent } from './components/financas/contas/incluir-conta/incluir-conta.component';
+import { EditarContaComponent } from './components/financas/contas/editar-conta/editar-conta.component';
+import { ExcluirContaComponent } from './components/financas/contas/excluir-conta/excluir-conta.component';
 import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-alerta.component';
 
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
-import { IncluirPagamentoContaComponent } from './components/financas/incluir-pagamento-conta/incluir-pagamento-conta.component';
+import { IncluirPagamentoContaComponent } from './components/financas/contas/incluir-pagamento-conta/incluir-pagamento-conta.component';
 registerLocaleData(localePT);
 
 @NgModule({

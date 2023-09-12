@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
-import { CreateContaDto } from 'src/app/interfaces/api-dto/financas/createContaDto';
-import { CreateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/createContaVariavelDto';
-import { ReadContaDto } from 'src/app/interfaces/api-dto/financas/readContaDto';
-import { ReadContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readContaVariavelDto';
-import { UpdateContaDto } from 'src/app/interfaces/api-dto/financas/updateContaDto';
-import { UpdateContaVariavelDto } from 'src/app/interfaces/api-dto/financas/updateContaVariavelDto';
+import { CreateContaDto } from 'src/app/dto/financas/contas/createContaDto';
+import { CreateContaVariavelDto } from 'src/app/dto/financas/contas/createContaVariavelDto';
+import { ReadContaDto } from 'src/app/dto/financas/contas/readContaDto';
+import { ReadContaVariavelDto } from 'src/app/dto/financas/contas/readContaVariavelDto';
+import { UpdateContaDto } from 'src/app/dto/financas/contas/updateContaDto';
+import { UpdateContaVariavelDto } from 'src/app/dto/financas/contas/updateContaVariavelDto';
 import { ReadConta } from 'src/app/interfaces/financas/Conta';
 import { PagamentoConta } from 'src/app/interfaces/financas/PagamentoConta';
 

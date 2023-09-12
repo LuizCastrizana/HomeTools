@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { MenuFinancasComponent } from './components/financas/menu-financas/menu-financas.component';
-import { PainelContasComponent } from './components/financas/painel-contas/painel-contas.component';
-import { PainelDespesasComponent } from './components/financas/painel-despesas/painel-despesas.component';
-import { IncluirContaComponent } from './components/financas/incluir-conta/incluir-conta.component';
-import { EditarContaComponent } from './components/financas/editar-conta/editar-conta.component';
+import { PainelContasComponent } from './components/financas/contas/painel-contas/painel-contas.component';
+import { PainelDespesasComponent } from './components/financas/despesas/painel-despesas/painel-despesas.component';
+import { IncluirContaComponent } from './components/financas/contas/incluir-conta/incluir-conta.component';
+import { EditarContaComponent } from './components/financas/contas/editar-conta/editar-conta.component';
 
 const routes: Routes = [
   //#region Home

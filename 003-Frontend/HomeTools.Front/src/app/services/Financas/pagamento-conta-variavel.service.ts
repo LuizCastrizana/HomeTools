@@ -1,8 +1,8 @@
-import { CreatePagamentoContaVariavelDto } from './../../interfaces/api-dto/financas/createPagamentoContaVariavelDto';
+import { CreatePagamentoContaVariavelDto } from '../../dto/financas/contas/createPagamentoContaVariavelDto';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PagamentoContaVariavelDto } from 'src/app/interfaces/api-dto/financas/readPagamentoContaVariavelDto';
-import { RespostaApi } from 'src/app/interfaces/api-dto/respostaApi';
+import { PagamentoContaVariavelDto } from 'src/app/dto/financas/contas/readPagamentoContaVariavelDto';
+import { RespostaApi } from 'src/app/dto/respostaApi';
 
 @Injectable({
   providedIn: 'root'
