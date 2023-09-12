@@ -24,14 +24,54 @@
   <div class="conteudo-pagina div-tabela">
     <table class="table ff-verdana">
       <tr>
-        <th class="campo-ordenacao" (click)="ordenarContas('Acoes')" id="thAcoes">Ações<span id="imgAcoes"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Descricao')" id="thDescricao" >Descrição<span id="imgDescricao"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Categoria')" id="thCategoria">Categoria<span id="imgCategoria"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Tipo')" id="thTipo">Tipo<span id="imgTipo"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Valor')" id="thValor">Valor<span id="imgValor"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Vencimento')" id="thVencimento">Venc.<span id="imgVencimento"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('UltimoPagamento')" id="thUltimoPagamento">Ult. Pagamento<span id="imgUltPagamento"></span></th>
-        <th class="campo-ordenacao" (click)="ordenarContas('Status')" id="thStatus">Status<span id="imgStatus"></span></th>
+        <th (click)="ordenarContas('Acoes')" id="thAcoes" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Ações</span>
+            <span class="img-ordenacao" id="imgAcoes"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Descricao')" id="thDescricao" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Descrição</span>
+            <span class="img-ordenacao" id="imgDescricao"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Categoria')" id="thCategoria" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Categoria</span>
+            <span class="img-ordenacao" id="imgCategoria"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Tipo')" id="thTipo" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Tipo</span>
+            <span class="img-ordenacao" id="imgTipo"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Valor')" id="thValor" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Valor</span>
+            <span class="img-ordenacao" id="imgValor"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Vencimento')" id="thVencimento" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Venc.</span>
+            <span class="img-ordenacao" id="imgVencimento"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('UltimoPagamento')" id="thUltimoPagamento" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Ult. Pagamento</span>
+            <span class="img-ordenacao" id="imgUltPagamento"></span>
+          </div>
+        </th>
+        <th (click)="ordenarContas('Status')" id="thStatus" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Status</span>
+            <span class="img-ordenacao" id="imgStatus"></span>
+          </div>
+        </th>
       </tr>
       <tr *ngFor="let conta of DadosPaginados.Itens">
         <td class="center">

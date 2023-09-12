@@ -205,8 +205,8 @@ export class PainelContasComponent implements OnInit {
   }
 
   tratarIconeOrdenacao() {
-    let imgAsc = "<img src=\"../../../../assets/img/asc.png\" class=\"img-ordenacao\">";
-    let imgDesc = "<img src=\"../../../../assets/img/desc.png\" class=\"img-ordenacao\">";
+    let imgAsc = "<img src=\"../../../../assets/img/asc.png\" >";
+    let imgDesc = "<img src=\"../../../../assets/img/desc.png\" >";
     let imgDescricao = document.getElementById('imgDescricao');
     let imgCategoria = document.getElementById('imgCategoria');
     let imgValor = document.getElementById('imgValor');

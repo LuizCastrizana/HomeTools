@@ -308,7 +308,7 @@ input:read-only {
   border-radius: 0.5rem;
 }
 .table th, td {
-padding: 5px 7px;
+padding: 4px 7px 2px 7px;
 }
 .table th {
 background-color: #699;
@@ -337,10 +337,18 @@ border-right: 1px solid #699;
   cursor: pointer;
   background-color: #8EB3A1;
 }
-.img-ordenacao {
+.table .titulo-tabela {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img-ordenacao img {
   width: 15px;
   height: 15px;
   margin-left: 5px;
+}
+.nome-campo {
+  padding-bottom: 4px;
 }
 .img-status img {
   width: 26px;

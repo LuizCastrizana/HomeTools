@@ -1,10 +1,27 @@
 <section class="incluir-pagamento-modal ff-verdana" id="modalIncluirPagamento">
   <div class="modal">
     <div class="cabecalho-modal">
-      <span class="texto">Incluir Pagamento</span>
+      <span class="texto">Incluir Pagamento</span><span class="img"><img src="../../../../assets/img/add-pagamento-icon.png"></span>
     </div>
     <div class="conteudo-modal">
       <div class="form">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="descricao">Conta</label>
+              <input type="text" class="form-control" id="txtConta" name="Conta" [(ngModel)]="Conta.Descricao" disabled>
+            </div>
+          </div>
+          <div class="col-6" id="divData">
+            <div class="form-group">
+              <label for="descricao">Data do pagamento</label>
+              <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
+              (focusout)="campoObrigatorio('txtData')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="DataPagamento">
+              <label class="form-validation" id="erro_txtData"></label>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-6">
             <div class="form-group">
@@ -32,23 +49,6 @@
               (focusout)="campoObrigatorio('txtAno')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="AnoReferencia">
               <label class="form-validation" id="erro_txtAno"></label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6" id="divData">
-            <div class="form-group">
-              <label for="descricao">Data do pagamento</label>
-              <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
-              (focusout)="campoObrigatorio('txtData')"
-              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="DataPagamento">
-              <label class="form-validation" id="erro_txtData"></label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="form-group">
-              <label for="descricao">Conta</label>
-              <input type="text" class="form-control" id="txtConta" name="Conta" [(ngModel)]="Conta.Descricao" disabled>
             </div>
           </div>
         </div>
