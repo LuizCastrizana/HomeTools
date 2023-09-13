@@ -23,7 +23,19 @@ export class ExcluirDespesaComponent implements OnInit {
   }
 
   excluirDespesa() {
-
+    this.serviceDespesa.excluir(this.Despesa.Id.toString())
+      .subscribe({
+        next: (res) => {
+          this.serviceRespostaApi.tratarRespostaApi(res);
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/despesas']);
+          });
+        },
+        error: (err) => {
+          this.serviceRespostaApi.tratarRespostaApi(err);
+          document.getElementById('modalExcluir')!.style.display = 'none';
+        }
+      });
   }
 
   cancelar() {
