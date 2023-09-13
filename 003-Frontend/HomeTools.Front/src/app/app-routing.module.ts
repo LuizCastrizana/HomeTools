@@ -6,6 +6,8 @@ import { PainelContasComponent } from './components/financas/contas/painel-conta
 import { PainelDespesasComponent } from './components/financas/despesas/painel-despesas/painel-despesas.component';
 import { IncluirContaComponent } from './components/financas/contas/incluir-conta/incluir-conta.component';
 import { EditarContaComponent } from './components/financas/contas/editar-conta/editar-conta.component';
+import { IncluirDespesaComponent } from './components/financas/despesas/incluir-despesa/incluir-despesa.component';
+import { EditarDespesaComponent } from './components/financas/despesas/editar-despesa/editar-despesa.component';
 
 const routes: Routes = [
   //#region Home
@@ -39,6 +41,14 @@ const routes: Routes = [
   {
     path: 'contas/editar-conta/:id/:tipo',
     component: EditarContaComponent
+  },
+  {
+    path: 'despesas/incluir-despesa',
+    component: IncluirDespesaComponent
+  },
+  {
+    path: 'despesas/editar-despesa/:id',
+    component: EditarDespesaComponent
   },
   //#endregion
   //#region Despensa

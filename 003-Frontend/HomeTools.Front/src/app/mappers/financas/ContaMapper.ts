@@ -6,7 +6,7 @@ import { ReadContaDto } from 'src/app/dto/financas/contas/readContaDto';
 import { ReadContaVariavelDto } from 'src/app/dto/financas/contas/readContaVariavelDto';
 import { UpdateContaDto } from 'src/app/dto/financas/contas/updateContaDto';
 import { UpdateContaVariavelDto } from 'src/app/dto/financas/contas/updateContaVariavelDto';
-import { ReadConta } from 'src/app/interfaces/financas/Conta';
+import { Conta } from 'src/app/interfaces/financas/Conta';
 import { PagamentoConta } from 'src/app/interfaces/financas/PagamentoConta';
 
 @Injectable({
@@ -16,8 +16,8 @@ export class ContaMapper {
 
   constructor() { }
 
-  public static ContaDtoToConta(ReadContaDto: ReadContaDto): ReadConta {
-    let conta: ReadConta = {
+  public static ContaDtoToConta(ReadContaDto: ReadContaDto): Conta {
+    let conta: Conta = {
       Id: ReadContaDto.Id,
       Descricao: ReadContaDto.Descricao,
       ValorInteiro: ReadContaDto.ValorInteiro,
@@ -45,8 +45,8 @@ export class ContaMapper {
     return conta;
   }
 
-  public static ContaVariavelDtoToConta(ReadContaDto: ReadContaVariavelDto): ReadConta {
-    let conta: ReadConta = {
+  public static ContaVariavelDtoToConta(ReadContaDto: ReadContaVariavelDto): Conta {
+    let conta: Conta = {
       Id: ReadContaDto.Id,
       Descricao: ReadContaDto.Descricao,
       ValorInteiro: 0,
@@ -75,7 +75,7 @@ export class ContaMapper {
     return conta;
   }
 
-  public static ContaToUpdateContaDto(Conta: ReadConta): UpdateContaDto {
+  public static ContaToUpdateContaDto(Conta: Conta): UpdateContaDto {
     let conta: UpdateContaDto = {
       Descricao: Conta.Descricao,
       ValorInteiro: Conta.ValorInteiro,
@@ -86,7 +86,7 @@ export class ContaMapper {
     return conta;
   }
 
-  public static ContaToUpdateContaVariavelDto(Conta: ReadConta): UpdateContaVariavelDto {
+  public static ContaToUpdateContaVariavelDto(Conta: Conta): UpdateContaVariavelDto {
     let conta: UpdateContaVariavelDto = {
       Descricao: Conta.Descricao,
       DiaVencimento: Conta.DiaVencimento,
@@ -95,7 +95,7 @@ export class ContaMapper {
     return conta;
   }
 
-  public static ContaToCreateContaDto(Conta: ReadConta): CreateContaDto {
+  public static ContaToCreateContaDto(Conta: Conta): CreateContaDto {
     let conta: CreateContaDto = {
       Descricao: Conta.Descricao,
       ValorInteiro: Conta.ValorInteiro,
@@ -106,7 +106,7 @@ export class ContaMapper {
     return conta;
   }
 
-  public static ContaToCreateContaVariavelDto(Conta: ReadConta): CreateContaVariavelDto {
+  public static ContaToCreateContaVariavelDto(Conta: Conta): CreateContaVariavelDto {
     let conta: CreateContaVariavelDto = {
       Descricao: Conta.Descricao,
       DiaVencimento: Conta.DiaVencimento,
@@ -115,7 +115,7 @@ export class ContaMapper {
     return conta;
   }
 
-  private static CalcularValorMedio(Conta: ReadConta) {
+  private static CalcularValorMedio(Conta: Conta) {
     let totalPagamentos = Conta.Pagamentos.reduce((acc, cur) => acc + cur.ValorInteiro, 0) + Conta.Pagamentos.reduce((acc, cur) => acc + cur.ValorCentavos, 0) / 100;
     let mediaPagamentos = totalPagamentos / Conta.Pagamentos.length;
     Conta.ValorInteiro = Math.trunc(mediaPagamentos);
@@ -124,7 +124,7 @@ export class ContaMapper {
     if (Number.isNaN(Conta.ValorCentavos)) Conta.ValorCentavos = 0;
   }
 
-  private static PreecherStatusConta(Conta: ReadConta) {
+  private static PreecherStatusConta(Conta: Conta) {
     if (Conta.Pagamentos.length > 0) {
       Conta.UltimoPagamento = Conta.Pagamentos
       .sort((a, b) => new Date(b.DataPagamento != undefined ? b.DataPagamento : 0).getTime() - new Date(a.DataPagamento != undefined ? a.DataPagamento : 0).getTime())[0].DataPagamento;

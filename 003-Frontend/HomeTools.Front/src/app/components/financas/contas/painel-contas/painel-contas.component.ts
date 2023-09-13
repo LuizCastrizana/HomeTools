@@ -2,7 +2,7 @@ import { FeedbackService } from '../../../../services/feedback.service';
 import { RespostaApi } from '../../../../dto/respostaApi';
 import { DadosPaginador } from '../../../../interfaces/paginacao/dadosPaginador';
 import { Component, OnInit } from '@angular/core';
-import { ReadConta } from 'src/app/interfaces/financas/Conta';
+import { Conta } from 'src/app/interfaces/financas/Conta';
 import { DadosPaginados } from '../../../../interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ContaService } from 'src/app/services/Financas/conta.service';
@@ -30,9 +30,9 @@ export class PainelContasComponent implements OnInit {
     TotalItens: 0,
   };
 
-  DadosPaginados: DadosPaginados<ReadConta> = { } as DadosPaginados<ReadConta>;
-  ContaAcao: ReadConta = { } as ReadConta;
-  Contas: ReadConta[] = [];
+  DadosPaginados: DadosPaginados<Conta> = { } as DadosPaginados<Conta>;
+  ContaAcao: Conta = { } as Conta;
+  Contas: Conta[] = [];
 
   constructor(
     private contaService: ContaService,
@@ -288,7 +288,7 @@ export class PainelContasComponent implements OnInit {
     this.DadosPaginados.ItensPorPagina = this.DadosPaginador.ItensPorPagina;
     this.DadosPaginados.TotalItens = this.DadosPaginador.TotalItens;
 
-    let itensPagina: ItemPagina<ReadConta>[] = [];
+    let itensPagina: ItemPagina<Conta>[] = [];
     let pagina = 1;
     this.Contas.forEach(item => {
       itensPagina.push({  Pagina: pagina, Item: item });
@@ -300,12 +300,12 @@ export class PainelContasComponent implements OnInit {
     this.DadosPaginados.Itens = itensPagina.filter(item => item.Pagina == this.DadosPaginados.Pagina).map(item => item.Item);
   }
 
-  exibirModalExcluir(Conta: ReadConta) {
+  exibirModalExcluir(Conta: Conta) {
     this.ContaAcao = Conta;
     document.getElementById('modalExcluir')!.style.display = 'block';
   }
 
-  exibirModalIncluirPagamento(Conta: ReadConta) {
+  exibirModalIncluirPagamento(Conta: Conta) {
     this.ContaAcao = Conta;
     document.getElementById('modalIncluirPagamento')!.style.display = 'block';
   }

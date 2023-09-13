@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StatusContaEnum } from 'src/app/enums/statusContaEnum';
 import { TipoContaEnum } from 'src/app/enums/tipoContaEnum';
 import { RespostaApi } from 'src/app/dto/respostaApi';
-import { ReadConta } from 'src/app/interfaces/financas/Conta';
+import { Conta } from 'src/app/interfaces/financas/Conta';
 import { ContaMapper } from 'src/app/mappers/financas/ContaMapper';
 import { ContaVariavelService } from 'src/app/services/Financas/conta-variavel.service';
 import { ContaService } from 'src/app/services/Financas/conta.service';
@@ -20,7 +20,7 @@ import { RespostaApiService } from 'src/app/services/resposta-api.service';
 })
 export class EditarContaComponent implements OnInit {
 
-  Conta: ReadConta = {
+  Conta: Conta = {
     Id: 0,
     Descricao: '',
     ValorInteiro: 0,

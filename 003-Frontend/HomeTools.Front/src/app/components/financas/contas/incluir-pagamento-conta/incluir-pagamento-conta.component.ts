@@ -5,7 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CreatePagamentoContaDto } from 'src/app/dto/financas/contas/createPagamentoContaDto';
 import { CreatePagamentoContaVariavelDto } from 'src/app/dto/financas/contas/createPagamentoContaVariavelDto';
 import { DadosFeedbackAlerta } from 'src/app/interfaces/dadosFeedbackAlerta';
-import { ReadConta } from 'src/app/interfaces/financas/Conta';
+import { Conta } from 'src/app/interfaces/financas/Conta';
 import { PagamentoContaVariavelService } from 'src/app/services/Financas/pagamento-conta-variavel.service';
 import { PagamentoContaService } from 'src/app/services/Financas/pagamento-conta.service';
 import { FeedbackService } from 'src/app/services/feedback.service';
@@ -20,7 +20,7 @@ import { RespostaApiService } from 'src/app/services/resposta-api.service';
 })
 export class IncluirPagamentoContaComponent implements OnInit {
 
-  @Input() Conta: ReadConta = {} as ReadConta;
+  @Input() Conta: Conta = {} as Conta;
   PagamentoConta: CreatePagamentoContaDto = {} as CreatePagamentoContaDto;
   PagamentoContaVariavel: CreatePagamentoContaVariavelDto = {} as CreatePagamentoContaVariavelDto;
 

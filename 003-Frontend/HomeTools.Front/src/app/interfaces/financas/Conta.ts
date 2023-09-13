@@ -1,7 +1,7 @@
 import { Categoria } from "../categoria";
 import { PagamentoConta } from "./PagamentoConta";
 
-export interface ReadConta {
+export interface Conta {
   Id: number;
   Descricao: string;
   ValorInteiro: number;

@@ -1,0 +1,15 @@
+.div-tabela{
+  border: 0;
+  min-width: min-content;
+}
+#thAcoes {
+  min-width: 80px;
+}
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.acoes-item {
+  padding: 0 2px 0 2px;
+}
