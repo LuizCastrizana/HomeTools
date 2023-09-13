@@ -29,13 +29,13 @@ export class DespesaService {
     return this.http.get<RespostaApi<ReadDespesaDto>>(url)
   }
 
-  incluir (CreateContaDto: CreateDespesaDto): Observable<RespostaApi<ReadDespesaDto>> {
-    return this.http.post<RespostaApi<ReadDespesaDto>>(this.API, CreateContaDto)
+  incluir (CreateDespesaDto: CreateDespesaDto): Observable<RespostaApi<ReadDespesaDto>> {
+    return this.http.post<RespostaApi<ReadDespesaDto>>(this.API, CreateDespesaDto)
   }
 
-  atualizar (id: string, UpdateContaDto: UpdateDespesaDto): Observable<RespostaApi<ReadDespesaDto>> {
+  atualizar (id: string, UpdateDespesaDto: UpdateDespesaDto): Observable<RespostaApi<ReadDespesaDto>> {
     const url = `${this.API}/${id}`
-    return this.http.put<RespostaApi<ReadDespesaDto>>(url, UpdateContaDto)
+    return this.http.put<RespostaApi<ReadDespesaDto>>(url, UpdateDespesaDto)
   }
 
   excluir (id: string): Observable<RespostaApi<ReadDespesaDto>> {

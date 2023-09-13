@@ -18,13 +18,13 @@ import { IncluirContaComponent } from './components/financas/contas/incluir-cont
 import { EditarContaComponent } from './components/financas/contas/editar-conta/editar-conta.component';
 import { ExcluirContaComponent } from './components/financas/contas/excluir-conta/excluir-conta.component';
 import { FeedbackAlertaComponent } from './components/feedback-alerta/feedback-alerta.component';
+import { IncluirPagamentoContaComponent } from './components/financas/contas/incluir-pagamento-conta/incluir-pagamento-conta.component';
 import { IncluirDespesaComponent } from './components/financas/despesas/incluir-despesa/incluir-despesa.component';
 import { EditarDespesaComponent } from './components/financas/despesas/editar-despesa/editar-despesa.component';
 import { ExcluirDespesaComponent } from './components/financas/despesas/excluir-despesa/excluir-despesa.component';
 
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
-import { IncluirPagamentoContaComponent } from './components/financas/contas/incluir-pagamento-conta/incluir-pagamento-conta.component';
 registerLocaleData(localePT);
 
 @NgModule({

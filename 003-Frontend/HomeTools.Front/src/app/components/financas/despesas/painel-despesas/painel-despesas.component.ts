@@ -120,6 +120,24 @@ export class PainelDespesasComponent implements OnInit {
           this.Despesas.sort((a, b) => b.ValorInteiro - a.ValorInteiro);
         }
         break;
+      case 'Data':
+        this.NomeCampo = 'Data';
+        if (this.Ordem == 'asc') {
+          this.Despesas.sort((a, b) => new Date(a.DataDespesa).getTime() - new Date(b.DataDespesa).getTime());
+        } else {
+          this.Ordem = 'desc';
+          this.Despesas.sort((a, b) => new Date(b.DataDespesa).getTime() - new Date(a.DataDespesa).getTime());
+        }
+        break;
+      case 'Parcelas':
+        this.NomeCampo = 'Parcelas';
+        if (this.Ordem == 'asc') {
+          this.Despesas.sort((a, b) => a.QtdParcelas - b.QtdParcelas);
+        } else {
+          this.Ordem = 'desc';
+          this.Despesas.sort((a, b) => b.QtdParcelas - a.QtdParcelas);
+        }
+        break;
       default:
         this.NomeCampo = '';
         this.Despesas.sort((a, b) => b.Id - a.Id);
@@ -136,10 +154,14 @@ export class PainelDespesasComponent implements OnInit {
     let imgDescricao = document.getElementById('imgDescricao');
     let imgCategoria = document.getElementById('imgCategoria');
     let imgValor = document.getElementById('imgValor');
+    let imgData = document.getElementById('imgData');
+    let imgParcelas = document.getElementById('imgParcelas');
 
     imgDescricao!.innerHTML = '';
     imgCategoria!.innerHTML = '';
     imgValor!.innerHTML = '';
+    imgData!.innerHTML = '';
+    imgParcelas!.innerHTML = '';
 
     switch (this.NomeCampo) {
       case 'Descricao':
@@ -162,6 +184,20 @@ export class PainelDespesasComponent implements OnInit {
         }
         else {
           imgValor!.innerHTML = imgDesc;
+        }
+        break;
+      case 'Data':
+        if (this.Ordem == 'asc') {
+          imgData!.innerHTML = imgAsc;
+        } else {
+          imgData!.innerHTML = imgDesc;
+        }
+        break;
+      case 'Parcelas':
+        if (this.Ordem == 'asc') {
+          imgParcelas!.innerHTML = imgAsc;
+        } else {
+          imgParcelas!.innerHTML = imgDesc;
         }
         break;
       default:

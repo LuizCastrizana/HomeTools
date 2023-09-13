@@ -14,11 +14,11 @@
       </div>
       <div class="col-4">
         <div class="form-group">
-          <label for="txtData">Data</label>
-          <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
-          (focusout)="campoObrigatorio('txtData')"
+          <label for="txtDataDespesa">Data</label>
+          <input type="date" class="form-control" id="txtDataDespesa" placeholder="Data" name="Data"
+          (focusout)="campoObrigatorio('txtDataDespesa')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Despesa.DataDespesa">
-          <label class="form-validation" id="erro_txtData"></label>
+          <label class="form-validation" id="erro_txtDataDespesa"></label>
         </div>
       </div>
       <div class="col-4">

@@ -54,6 +54,12 @@
             <span class="img-ordenacao" id="imgData"></span>
           </div>
         </th>
+        <th (click)="ordenarDespesas('Parcelas')" id="thParcelas" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Qtd. Parcelas</span>
+            <span class="img-ordenacao" id="imgParcelas"></span>
+          </div>
+        </th>
       </tr>
       <tr *ngFor="let Despesa of DadosPaginados.Itens">
         <td class="center">
@@ -74,6 +80,7 @@
         <td>{{Despesa.Categoria!.Descricao}}</td>
         <td class="right">{{Despesa.ValorInteiro!.toFixed()}},{{Despesa.ValorCentavos!.toFixed()}}</td>
         <td class="center">{{Despesa.DataDespesa  | date : 'shortDate'}}</td>
+        <td class="center">{{Despesa.QtdParcelas}}</td>
     </table>
   </div>
   <div class="paginador">

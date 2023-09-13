@@ -42,7 +42,6 @@ export class EditarContaComponent implements OnInit {
     private categoriaService: CategoriaService,
     private validacaoService: ValidacaoService,
     private respostaApiService: RespostaApiService,
-    private feedbackService: FeedbackService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }

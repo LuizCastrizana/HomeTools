@@ -1,5 +1,4 @@
 import { DespesaService } from 'src/app/services/Financas/despesa.service';
-import { Despesa } from './../../../../interfaces/financas/Despesa';
 import { Component, OnInit } from '@angular/core';
 import { CategoriaService } from 'src/app/services/categoria.service';
 import { ValidacaoService } from 'src/app/services/validacao.service';

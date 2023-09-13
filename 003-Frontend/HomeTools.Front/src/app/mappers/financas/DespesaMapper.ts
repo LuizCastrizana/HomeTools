@@ -1,5 +1,6 @@
 import { Despesa } from 'src/app/interfaces/financas/Despesa';
 import { ReadDespesaDto } from './../../dto/financas/despesas/readDespesaDto';
+import { UpdateDespesaDto } from './../../dto/financas/despesas/updateDespesaDto';
 import { Injectable } from "@angular/core";
 
 @Injectable({
@@ -21,6 +22,18 @@ export class DespesaMapper {
       Categoria: ReadDespesaDto.Categoria,
     }
     return Despesa;
+  }
+
+  ReadDtoToUpdateDto(ReadDespesaDto: ReadDespesaDto): UpdateDespesaDto {
+    let UpdateDespesaDto: UpdateDespesaDto = {
+      Descricao: ReadDespesaDto.Descricao,
+      ValorInteiro: ReadDespesaDto.ValorInteiro,
+      ValorCentavos: ReadDespesaDto.ValorCentavos,
+      DataDespesa: ReadDespesaDto.DataDespesa,
+      QtdParcelas: ReadDespesaDto.QtdParcelas,
+      CategoriaId: ReadDespesaDto.Categoria.Id,
+    }
+    return UpdateDespesaDto;
   }
 
 }
