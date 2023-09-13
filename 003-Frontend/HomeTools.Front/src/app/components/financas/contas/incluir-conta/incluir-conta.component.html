@@ -1,12 +1,12 @@
 <div class="container main ff-verdana">
   <div class="titulo-pagina ff-verdana">
-    <h1>Inlcuir Conta</h1>
+    <h1>Incluir Conta</h1>
   </div>
   <form (ngSubmit)="salvarConta()" class="form conteudo-pagina">
     <div class="row">
       <div class="col-4">
         <div class="form-group">
-          <label for="descricao">Descrição</label>
+          <label for="txtDescricao">Descrição</label>
           <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
           (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Conta.Descricao">
           <label class="form-validation" id="erro_txtDescricao"></label>
@@ -14,7 +14,7 @@
       </div>
       <div class="col-2">
         <div class="form-group">
-          <label for="diaVencimento">Dia venc.:</label>
+          <label for="txtDiaVencimento">Dia venc.</label>
           <input type="text" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento"
           (focusout)="campoObrigatorio('txtDiaVencimento')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.DiaVencimento">
@@ -23,7 +23,7 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="tipoCconta">Tipo</label>
+          <label for="selTipoContaId">Tipo</label>
           <select name="tipoConta" id="selTipoContaId" class="form-control" name="TipoContaId"
           (change)="selecionaTipoConta()" (focusout)="campoObrigatorio('selTipoContaId')" [(ngModel)]="TipoContaId">
             <option value="0">Selecione...</option>
@@ -35,10 +35,10 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="CategoriaId">Categoria</label>
+          <label for="selCategoriaId">Categoria</label>
           <select name="CategoriaId" id="selCategoriaId" class="form-control" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="Conta.CategoriaId">
             <option value="0">Selecione...</option>
-            <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao }}</option>
+            <option *ngFor="let categoria of Categorias" [value]="categoria.Id">{{ categoria.Descricao }}</option>
           </select>
           <label class="form-validation" id="erro_selCategoriaId"></label>
         </div>
@@ -47,7 +47,7 @@
     <div class="row" id="divValor">
       <div class="col-3">
         <div class="form-group">
-          <label for="descricao">Valor inteiro</label>
+          <label for="txtValorInteiro">Valor inteiro</label>
           <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
           (focusout)="campoObrigatorio('txtValorInteiro')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorInteiro">
@@ -56,7 +56,7 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="descricao">Valor centavos</label>
+          <label for="txtValorCentavos">Valor centavos</label>
           <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
           (focusout)="campoObrigatorio('txtValorCentavos')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorCentavos">
@@ -67,8 +67,8 @@
     <div class="row">
       <div class="col-12">
         <div class="form-group">
-          <button type="submit" id="btnSumbit" class="btn">Salvar</button>
-          <button type="button" id="btnCancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
+          <button type="submit" id="btnSumbit" title="Salvar" class="btn">Salvar</button>
+          <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
         </div>
       </div>
   </div>

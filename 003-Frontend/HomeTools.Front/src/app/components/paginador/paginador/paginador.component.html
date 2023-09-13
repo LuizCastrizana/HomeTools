@@ -1,6 +1,6 @@
 <div class="paginador-component">
   <span>
-    <button class="btn btn-anterior" id="btnAnterior" (click)="goToPreviousPage()">
+    <button class="btn btn-anterior" id="btnAnterior" title="Página anterior" (click)="goToPreviousPage()">
       <img src="../../../../assets/img/arrow-left-icon.png">
     </button>
   </span>
@@ -16,7 +16,7 @@
     (keydown.return)="goToPage()"
   >
   <span>
-    <button class="btn btn-proximo" id="btnProximo" (click)="goToNextPage()">
+    <button class="btn btn-proximo" id="btnProximo" title="Próxima página" (click)="goToNextPage()">
       <img src="../../../../assets/img/arrow-right-icon.png">
     </button>
   </span>

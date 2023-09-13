@@ -20,7 +20,7 @@ export class IncluirContaComponent implements OnInit {
   Conta: CreateContaDto = {} as CreateContaDto;
 
   TipoContaId: number = 0;
-  Categorias: RespostaApi<Categoria[]> = {} as RespostaApi<Categoria[]>;
+  Categorias: Categoria[] = {} as Categoria[];
 
   constructor(
     private contaService: ContaService,
@@ -35,7 +35,7 @@ export class IncluirContaComponent implements OnInit {
     this.Conta.CategoriaId = 0;
     this.categoriaService.listar().subscribe({
       next: (result) => {
-        this.Categorias = result;
+        this.Categorias = result.valor;
       },
       error: (err) => {
         this.respostaApiService.tratarRespostaApi(err);
@@ -45,7 +45,7 @@ export class IncluirContaComponent implements OnInit {
   }
 
   selecionaTipoConta() {
-    let tipoConta = (<HTMLInputElement>document.getElementById('selTipoConta'))
+    let tipoConta = (<HTMLInputElement>document.getElementById('selTipoContaId'))
       .value;
     if (tipoConta == TipoContaEnum.Fixa.toLocaleString()) {
       document.getElementById('divValor')!.style.display = 'flex';
@@ -90,6 +90,8 @@ export class IncluirContaComponent implements OnInit {
     this.router.navigate(['/contas']);
   }
 
+  //#region Validações
+
   validarCamposObrigatorios(variavel: boolean): boolean {
     let erros: number = 0;
     let camposObrigatorios = ['txtDescricao', 'txtDiaVencimento', 'selCategoriaId', 'selTipoContaId'];
@@ -132,4 +134,6 @@ export class IncluirContaComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  //#endregion
 }

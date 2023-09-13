@@ -8,13 +8,13 @@
         <div class="row">
           <div class="col-6">
             <div class="form-group">
-              <label for="descricao">Conta</label>
+              <label for="txtConta">Conta</label>
               <input type="text" class="form-control" id="txtConta" name="Conta" [(ngModel)]="Conta.Descricao" disabled>
             </div>
           </div>
           <div class="col-6" id="divData">
             <div class="form-group">
-              <label for="descricao">Data do pagamento</label>
+              <label for="txtData">Data do pagamento</label>
               <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
               (focusout)="campoObrigatorio('txtData')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="DataPagamento">
@@ -25,7 +25,7 @@
         <div class="row">
           <div class="col-6">
             <div class="form-group">
-              <label for="descricao">Mês referência</label>
+              <label for="selMes">Mês referência</label>
               <select class="form-control" id="selMes" name="Mes" [(ngModel)]="MesReferencia">
                 <option value="1">Janeiro</option>
                 <option value="2">Fevereiro</option>
@@ -44,7 +44,7 @@
           </div>
           <div class="col-6">
             <div class="form-group">
-              <label for="descricao">Ano referência</label>
+              <label for="txtAno">Ano referência</label>
               <input type="text" class="form-control" id="txtAno" placeholder="Ano" name="Ano"
               (focusout)="campoObrigatorio('txtAno')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="AnoReferencia">
@@ -55,7 +55,7 @@
         <div class="row" id="divValores">
           <div class="col-6">
             <div class="form-group">
-              <label for="descricao">Valor inteiro</label>
+              <label for="txtValorInteiro">Valor inteiro</label>
               <input *ngIf="Conta.Variavel" type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
               (focusout)="campoObrigatorio('txtValorInteiro')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="PagamentoContaVariavel.ValorInteiro">
@@ -65,7 +65,7 @@
           </div>
           <div class="col-6">
             <div class="form-group">
-              <label for="descricao">Valor centavos</label>
+              <label for="txtValorCentavos">Valor centavos</label>
               <input *ngIf="Conta.Variavel" type="text" class="form-control" id="txtValorCentavos" placeholder="Valor" name="ValorCentavos"
               (focusout)="campoObrigatorio('txtValorCentavos')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="PagamentoContaVariavel.ValorCentavos">
@@ -77,9 +77,9 @@
       </div>
     </div>
     <div class="acoes-modal">
-      <button class="btn" id="btnCofirmar" (click)="incluirPagamento()">Incluir</button>
+      <button class="btn" id="btnCofirmar" title="Confirmar" (click)="incluirPagamento()">Incluir</button>
       &nbsp;
-      <button class="btn btn-red" id="btnCancelar" (click)="cancelar()">Cancelar</button>
+      <button class="btn btn-red" id="btnCancelar" title="Cancelar" (click)="cancelar()">Cancelar</button>
     </div>
   </div>
   <div class="overlay"></div>

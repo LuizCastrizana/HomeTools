@@ -1,1 +1,73 @@
-<p>incluir-despesa works!</p>
+<div class="container main ff-verdana">
+  <div class="titulo-pagina ff-verdana">
+    <h1>Incluir Despesa</h1>
+  </div>
+  <form (ngSubmit)="salvarDespesa()" class="form conteudo-pagina">
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="descricao">Descrição</label>
+          <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
+          (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Despesa.Descricao">
+          <label class="form-validation" id="erro_txtDescricao"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="txtData">Data</label>
+          <input type="date" class="form-control" id="txtData" placeholder="Data" name="Data"
+          (focusout)="campoObrigatorio('txtData')"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Despesa.DataDespesa">
+          <label class="form-validation" id="erro_txtData"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="selCategoriaId">Categoria</label>
+          <select name="CategoriaId" id="selCategoriaId" class="form-control" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="Despesa.CategoriaId">
+            <option value="0">Selecione...</option>
+            <option *ngFor="let categoria of Categorias" [value]="categoria.Id">{{ categoria.Descricao }}</option>
+          </select>
+          <label class="form-validation" id="erro_selCategoriaId"></label>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="divValor">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="txtValorInteiro">Valor inteiro</label>
+          <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+          (focusout)="campoObrigatorio('txtValorInteiro')"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Despesa.ValorInteiro">
+          <label class="form-validation" id="erro_txtValorInteiro"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="txtValorCentavos">Valor centavos</label>
+          <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
+          (focusout)="campoObrigatorio('txtValorCentavos')"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Despesa.ValorCentavos">
+          <label class="form-validation" id="erro_txtValorCentavos"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="txtQtdParcelas">Qtd. Parcelas</label>
+          <input type="number" min="1" step="1" class="form-control" id="txtQtdParcelas" placeholder="Qtd. Parcelas" name="Parcelas"
+          (focusout)="campoObrigatorio('txtQtdParcelas')"
+          (keypress)="apenasNumerosPositivos($event)" (paste)="apenasNumerosPositivos($event)" [(ngModel)]="Despesa.QtdParcelas">
+          <label class="form-validation" id="erro_txtQtdParcelas"></label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <button type="submit" id="btnSumbit" title="Salvar" class="btn">Salvar</button>
+          <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+  </div>
+</form>
+

@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-4">
         <div class="form-group">
-          <label for="descricao">Descrição</label>
+          <label for="txtDescricao">Descrição</label>
           <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
           (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Conta.Descricao">
           <label class="form-validation" id="erro_txtDescricao"></label>
@@ -14,7 +14,7 @@
       </div>
       <div class="col-2">
         <div class="form-group">
-          <label for="diaVencimento">Dia venc.:</label>
+          <label for="txtDiaVencimento">Dia venc.:</label>
           <input type="text" class="form-control" id="txtDiaVencimento" placeholder="Dia vencimento" name="DiaVencimento"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)"
           (focusout)="campoObrigatorio('txtDiaVencimento')" [(ngModel)]="Conta.DiaVencimento">
@@ -23,14 +23,14 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="tipoCconta">Tipo</label>
-          <input *ngIf="Conta.Variavel" type="text" class="form-control" value="Variável" readonly>
+          <label for="txtTipoContaId">Tipo</label>
+          <input *ngIf="Conta.Variavel" type="text" class="form-control" value="Variável" readonly id="txtTipoContaId">
           <input *ngIf="!Conta.Variavel" type="text" class="form-control" value="Fixa" readonly>
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="CategoriaId">Categoria</label>
+          <label for="selCategoriaId">Categoria</label>
           <select id="selCategoriaId" class="form-control" name="CategoriaId" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="Conta.Categoria.Id">
             <option value="">Selecione...</option>
             <option *ngFor="let categoria of Categorias.valor" [value]="categoria.Id">{{ categoria.Descricao }}</option>
@@ -42,7 +42,7 @@
     <div class="row" id="divValor">
       <div class="col-3">
         <div class="form-group">
-          <label for="descricao">Valor inteiro</label>
+          <label for="txtValorInteiro">Valor inteiro</label>
           <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
           (focusout)="campoObrigatorio('txtValorInteiro')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorInteiro">
@@ -51,7 +51,7 @@
       </div>
       <div class="col-3">
         <div class="form-group">
-          <label for="descricao">Valor centavos</label>
+          <label for="txtValorCentavos">Valor centavos</label>
           <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
           (focusout)="campoObrigatorio('txtValorCentavos')"
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Conta.ValorCentavos">
@@ -62,8 +62,8 @@
     <div class="row">
       <div class="col-12">
         <div class="form-group">
-          <button type="submit" id="btnSubmit" class="btn">Salvar</button>
-          <button type="button" id="btnCancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
+          <button type="submit" id="btnSubmit" title="Salvar" class="btn">Salvar</button>
+          <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
         </div>
       </div>
   </div>
