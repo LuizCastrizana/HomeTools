@@ -1,6 +1,13 @@
 .div-tabela{
-  border: 0;
-  min-width: min-content;
+  display: flex;
+  padding-bottom: 0.5rem;
+  overflow-y: auto;
+}
+.div-tabela .table {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
 }
 #thAcoes {
   min-width: 80px;

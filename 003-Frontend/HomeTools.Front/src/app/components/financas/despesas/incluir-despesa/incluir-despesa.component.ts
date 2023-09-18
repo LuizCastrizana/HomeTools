@@ -27,6 +27,7 @@ export class IncluirDespesaComponent implements OnInit {
 
   ngOnInit(): void {
     this.Despesa.CategoriaId = 0;
+    this.Despesa.QtdParcelas = 1;
     this.categoriaService.listar().subscribe({
       next: (result) => {
         this.Categorias = result.valor;
