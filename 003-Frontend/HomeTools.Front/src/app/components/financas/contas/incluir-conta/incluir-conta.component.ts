@@ -129,11 +129,5 @@ export class IncluirContaComponent implements OnInit {
     }
   }
 
-  diaMes(event: any) {
-    if (!this.validacaoService.diaMes(event)) {
-      event.preventDefault();
-    }
-  }
-
   //#endregion
 }

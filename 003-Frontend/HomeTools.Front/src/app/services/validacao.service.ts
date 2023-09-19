@@ -25,11 +25,4 @@ export class ValidacaoService {
       return true;
   }
 
-  diaMes(val: string): boolean {
-    const pattern = /[0-9]*/;
-    if(pattern.test(val) && parseInt(val) <= 31 && parseInt(val) > 0) {
-      return true;
-    }
-    return false;
-  }
 }

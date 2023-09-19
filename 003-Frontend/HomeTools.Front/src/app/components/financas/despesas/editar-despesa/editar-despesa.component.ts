@@ -119,11 +119,5 @@ export class EditarDespesaComponent implements OnInit {
     }
   }
 
-  diaMes(event: any) {
-    if (!this.validacaoService.diaMes(event)) {
-      event.preventDefault();
-    }
-  }
-
   //#endregion
 }

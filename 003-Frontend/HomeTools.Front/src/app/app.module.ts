@@ -25,6 +25,10 @@ import { ExcluirDespesaComponent } from './components/financas/despesas/excluir-
 
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
+import { PainelCartoesComponent } from './components/financas/cartoes/painel-cartoes/painel-cartoes.component';
+import { IncluirCartaoComponent } from './components/financas/cartoes/incluir-cartao/incluir-cartao.component';
+import { EditarCartaoComponent } from './components/financas/cartoes/editar-cartao/editar-cartao.component';
+import { ExcluirCartaoComponent } from './components/financas/cartoes/excluir-cartao/excluir-cartao.component';
 registerLocaleData(localePT);
 
 @NgModule({
@@ -46,6 +50,10 @@ registerLocaleData(localePT);
     IncluirDespesaComponent,
     EditarDespesaComponent,
     ExcluirDespesaComponent,
+    PainelCartoesComponent,
+    IncluirCartaoComponent,
+    EditarCartaoComponent,
+    ExcluirCartaoComponent,
   ],
   imports: [
     BrowserModule,

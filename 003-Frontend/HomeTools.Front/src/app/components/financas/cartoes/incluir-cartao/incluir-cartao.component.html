@@ -1,0 +1,43 @@
+<div class="container main ff-verdana">
+  <div class="titulo-pagina ff-verdana">
+    <h1>Incluir Cartão</h1>
+  </div>
+  <form (ngSubmit)="salvarCartao()" class="form conteudo-pagina">
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" class="form-control" id="txtNome" name="Nome" placeholder="Nome"
+          (focusout)="campoObrigatorio('txtNome')" [(ngModel)]="Cartao.Nome">
+          <label class="form-validation" id="erro_txtNome"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="nome">Dia vencimento</label>
+          <input type="text" class="form-control" id="txtDiaVencimento" name="DiaVencimento" placeholder="Dia vencimento"
+          (focusout)="campoObrigatorio('txtDiaVencimento')"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Cartao.DiaVencimento">
+          <label class="form-validation" id="erro_txtDiaVencimento"></label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+          <label for="nome">Dia fechamento</label>
+          <input type="text" class="form-control" id="txtDiaFechamento" name="DiaFechamento" placeholder="Dia fechamento"
+          (focusout)="campoObrigatorio('txtDiaFechamento')"
+          (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Cartao.DiaFechamento">
+          <label class="form-validation" id="erro_txtDiaFechamento"></label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <button type="submit" id="btnSumbit" title="Salvar" class="btn">Salvar</button>
+          <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

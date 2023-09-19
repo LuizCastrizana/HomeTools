@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.listaItens.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
 }

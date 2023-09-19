@@ -171,10 +171,4 @@ export class EditarContaComponent implements OnInit {
     }
   }
 
-  diaMes(event: any) {
-    if (!this.validacaoService.diaMes(event)) {
-      event.preventDefault();
-    }
-  }
-
 }

@@ -99,11 +99,5 @@ export class IncluirDespesaComponent implements OnInit {
     }
   }
 
-  diaMes(event: any) {
-    if (!this.validacaoService.diaMes(event)) {
-      event.preventDefault();
-    }
-  }
-
   //#endregion
 }

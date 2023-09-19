@@ -19,11 +19,17 @@ export class MenuFinancasComponent implements OnInit {
       link: 'despesas',
       icone: 'despesa-icon.png'
     },
+    {
+      nome: 'Cartões',
+      link: 'cartoes',
+      icone: 'cartoes-icon.png'
+    },
   ];
 
   constructor() { }
 
   ngOnInit(): void {
+    this.listaItens.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
 }

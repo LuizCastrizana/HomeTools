@@ -1,0 +1,92 @@
+<div class="container main">
+  <div class="titulo-pagina ff-verdana">
+    <h1>Cartões</h1>
+  </div>
+  <div class="menu-painel conteudo-pagina">
+    <div class="row">
+      <div class="col col-flexible">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Buscar" name="Busca" id="txtBusca" (keydown.enter)="buscarCartoes()" (keydown.return)="buscarCartoes()">
+          <span>
+            <button title="Buscar" id="btnBuscar" class="btn" (click)="buscarCartoes()">
+              <img src="../../../../assets/img/lupa-icon.png">
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col col-flexible">
+        <button title="Novo Cartão" id="btnNovoCartao" class="btn" routerLink="incluir-cartao">
+          <img src="../../../../assets/img/plus-icon.png">
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="conteudo-pagina div-tabela">
+    <table class="table ff-verdana">
+      <tr>
+        <th (click)="ordenarCartoes('Acoes')" id="thAcoes" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Ações</span>
+            <span class="img-ordenacao" id="imgAcoes"></span>
+          </div>
+        </th>
+        <th (click)="ordenarCartoes('Nome')" id="thNome" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Nome</span>
+            <span class="img-ordenacao" id="imgNome"></span>
+          </div>
+        </th>
+        <th (click)="ordenarCartoes('DiaVencimento')" id="thDiaVencimento" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Dia Vencimento</span>
+            <span class="img-ordenacao" id="imgDiaVencimento"></span>
+          </div>
+        </th>
+        <th (click)="ordenarCartoes('DiaFechamento')" id="thDiaFechamento" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Dia Fechamento</span>
+            <span class="img-ordenacao" id="imgDiaFechamento"></span>
+          </div>
+        </th>
+      </tr>
+      <tr *ngFor="let cartao of DadosPaginados.Itens">
+        <td class="center">
+          <div class="acoes">
+            <span class="acoes-item">
+              <button title="Editar" id="btnEditar{{cartao.Id}}" class="btn btn-sm" routerLink="editar-cartao/{{cartao.Id}}">
+                <img src="../../../../assets/img/pencil-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Compras" id="btnCompras{{cartao.Id}}" class="btn btn-sm" routerLink="compras-cartao/{{cartao.Id}}">
+                <img src="../../../../assets/img/cifrao-icon-2.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Assinaturas" id="btnAssinaturas{{cartao.Id}}" class="btn btn-sm" routerLink="assinaturas-cartao/{{cartao.Id}}">
+                <img src="../../../../assets/img/assinaturas-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Faturas" id="btnFaturas{{cartao.Id}}" class="btn btn-sm" routerLink="faturas-cartao/{{cartao.Id}}">
+                <img src="../../../../assets/img/fatura-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button title="Excluir" id="btnExcluir{{cartao.Id}}" class="btn btn-sm" (click)="exibirModalExcluir(cartao)">
+                <img src="../../../../assets/img/lixeira-icon.png">
+              </button>
+            </span>
+          </div>
+        </td>
+        <td>{{cartao.Nome}}</td>
+        <td class="center">{{cartao.DiaVencimento}}</td>
+        <td class="center">{{cartao.DiaFechamento}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="paginador">
+    <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
+  </div>
+</div>
+<app-excluir-cartao [Cartao]="CartaoAcao"></app-excluir-cartao>
