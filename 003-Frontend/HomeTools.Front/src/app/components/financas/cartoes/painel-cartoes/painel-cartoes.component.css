@@ -12,6 +12,9 @@
 #thAcoes {
   min-width: 80px;
 }
+#thNome {
+  min-width: 100px;
+}
 .acoes {
   display: flex;
   justify-content: center;

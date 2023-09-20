@@ -114,10 +114,10 @@ export class PainelDespesasComponent implements OnInit {
       case 'Valor':
         this.NomeCampo = 'Valor';
         if (this.Ordem == 'asc') {
-          this.Despesas.sort((a, b) => a.ValorInteiro - b.ValorInteiro);
+          this.Despesas.sort((a, b) => a.ValorInteiro - b.ValorInteiro && a.ValorCentavos - b.ValorCentavos);
         } else {
           this.Ordem = 'desc';
-          this.Despesas.sort((a, b) => b.ValorInteiro - a.ValorInteiro);
+          this.Despesas.sort((a, b) => b.ValorInteiro - a.ValorInteiro && b.ValorCentavos - a.ValorCentavos);
         }
         break;
       case 'Data':

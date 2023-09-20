@@ -1,6 +1,6 @@
+import { Cartao } from 'src/app/interfaces/financas/Cartao';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { CreateCartaoDto } from 'src/app/dto/financas/cartoes/createCartaoDto';
 import { CartaoMapper } from 'src/app/mappers/financas/CartaoMapper';
 import { CartaoService } from 'src/app/services/Financas/cartao/cartao.service';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';
@@ -13,7 +13,7 @@ import { ValidacaoService } from 'src/app/services/validacao.service';
 })
 export class EditarCartaoComponent implements OnInit {
 
-  Cartao: CreateCartaoDto = {} as CreateCartaoDto;
+  Cartao: Cartao = {} as Cartao;
   Id: string | null = "";
 
   constructor(
@@ -28,7 +28,7 @@ export class EditarCartaoComponent implements OnInit {
     this.Id = this.ActivatedRoute.snapshot.paramMap.get('id');
     this.cartaoService.buscarPorId(this.Id!).subscribe({
       next: (respostaApi) => {
-      this.Cartao = CartaoMapper.ReadDtoToCreateDto(respostaApi.valor);
+      this.Cartao = CartaoMapper.CartaoDtoToCartao(respostaApi.valor);
       },
       error: (err) => {
         this.respostaApiService.tratarRespostaApi(err);
@@ -41,7 +41,8 @@ export class EditarCartaoComponent implements OnInit {
     if (!this.validarCamposObrigatorios(true)) {
       return;
     }
-    this.cartaoService.atualizar(this.Id!, this.Cartao).subscribe({
+    let CreateCartaoDto = CartaoMapper.CartaoToCreateCartaoDto(this.Cartao);
+    this.cartaoService.atualizar(this.Id!, CreateCartaoDto).subscribe({
       next: (result) => {
         this.respostaApiService.tratarRespostaApi(result);
         this.router.navigate(['/cartoes']);

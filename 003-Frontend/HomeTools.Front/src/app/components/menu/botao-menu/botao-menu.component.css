@@ -29,7 +29,7 @@
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .botao {
     padding: 1rem;
     margin: 0 auto;
@@ -43,4 +43,4 @@
   .texto-botao {
     font-size: 0.8em;
   }
-}
+} */

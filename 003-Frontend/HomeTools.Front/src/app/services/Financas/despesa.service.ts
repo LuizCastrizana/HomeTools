@@ -5,6 +5,7 @@ import { CreateDespesaDto } from 'src/app/dto/financas/despesas/createDespesaDto
 import { UpdateDespesaDto } from 'src/app/dto/financas/despesas/updateDespesaDto';
 import { ReadDespesaDto } from 'src/app/dto/financas/despesas/readDespesaDto';
 import { RespostaApi } from 'src/app/dto/respostaApi';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DespesaService {
 
   constructor(private http: HttpClient) { }
 
-  private readonly API = "https://localhost:7012/api/Despesa";
+  private readonly API = environment.laPlataApiAdress + "/api/Despesa";
 
   listar(): Observable<RespostaApi<ReadDespesaDto[]>> {
     return this.http.get<RespostaApi<ReadDespesaDto[]>>(this.API);

@@ -29,6 +29,7 @@ import { PainelCartoesComponent } from './components/financas/cartoes/painel-car
 import { IncluirCartaoComponent } from './components/financas/cartoes/incluir-cartao/incluir-cartao.component';
 import { EditarCartaoComponent } from './components/financas/cartoes/editar-cartao/editar-cartao.component';
 import { ExcluirCartaoComponent } from './components/financas/cartoes/excluir-cartao/excluir-cartao.component';
+import { AssinaturasComponent } from './components/financas/cartoes/assinaturas/assinaturas.component';
 registerLocaleData(localePT);
 
 @NgModule({
@@ -54,6 +55,7 @@ registerLocaleData(localePT);
     IncluirCartaoComponent,
     EditarCartaoComponent,
     ExcluirCartaoComponent,
+    AssinaturasComponent,
   ],
   imports: [
     BrowserModule,

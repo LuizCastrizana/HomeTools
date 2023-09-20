@@ -2,7 +2,7 @@
   <div class="titulo-pagina ff-verdana">
     <h1>Editar Cartão</h1>
   </div>
-  <form (ngSubmit)="salvarCartao()" class="form conteudo-pagina">
+  <form (ngSubmit)="salvarCartao()" class="form conteudo-pagina" (keydown.enter)="$event.preventDefault()">
     <div class="row">
       <div class="col-4">
         <div class="form-group">
@@ -29,6 +29,12 @@
           (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Cartao.DiaFechamento">
           <label class="form-validation" id="erro_txtDiaFechamento"></label>
         </div>
+      </div>
+    </div>
+    <div class="container-assinaturas">
+      <label>Assinaturas</label>
+      <div class="detalhe-cartao">
+        <app-assinaturas [(Cartao)]="Cartao"></app-assinaturas>
       </div>
     </div>
     <div class="row">

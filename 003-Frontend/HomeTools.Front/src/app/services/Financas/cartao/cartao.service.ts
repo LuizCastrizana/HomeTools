@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CreateCartaoDto } from 'src/app/dto/financas/cartoes/createCartaoDto';
 import { ReadCartaoDto } from 'src/app/dto/financas/cartoes/readCartaoDto';
 import { RespostaApi } from 'src/app/dto/respostaApi';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CartaoService {
 
   constructor(private http: HttpClient) { }
 
-  private readonly API = "https://localhost:7012/api/Cartao";
+  private readonly API = environment.laPlataApiAdress + "/api/Cartao";
 
   listar(): Observable<RespostaApi<ReadCartaoDto[]>> {
     return this.http.get<RespostaApi<ReadCartaoDto[]>>(this.API);

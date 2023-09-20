@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReadContaVariavelDto } from 'src/app/dto/financas/contas/readContaVariavelDto';
 import { RespostaApi } from 'src/app/dto/respostaApi';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ContaVariavelService {
 
   constructor(private http: HttpClient) { }
 
-  private readonly API = "https://localhost:7012/api/ContaVariavel";
+  private readonly API = environment.laPlataApiAdress + "/api/ContaVariavel";
 
   listar(): Observable<RespostaApi<ReadContaVariavelDto[]>> {
     return this.http.get<RespostaApi<ReadContaVariavelDto[]>>(this.API);

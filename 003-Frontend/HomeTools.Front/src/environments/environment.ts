@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  laPlataApiAdress: 'https://w9jfc6j1-7012.brs.devtunnels.ms'
+  // laPlataApiAdress: 'https://localhost:7012'
 };
 
 /*

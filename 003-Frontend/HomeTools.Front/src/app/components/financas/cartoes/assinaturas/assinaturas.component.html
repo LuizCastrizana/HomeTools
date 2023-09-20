@@ -1,0 +1,79 @@
+<div class="assinaturas">
+  <div class="menu-painel conteudo-pagina">
+      <div class="menu">
+        <div class="busca">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar" name="Busca" id="txtBusca"
+              (keydown.enter)="buscarAssinaturas()" (keydown.return)="buscarAssinaturas()">
+            <span>
+              <button type="button" title="Buscar" id="btnBuscar" class="btn" (click)="buscarAssinaturas()">
+                <img src="../../../../assets/img/lupa-icon.png">
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="btn-novo">
+          <button type="button" title="Nova Assinatura" id="btnNovaAssinatura" class="btn" routerLink="incluir-assinatura">
+            <img src="../../../../assets/img/plus-icon.png">
+          </button>
+        </div>
+      </div>
+      <div class="titulo">
+        Assinaturas
+      </div>
+  </div>
+  <div class="conteudo-pagina div-tabela">
+    <table class="table ff-verdana">
+      <tr>
+        <th (click)="ordenarAssinaturas('Acoes')" id="thAcoes" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Ações</span>
+            <span class="img-ordenacao" id="imgAcoes"></span>
+          </div>
+        </th>
+        <th (click)="ordenarAssinaturas('Descricao')" id="thDescricao" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Descricao</span>
+            <span class="img-ordenacao" id="imgDescricao"></span>
+          </div>
+        </th>
+        <th (click)="ordenarAssinaturas('DiaVencimento')" id="thDiaVencimento" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Dia Vencimento</span>
+            <span class="img-ordenacao" id="imgDiaVencimento"></span>
+          </div>
+        </th>
+        <th (click)="ordenarAssinaturas('Valor')" id="thValor" class="campo-ordenacao">
+          <div class="titulo-tabela">
+            <span class="nome-campo">Valor</span>
+            <span class="img-ordenacao" id="imgValor"></span>
+          </div>
+        </th>
+      </tr>
+      <tr *ngFor="let assinatura of DadosPaginados.Itens">
+        <td class="center">
+          <div class="acoes">
+            <span class="acoes-item">
+              <button type="button" title="Editar" id="btnEditar{{assinatura.Id}}" class="btn btn-sm"
+                routerLink="editar-assinatura/{{assinatura.Id}}">
+                <img src="../../../../assets/img/pencil-icon.png">
+              </button>
+            </span>
+            <span class="acoes-item">
+              <button type="button" title="Excluir" id="btnExcluir{{assinatura.Id}}" class="btn btn-sm"
+                (click)="exibirModalExcluir(assinatura)">
+                <img src="../../../../assets/img/lixeira-icon.png">
+              </button>
+            </span>
+          </div>
+        </td>
+        <td>{{assinatura.Descricao}}</td>
+        <td class="center">{{assinatura.DiaVencimento}}</td>
+        <td class="center">{{assinatura.ValorInteiro!.toFixed()}},{{assinatura.ValorCentavos!.toFixed()}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="paginador">
+    <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
+  </div>
+</div>
