@@ -5,6 +5,7 @@ using LaPlata.Domain.Interfaces;
 using LaPlata.Domain.Models;
 using System.Reflection;
 using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 namespace LaPlata.Domain.Services
 {
@@ -60,7 +61,24 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadAssinaturaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Cartao.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                retorno.Valor = _mapper.Map<List<ReadAssinaturaDTO>>(model);
+                retorno.Status = EnumStatusResposta.SUCESSO;
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                throw;
+            }
+        }
+
+        public RespostaServico<List<ReadAssinaturaDTO>> ObterAssinaturas(Expression<Func<Assinatura, bool>> predicate)
+        {
+            try
+            {
+                var retorno = new RespostaServico<List<ReadAssinaturaDTO>>();
+                var model = _context.Obter(predicate).ToList();
                 retorno.Valor = _mapper.Map<List<ReadAssinaturaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
