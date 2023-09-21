@@ -192,10 +192,6 @@ export class AssinaturasComponent implements OnInit {
     this.DadosPaginados.Itens = itensPagina.filter(itemPagina => itemPagina.Pagina == this.DadosPaginados.Pagina).map(itemPagina => itemPagina.Item);
   }
 
-  cancelar() {
-    document.getElementById('modalAssinaturas')!.style.display = 'none';
-  }
-
   exibirModalExcluir(AssinaturaAcao: Assinatura) {
     this.AssinaturaAcao = AssinaturaAcao
     document.getElementById('modalExcluirAssinatura')!.style.display = 'block';

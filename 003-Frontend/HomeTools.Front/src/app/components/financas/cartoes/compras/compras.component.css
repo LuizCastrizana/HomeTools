@@ -1,0 +1,51 @@
+.compras {
+  min-width: 580px;
+}
+.div-tabela{
+  display: flex;
+  padding-bottom: 0.5rem;
+  overflow-y: auto;
+}
+.div-tabela .table {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+#thAcoes {
+  min-width: 80px;
+}
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.acoes-item {
+  padding: 0 2px 0 2px;
+}
+.menu-painel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  width: 100%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.menu-painel .menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menu-painel .titulo {
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+.menu-painel .input-group {
+  max-width: 200px;
+}
+.btn-novo {
+  margin-left: 0.5rem;
+}

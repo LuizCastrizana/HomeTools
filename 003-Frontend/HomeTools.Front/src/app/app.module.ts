@@ -22,14 +22,15 @@ import { IncluirPagamentoContaComponent } from './components/financas/contas/inc
 import { IncluirDespesaComponent } from './components/financas/despesas/incluir-despesa/incluir-despesa.component';
 import { EditarDespesaComponent } from './components/financas/despesas/editar-despesa/editar-despesa.component';
 import { ExcluirDespesaComponent } from './components/financas/despesas/excluir-despesa/excluir-despesa.component';
-
-import { registerLocaleData } from '@angular/common';
-import localePT from '@angular/common/locales/pt';
 import { PainelCartoesComponent } from './components/financas/cartoes/painel-cartoes/painel-cartoes.component';
 import { IncluirCartaoComponent } from './components/financas/cartoes/incluir-cartao/incluir-cartao.component';
 import { EditarCartaoComponent } from './components/financas/cartoes/editar-cartao/editar-cartao.component';
 import { ExcluirCartaoComponent } from './components/financas/cartoes/excluir-cartao/excluir-cartao.component';
 import { AssinaturasComponent } from './components/financas/cartoes/assinaturas/assinaturas.component';
+import { ComprasComponent } from './components/financas/cartoes/compras/compras.component';
+
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
 registerLocaleData(localePT);
 
 @NgModule({
@@ -56,6 +57,7 @@ registerLocaleData(localePT);
     EditarCartaoComponent,
     ExcluirCartaoComponent,
     AssinaturasComponent,
+    ComprasComponent,
   ],
   imports: [
     BrowserModule,

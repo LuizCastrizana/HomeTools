@@ -17,6 +17,7 @@ export class CartaoMapper {
       DiaVencimento: ReadCartaoDto.DiaVencimento,
       DiaFechamento: ReadCartaoDto.DiaFechamento,
       Assinaturas: [],
+      Compras: [],
     }
     return cartao;
   }

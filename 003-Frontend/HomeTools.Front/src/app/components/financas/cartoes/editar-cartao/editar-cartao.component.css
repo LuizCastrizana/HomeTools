@@ -5,7 +5,8 @@
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.4);
   overflow-y: auto;
 }
-.container-assinaturas label {
+.container-assinaturas label,
+.container-compras label {
   margin-left: 1.375rem;
   font-size: 0.875rem;
 }
