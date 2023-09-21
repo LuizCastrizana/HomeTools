@@ -43,6 +43,19 @@ namespace LaPlata.API.Controllers.Cartoes
             }
         }
 
+        [HttpGet("ObterPorCartaoId/{id}")]
+        public IActionResult ObterPorCartaoId(int id)
+        {
+            try
+            {
+                return this.TratarRespostaServico(_service.ObterCompras(x => x.Cartao.Id == id));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
+            }
+        }
+
         [HttpGet]
         public IActionResult ObterCompras([FromQuery] string? busca)
         {

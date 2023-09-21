@@ -4,6 +4,7 @@ using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace LaPlata.Domain.Services
@@ -61,6 +62,23 @@ namespace LaPlata.Domain.Services
                 var retorno = new RespostaServico<List<ReadCompraDTO>>();
                 busca = busca ?? string.Empty;
                 var model = _context.Obter(x => x.Cartao.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+                retorno.Valor = _mapper.Map<List<ReadCompraDTO>>(model);
+                retorno.Status = EnumStatusResposta.SUCESSO;
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                throw;
+            }
+        }
+
+        public RespostaServico<List<ReadCompraDTO>> ObterCompras(Expression<Func<Compra, bool>> predicate)
+        {
+            try
+            {
+                var retorno = new RespostaServico<List<ReadCompraDTO>>();
+                var model = _context.Obter(predicate).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCompraDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
