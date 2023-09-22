@@ -10,10 +10,10 @@
         <div class="row">
           <div class="col-4">
             <div class="form-group">
-              <label for="descricao">Descrição</label>
-              <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
-              (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Compra.Descricao">
-              <label class="form-validation" id="erro_txtDescricao"></label>
+              <label for="txtDescricaoCompra">Descrição</label>
+              <input type="text" class="form-control" id="txtDescricaoCompra" placeholder="Descrição" name="Descricao"
+              (focusout)="campoObrigatorio('txtDescricaoCompra')" [(ngModel)]="Compra.Descricao">
+              <label class="form-validation" id="erro_txtDescricaoCompra"></label>
             </div>
           </div>
           <div class="col-4">
@@ -27,41 +27,41 @@
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="selCategoriaId">Categoria</label>
-              <select name="CategoriaId" id="selCategoriaId" class="form-control" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="CategoriaId">
+              <label for="selCategoriaIdCompra">Categoria</label>
+              <select name="CategoriaId" id="selCategoriaIdCompra" class="form-control" (focusout)="campoObrigatorio('selCategoriaIdCompra')" [(ngModel)]="CategoriaId">
                 <option value="0">Selecione...</option>
                 <option *ngFor="let categoria of Categorias" [value]="categoria.Id">{{ categoria.Descricao }}</option>
               </select>
-              <label class="form-validation" id="erro_selCategoriaId"></label>
+              <label class="form-validation" id="erro_selCategoriaIdCompra"></label>
             </div>
           </div>
         </div>
         <div class="row" id="divValor">
           <div class="col-4">
             <div class="form-group">
-              <label for="txtValorInteiro">Valor inteiro</label>
-              <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
-              (focusout)="campoObrigatorio('txtValorInteiro')"
+              <label for="txtValorInteiroCompra">Valor inteiro</label>
+              <input type="text" class="form-control" id="txtValorInteiroCompra" placeholder="Valor" name="ValorInteiro"
+              (focusout)="campoObrigatorio('txtValorInteiroCompra')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Compra.ValorInteiro">
-              <label class="form-validation" id="erro_txtValorInteiro"></label>
+              <label class="form-validation" id="erro_txtValorInteiroCompra"></label>
             </div>
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="txtValorCentavos">Valor centavos</label>
-              <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
-              (focusout)="campoObrigatorio('txtValorCentavos')"
+              <label for="txtValorCentavosCompra">Valor centavos</label>
+              <input type="text" class="form-control" id="txtValorCentavosCompra" placeholder="Valor Centavos" name="ValorCentavos"
+              (focusout)="campoObrigatorio('txtValorCentavosCompra')"
               (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Compra.ValorCentavos">
-              <label class="form-validation" id="erro_txtValorCentavos"></label>
+              <label class="form-validation" id="erro_txtValorCentavosCompra"></label>
             </div>
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="txtQtdParcelas">Qtd. Parcelas</label>
-              <input type="number" min="1" step="1" class="form-control" id="txtQtdParcelas" placeholder="Qtd. Parcelas" name="Parcelas"
-              (focusout)="campoObrigatorio('txtQtdParcelas')"
+              <label for="txtQtdParcelasCompra">Qtd. Parcelas</label>
+              <input type="number" min="1" step="1" class="form-control" id="txtQtdParcelasCompra" placeholder="Qtd. Parcelas" name="Parcelas"
+              (focusout)="campoObrigatorio('txtQtdParcelasCompra')"
               (keypress)="apenasNumerosPositivos($event)" (paste)="apenasNumerosPositivos($event)" [(ngModel)]="Compra.QtdParcelas">
-              <label class="form-validation" id="erro_txtQtdParcelas"></label>
+              <label class="form-validation" id="erro_txtQtdParcelasCompra"></label>
             </div>
           </div>
         </div>

@@ -7,13 +7,13 @@ import { RespostaApiService } from 'src/app/services/resposta-api.service';
 import { ValidacaoService } from 'src/app/services/validacao.service';
 
 @Component({
-  selector: 'app-modal-formulario',
+  selector: 'app-modal-formulario-compra',
   templateUrl: './modal-formulario.component.html',
   styleUrls: ['./modal-formulario.component.css'],
 })
-export class ModalFormularioComponent implements OnInit {
+export class ModalFormularioCompraComponent implements OnInit {
   @Input() Compra: Compra = {} as Compra;
-  @Input() Edicao: boolean | null = null;
+  @Input() Edicao: boolean = false;
   @Input() CartaoId: number = 0;
   @Output() CompraChange = new EventEmitter<Compra>();
   @Output() EventoEdicao = new EventEmitter<boolean>();
@@ -55,12 +55,14 @@ export class ModalFormularioComponent implements OnInit {
         Descricao: '',
       } as Categoria;
       this.Compra.CartaoId = this.CartaoId;
-      this.EventoEdicao.emit(this.Edicao == null ? false : this.Edicao);
+      this.EventoEdicao.emit(this.Edicao);
     }
   }
 
   fechar() {
-    document.getElementById('modalFormularioCompra')!.style.display = 'none';
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/cartoes/editar-cartao/' + this.CartaoId]);
+    });
   }
 
   //#region Validações
@@ -68,12 +70,12 @@ export class ModalFormularioComponent implements OnInit {
   validarCamposObrigatorios(): boolean {
     let erros: number = 0;
     let camposObrigatorios = [
-      'txtDescricao',
+      'txtDescricaoCompra',
       'txtDataCompra',
-      'txtValorInteiro',
-      'txtValorCentavos',
-      'txtQtdParcelas',
-      'selCategoriaId',
+      'txtValorInteiroCompra',
+      'txtValorCentavosCompra',
+      'txtQtdParcelasCompra',
+      'selCategoriaIdCompra',
     ];
     camposObrigatorios.forEach((campo) => {
       if (!this.campoObrigatorio(campo)) {

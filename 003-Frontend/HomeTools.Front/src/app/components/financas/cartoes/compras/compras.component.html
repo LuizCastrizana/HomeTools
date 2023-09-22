@@ -25,22 +25,22 @@
   <div class="conteudo-pagina div-tabela">
     <table class="table ff-verdana">
       <tr>
-        <th (click)="ordenarCompras('Acoes')" id="thAcoes" class="campo-ordenacao">
+        <th (click)="ordenarCompras('AcoesCompra')" id="thAcoesCompra" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Ações</span>
-            <span class="img-ordenacao" id="imgAcoes"></span>
+            <span class="img-ordenacao" id="imgAcoesCompra"></span>
           </div>
         </th>
-        <th (click)="ordenarCompras('Descricao')" id="thDescricao" class="campo-ordenacao">
+        <th (click)="ordenarCompras('DescricaoCompra')" id="thDescricaoCompra" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Descricao</span>
-            <span class="img-ordenacao" id="imgDescricao"></span>
+            <span class="img-ordenacao" id="imgDescricaoCompra"></span>
           </div>
         </th>
-        <th (click)="ordenarCompras('Categoria')" id="thCategoria" class="campo-ordenacao">
+        <th (click)="ordenarCompras('CategoriaCompra')" id="thCategoriaCompra" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Categoria</span>
-            <span class="img-ordenacao" id="imgCategoria"></span>
+            <span class="img-ordenacao" id="imgCategoriaCompra"></span>
           </div>
         </th>
         <th (click)="ordenarCompras('DataCompra')" id="thDataCompra" class="campo-ordenacao">
@@ -49,16 +49,16 @@
             <span class="img-ordenacao" id="imgDataCompra"></span>
           </div>
         </th>
-        <th (click)="ordenarCompras('Valor')" id="thValor" class="campo-ordenacao">
+        <th (click)="ordenarCompras('ValorCompra')" id="thValorCompra" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Valor</span>
-            <span class="img-ordenacao" id="imgValor"></span>
+            <span class="img-ordenacao" id="imgValorCompra"></span>
           </div>
         </th>
-        <th (click)="ordenarCompras('Parcelas')" id="thParcelas" class="campo-ordenacao">
+        <th (click)="ordenarCompras('ParcelasCompra')" id="thParcelasCompra" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Qtd. Parcelas</span>
-            <span class="img-ordenacao" id="imgParcelas"></span>
+            <span class="img-ordenacao" id="imgParcelasCompra"></span>
           </div>
         </th>
       </tr>
@@ -90,5 +90,5 @@
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>
-<app-modal-formulario [(Compra)]="CompraAcao!" [Edicao]="AcaoEditar" [CartaoId]="Cartao.Id" (EventoEdicao)="receiveMessageFormulario($event)"></app-modal-formulario>
+<app-modal-formulario-compra [(Compra)]="CompraAcao!" [Edicao]="AcaoEditar" [CartaoId]="Cartao.Id" (EventoEdicao)="receiveMessageFormulario($event)"></app-modal-formulario-compra>
 <app-modal-excluir [DadosModalExcluir]="DadosModalExcluir" (ExcluirRegistro)="receiveMessageExcluir($event)"></app-modal-excluir>

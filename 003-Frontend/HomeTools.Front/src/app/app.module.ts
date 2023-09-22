@@ -28,8 +28,9 @@ import { EditarCartaoComponent } from './components/financas/cartoes/editar-cart
 import { ExcluirCartaoComponent } from './components/financas/cartoes/excluir-cartao/excluir-cartao.component';
 import { AssinaturasComponent } from './components/financas/cartoes/assinaturas/assinaturas.component';
 import { ComprasComponent } from './components/financas/cartoes/compras/compras.component';
-import { ModalFormularioComponent } from './components/financas/cartoes/compras/modal-formulario/modal-formulario.component';
+import { ModalFormularioCompraComponent } from './components/financas/cartoes/compras/modal-formulario/modal-formulario.component';
 import { ModalExcluirComponent } from './components/modal-excluir/modal-excluir.component';
+import { ModalFormularioAssinaturaComponent } from './components/financas/cartoes/assinaturas/modal-formulario/modal-formulario.component';
 
 
 import { registerLocaleData } from '@angular/common';
@@ -61,8 +62,9 @@ registerLocaleData(localePT);
     ExcluirCartaoComponent,
     AssinaturasComponent,
     ComprasComponent,
-    ModalFormularioComponent,
+    ModalFormularioCompraComponent,
     ModalExcluirComponent,
+    ModalFormularioAssinaturaComponent
   ],
   imports: [
     BrowserModule,

@@ -106,8 +106,8 @@ export class ComprasComponent implements OnInit {
     }
 
     switch (nomeCampo) {
-      case 'Descricao':
-        this.NomeCampo = 'Descricao';
+      case 'DescricaoCompra':
+        this.NomeCampo = 'DescricaoCompra';
         if (this.Ordem == 'asc') {
           this.Cartao.Compras.sort((a, b) =>
             a.Descricao.localeCompare(b.Descricao, 'pt-BR')
@@ -119,8 +119,8 @@ export class ComprasComponent implements OnInit {
           );
         }
         break;
-      case 'Categoria':
-        this.NomeCampo = 'Categoria';
+      case 'CategoriaCompra':
+        this.NomeCampo = 'CategoriaCompra';
         if (this.Ordem == 'asc') {
           this.Cartao.Compras.sort((a, b) =>
             a.Categoria.Descricao.localeCompare(b.Categoria.Descricao, 'pt-BR')
@@ -149,8 +149,8 @@ export class ComprasComponent implements OnInit {
           );
         }
         break;
-      case 'Valor':
-        this.NomeCampo = 'Valor';
+      case 'ValorCompra':
+        this.NomeCampo = 'ValorCompra';
         if (this.Ordem == 'asc') {
           this.Cartao.Compras.sort(
             (a, b) =>
@@ -166,8 +166,8 @@ export class ComprasComponent implements OnInit {
           );
         }
         break;
-      case 'Parcelas':
-        this.NomeCampo = 'Parcelas';
+      case 'ParcelasCompra':
+        this.NomeCampo = 'ParcelasCompra';
         if (this.Ordem == 'asc') {
           this.Cartao.Compras.sort((a, b) => a.QtdParcelas - b.QtdParcelas);
         } else {
@@ -188,11 +188,11 @@ export class ComprasComponent implements OnInit {
   tratarIconeOrdenacao() {
     let imgAsc = '<img src="../../../../assets/img/asc.png" >';
     let imgDesc = '<img src="../../../../assets/img/desc.png" >';
-    let imgDescricao = document.getElementById('imgDescricao');
-    let imgCategoria = document.getElementById('imgCategoria');
+    let imgDescricao = document.getElementById('imgDescricaoCompra');
+    let imgCategoria = document.getElementById('imgCategoriaCompra');
     let imgDataCompra = document.getElementById('imgDataCompra');
-    let imgValor = document.getElementById('imgValor');
-    let imgParcelas = document.getElementById('imgParcelas');
+    let imgValor = document.getElementById('imgValorCompra');
+    let imgParcelas = document.getElementById('imgParcelasCompra');
 
     imgDescricao!.innerHTML = '';
     imgCategoria!.innerHTML = '';
@@ -201,14 +201,14 @@ export class ComprasComponent implements OnInit {
     imgParcelas!.innerHTML = '';
 
     switch (this.NomeCampo) {
-      case 'Descricao':
+      case 'DescricaoCompra':
         if (this.Ordem == 'asc') {
           imgDescricao!.innerHTML = imgAsc;
         } else {
           imgDescricao!.innerHTML = imgDesc;
         }
         break;
-      case 'Categoria':
+      case 'CategoriaCompra':
         if (this.Ordem == 'asc') {
           imgCategoria!.innerHTML = imgAsc;
         } else {
@@ -222,14 +222,14 @@ export class ComprasComponent implements OnInit {
           imgDataCompra!.innerHTML = imgDesc;
         }
         break;
-      case 'Valor':
+      case 'ValorCompra':
         if (this.Ordem == 'asc') {
           imgValor!.innerHTML = imgAsc;
         } else {
           imgValor!.innerHTML = imgDesc;
         }
         break;
-      case 'Parcelas':
+      case 'ParcelasCompra':
         if (this.Ordem == 'asc') {
           imgParcelas!.innerHTML = imgAsc;
         } else {

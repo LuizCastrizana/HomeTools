@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="btn-novo">
-          <button type="button" title="Nova Assinatura" id="btnNovaAssinatura" class="btn" routerLink="incluir-assinatura">
+          <button type="button" title="Nova Assinatura" id="btnNovaAssinatura" class="btn" (click)="exibirModalFormulario(false)">
             <img src="../../../../assets/img/plus-icon.png">
           </button>
         </div>
@@ -25,28 +25,28 @@
   <div class="conteudo-pagina div-tabela">
     <table class="table ff-verdana">
       <tr>
-        <th (click)="ordenarAssinaturas('Acoes')" id="thAcoes" class="campo-ordenacao">
+        <th (click)="ordenarAssinaturas('AcoesAssinatura')" id="thAcoesAssinatura" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Ações</span>
-            <span class="img-ordenacao" id="imgAcoes"></span>
+            <span class="img-ordenacao" id="imgAcoesAssinatura"></span>
           </div>
         </th>
-        <th (click)="ordenarAssinaturas('Descricao')" id="thDescricao" class="campo-ordenacao">
+        <th (click)="ordenarAssinaturas('DescricaoAssinatura')" id="thDescricaoAssinatura" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Descricao</span>
-            <span class="img-ordenacao" id="imgDescricao"></span>
+            <span class="img-ordenacao" id="imgDescricaoAssinatura"></span>
           </div>
         </th>
-        <th (click)="ordenarAssinaturas('DiaVencimento')" id="thDiaVencimento" class="campo-ordenacao">
+        <th (click)="ordenarAssinaturas('DiaVencimentoAssinatura')" id="thDiaVencimentoAssinatura" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Dia Vencimento</span>
-            <span class="img-ordenacao" id="imgDiaVencimento"></span>
+            <span class="img-ordenacao" id="imgDiaVencimentoAssinatura"></span>
           </div>
         </th>
-        <th (click)="ordenarAssinaturas('Valor')" id="thValor" class="campo-ordenacao">
+        <th (click)="ordenarAssinaturas('ValorAssinatura')" id="thValorAssinatura" class="campo-ordenacao">
           <div class="titulo-tabela">
             <span class="nome-campo">Valor</span>
-            <span class="img-ordenacao" id="imgValor"></span>
+            <span class="img-ordenacao" id="imgValorAssinatura"></span>
           </div>
         </th>
       </tr>
@@ -55,7 +55,7 @@
           <div class="acoes">
             <span class="acoes-item">
               <button type="button" title="Editar" id="btnEditar{{assinatura.Id}}" class="btn btn-sm"
-                routerLink="editar-assinatura/{{assinatura.Id}}">
+                (click)="exibirModalFormulario(true, assinatura)">
                 <img src="../../../../assets/img/pencil-icon.png">
               </button>
             </span>
@@ -77,3 +77,5 @@
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>
+<app-modal-formulario-assinatura [(Assinatura)]="AssinaturaAcao!" [Edicao]="AcaoEditar" [CartaoId]="Cartao.Id" (EventoEdicao)="receiveMessageFormulario($event)"></app-modal-formulario-assinatura>
+<app-modal-excluir [DadosModalExcluir]="DadosModalExcluir" (ExcluirRegistro)="receiveMessageExcluir($event)"></app-modal-excluir>

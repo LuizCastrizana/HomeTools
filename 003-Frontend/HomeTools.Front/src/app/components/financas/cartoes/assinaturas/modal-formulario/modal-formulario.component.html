@@ -1,0 +1,59 @@
+<section class="form-assinatura-modal ff-verdana" id="modalFormularioAssinatura">
+  <div class="modal">
+    <div class="cabecalho-modal">
+      <span *ngIf="Edicao" class="texto">Editar Assinatura</span>
+      <span *ngIf="!Edicao" class="texto">Incluir Assinatura</span>
+      <span class="btn-fechar" (click)="fechar()"><img src="../../../../assets/img/fechar-icon.png"></span>
+    </div>
+    <div class="conteudo-modal">
+      <form (ngSubmit)="salvarDados()" class="form form-assinatura">
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <label for="txtDescricaoAssinatura">Descrição</label>
+              <input type="text" class="form-control" id="txtDescricaoAssinatura" placeholder="Descrição" name="Descricao"
+              (focusout)="campoObrigatorio('txtDescricaoAssinatura')" [(ngModel)]="Assinatura.Descricao">
+              <label class="form-validation" id="erro_txtDescricaoAssinatura"></label>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label for="txtDiaVencimentoAssinatura">Dia Venc.</label>
+              <input type="number" min="1" step="1" class="form-control" id="txtDiaVencimentoAssinatura" placeholder="Dia Venc." name="Parcelas"
+              (focusout)="campoObrigatorio('txtDiaVencimentoAssinatura')"
+              (keypress)="apenasNumerosPositivos($event)" (paste)="apenasNumerosPositivos($event)" [(ngModel)]="Assinatura.DiaVencimento">
+              <label class="form-validation" id="erro_txtDiaVencimentoAssinatura"></label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="txtValorInteiroAssinatura">Valor inteiro</label>
+              <input type="text" class="form-control" id="txtValorInteiroAssinatura" placeholder="Valor" name="ValorInteiro"
+              (focusout)="campoObrigatorio('txtValorInteiroAssinatura')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Assinatura.ValorInteiro">
+              <label class="form-validation" id="erro_txtValorInteiroAssinatura"></label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="txtValorCentavosAssinatura">Valor centavos</label>
+              <input type="text" class="form-control" id="txtValorCentavosAssinatura" placeholder="Valor Centavos" name="ValorCentavos"
+              (focusout)="campoObrigatorio('txtValorCentavosAssinatura')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Assinatura.ValorCentavos">
+              <label class="form-validation" id="erro_txtValorCentavosAssinatura"></label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <button type="submit" id="btnSumbit" title="Salvar" class="btn">Salvar</button>
+              <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="fechar()">Cancelar</button>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <div class="overlay"></div>
+</section>

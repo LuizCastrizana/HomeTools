@@ -11,6 +11,7 @@ import { DadosPaginados } from 'src/app/interfaces/paginacao/dadosPaginados';
 import { ItemPagina } from 'src/app/interfaces/paginacao/itemPagina';
 import { ReadAssinaturaDto } from 'src/app/dto/financas/cartoes/readAssinaturaDto';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';
+import { DadosModalExcluir } from 'src/app/interfaces/dadosModalExcluir';
 
 @Component({
   selector: 'app-assinaturas',
@@ -21,7 +22,9 @@ export class AssinaturasComponent implements OnInit {
 
   @Input() Cartao = {} as Cartao;
   @Output() CartaoChange = new EventEmitter<Cartao>();
+  AcaoEditar: boolean = false;
   AssinaturaAcao: Assinatura = {} as Assinatura;
+  DadosModalExcluir: DadosModalExcluir = {} as DadosModalExcluir;
 
   Ordem: string = '';
   NomeCampo: string = '';
@@ -53,8 +56,8 @@ export class AssinaturasComponent implements OnInit {
   listarAssinaturas() {
     this.assinaturaService.buscarPorCartaoId(this.Cartao.Id.toString()).subscribe({
       next: (retornoDaApi) => {
+        this.Cartao.Assinaturas = [];
         retornoDaApi.valor.forEach((assinatura) => {
-          this.Cartao.Assinaturas = [];
           this.Cartao.Assinaturas.push(AssinaturaMapper.AssinaturaDtoToAssinatura(assinatura));
         });
         this.ordenarAssinaturas();
@@ -99,8 +102,8 @@ export class AssinaturasComponent implements OnInit {
     }
 
     switch (nomeCampo) {
-      case 'Descricao':
-        this.NomeCampo = 'Descricao';
+      case 'DescricaoAssinatura':
+        this.NomeCampo = 'DescricaoAssinatura';
         if (this.Ordem == 'asc') {
           this.Cartao.Assinaturas.sort((a, b) => a.Descricao.localeCompare(b.Descricao, 'pt-BR'));
         } else {
@@ -108,8 +111,8 @@ export class AssinaturasComponent implements OnInit {
           this.Cartao.Assinaturas.sort((a, b) => b.Descricao.localeCompare(a.Descricao, 'pt-BR'));
         }
         break;
-      case 'DiaVencimento':
-        this.NomeCampo = 'DiaVencimento';
+      case 'DiaVencimentoAssinatura':
+        this.NomeCampo = 'DiaVencimentoAssinatura';
         if (this.Ordem == 'asc') {
           this.Cartao.Assinaturas.sort((a, b) => a.DiaVencimento - b.DiaVencimento);
         } else {
@@ -117,8 +120,8 @@ export class AssinaturasComponent implements OnInit {
           this.Cartao.Assinaturas.sort((a, b) => b.DiaVencimento - a.DiaVencimento);
         }
         break;
-      case 'Valor':
-        this.NomeCampo = 'Valor';
+      case 'ValorAssinatura':
+        this.NomeCampo = 'ValorAssinatura';
         if (this.Ordem == 'asc') {
           this.Cartao.Assinaturas.sort((a, b) => a.ValorInteiro - b.ValorInteiro && a.ValorCentavos - b.ValorCentavos);
         } else {
@@ -139,30 +142,30 @@ export class AssinaturasComponent implements OnInit {
   tratarIconeOrdenacao() {
     let imgAsc = "<img src=\"../../../../assets/img/asc.png\" >";
     let imgDesc = "<img src=\"../../../../assets/img/desc.png\" >";
-    let imgDescricao = document.getElementById('imgDescricao');
-    let imgDiaVencimento = document.getElementById('imgDiaVencimento');
-    let imgValor = document.getElementById('imgValor');
+    let imgDescricao = document.getElementById('imgDescricaoAssinatura');
+    let imgDiaVencimento = document.getElementById('imgDiaVencimentoAssinatura');
+    let imgValor = document.getElementById('imgValorAssinatura');
 
     imgDescricao!.innerHTML = '';
     imgDiaVencimento!.innerHTML = '';
     imgValor!.innerHTML = '';
 
     switch (this.NomeCampo) {
-      case 'Descricao':
+      case 'DescricaoAssinatura':
         if (this.Ordem == 'asc') {
           imgDescricao!.innerHTML = imgAsc;
         } else {
           imgDescricao!.innerHTML = imgDesc;
         }
         break;
-      case 'DiaVencimento':
+      case 'DiaVencimentoAssinatura':
         if (this.Ordem == 'asc') {
           imgDiaVencimento!.innerHTML = imgAsc;
         } else {
           imgDiaVencimento!.innerHTML = imgDesc;
         }
         break;
-      case 'Valor':
+      case 'ValorAssinatura':
         if (this.Ordem == 'asc') {
           imgValor!.innerHTML = imgAsc;
         }
@@ -194,11 +197,71 @@ export class AssinaturasComponent implements OnInit {
 
   exibirModalExcluir(AssinaturaAcao: Assinatura) {
     this.AssinaturaAcao = AssinaturaAcao
-    document.getElementById('modalExcluirAssinatura')!.style.display = 'block';
+    this.DadosModalExcluir = {
+      IdRegistro: AssinaturaAcao.Id,
+      NomeRegistro: AssinaturaAcao.Descricao,
+    } as DadosModalExcluir;
+    document.getElementById('modalExcluir')!.style.display = 'block';
+  }
+
+  exibirModalFormulario(Edicao: boolean, AssinaturaAcao?: Assinatura) {
+    this.AssinaturaAcao = AssinaturaAcao != undefined ? AssinaturaAcao : ({} as Assinatura);
+    this.AcaoEditar = Edicao;
+    document.getElementById('modalFormularioAssinatura')!.style.display = 'block';
   }
 
   receiveMessage($event: DadosPaginador) {
     this.DadosPaginador = $event
     this.paginarAssinaturas();
+  }
+
+  receiveMessageExcluir($event: DadosModalExcluir) {
+    this.DadosModalExcluir = $event;
+    this.assinaturaService.excluir(this.DadosModalExcluir.IdRegistro.toString()).subscribe({
+      next: (retornoApi) => {
+        this.respostaApiService.tratarRespostaApi(retornoApi);
+        this.listarAssinaturas();
+        document.getElementById('modalExcluir')!.style.display = 'none';
+        window.scroll(0,0);
+      },
+      error: (err) => {
+        this.respostaApiService.tratarRespostaApi(err);
+        document.getElementById('modalExcluir')!.style.display = 'none';
+        window.scroll(0,0);
+      }
+    });
+  }
+
+  receiveMessageFormulario($eventEdicao: boolean) {
+    if ($eventEdicao) {
+      this.assinaturaService
+          .atualizar(
+            this.AssinaturaAcao!.Id.toString(),
+            AssinaturaMapper.AssinaturaToCreateAssinaturaDto(this.AssinaturaAcao!)
+          )
+          .subscribe({
+            next: (result) => {
+              this.respostaApiService.tratarRespostaApi(result);
+              this.listarAssinaturas();
+            },
+            error: (err) => {
+              this.respostaApiService.tratarRespostaApi(err);
+            }
+          });
+    } else {
+      this.assinaturaService
+          .incluir(AssinaturaMapper.AssinaturaToCreateAssinaturaDto(this.AssinaturaAcao!))
+          .subscribe({
+            next: (result) => {
+              this.respostaApiService.tratarRespostaApi(result);
+              this.listarAssinaturas();
+            },
+            error: (err) => {
+              this.respostaApiService.tratarRespostaApi(err);
+            }
+          });
+    }
+    document.getElementById('modalFormularioAssinatura')!.style.display = 'none';
+    window.scroll(0,0);
   }
 }
