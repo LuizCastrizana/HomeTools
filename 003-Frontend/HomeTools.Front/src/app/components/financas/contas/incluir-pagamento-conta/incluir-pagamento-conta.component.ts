@@ -113,6 +113,7 @@ export class IncluirPagamentoContaComponent implements OnInit {
   }
 
   cancelar() {
+    this.removerValidacao();
     document.getElementById('modalIncluirPagamento')!.style.display = 'none';
   }
 
@@ -135,6 +136,16 @@ export class IncluirPagamentoContaComponent implements OnInit {
       }
     });
     return erros == 0 ? true : false;
+  }
+
+  removerValidacao() {
+    let campos = ['txtData', 'txtAno', 'txtValorInteiro', 'txtValorCentavos'];
+    campos.forEach(campo => {
+      document.getElementById(campo)!.classList.remove('campo-obrigatorio');
+      let campoErro = document.getElementById('erro_' + campo)!;
+      campoErro.style.display = 'none';
+      campoErro.innerHTML = "";
+    });
   }
 
   campoObrigatorio(campoId: string): boolean {
