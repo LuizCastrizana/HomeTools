@@ -61,7 +61,7 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadCompraDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Cartao.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCompraDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
