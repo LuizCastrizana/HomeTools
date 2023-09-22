@@ -1,0 +1,80 @@
+<section class="form-compra-modal ff-verdana" id="modalFormularioCompra">
+  <div class="modal">
+    <div class="cabecalho-modal">
+      <span *ngIf="Edicao" class="texto">Editar Compra</span>
+      <span *ngIf="!Edicao" class="texto">Incluir Compra</span>
+      <span class="btn-fechar" (click)="fechar()"><img src="../../../../assets/img/fechar-icon.png"></span>
+    </div>
+    <div class="conteudo-modal">
+      <form (ngSubmit)="salvarDados()" class="form form-compra">
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <label for="descricao">Descrição</label>
+              <input type="text" class="form-control" id="txtDescricao" placeholder="Descrição" name="Descricao"
+              (focusout)="campoObrigatorio('txtDescricao')" [(ngModel)]="Compra.Descricao">
+              <label class="form-validation" id="erro_txtDescricao"></label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="txtDataCompra">Data</label>
+              <input type="date" class="form-control" id="txtDataCompra" placeholder="Data" name="Data"
+              (focusout)="campoObrigatorio('txtDataCompra')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [ngModel]="Compra.DataCompra | date: 'yyyy-MM-dd'" (ngModelChange)="Compra.DataCompra = $event">
+              <label class="form-validation" id="erro_txtDataCompra"></label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="selCategoriaId">Categoria</label>
+              <select name="CategoriaId" id="selCategoriaId" class="form-control" (focusout)="campoObrigatorio('selCategoriaId')" [(ngModel)]="CategoriaId">
+                <option value="0">Selecione...</option>
+                <option *ngFor="let categoria of Categorias" [value]="categoria.Id">{{ categoria.Descricao }}</option>
+              </select>
+              <label class="form-validation" id="erro_selCategoriaId"></label>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="divValor">
+          <div class="col-4">
+            <div class="form-group">
+              <label for="txtValorInteiro">Valor inteiro</label>
+              <input type="text" class="form-control" id="txtValorInteiro" placeholder="Valor" name="ValorInteiro"
+              (focusout)="campoObrigatorio('txtValorInteiro')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Compra.ValorInteiro">
+              <label class="form-validation" id="erro_txtValorInteiro"></label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="txtValorCentavos">Valor centavos</label>
+              <input type="text" class="form-control" id="txtValorCentavos" placeholder="Valor Centavos" name="ValorCentavos"
+              (focusout)="campoObrigatorio('txtValorCentavos')"
+              (keypress)="apenasNumeros($event)" (paste)="apenasNumeros($event)" [(ngModel)]="Compra.ValorCentavos">
+              <label class="form-validation" id="erro_txtValorCentavos"></label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label for="txtQtdParcelas">Qtd. Parcelas</label>
+              <input type="number" min="1" step="1" class="form-control" id="txtQtdParcelas" placeholder="Qtd. Parcelas" name="Parcelas"
+              (focusout)="campoObrigatorio('txtQtdParcelas')"
+              (keypress)="apenasNumerosPositivos($event)" (paste)="apenasNumerosPositivos($event)" [(ngModel)]="Compra.QtdParcelas">
+              <label class="form-validation" id="erro_txtQtdParcelas"></label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <button type="submit" id="btnSumbit" title="Salvar" class="btn">Salvar</button>
+              <button type="button" id="btnCancelar" title="Cancelar" class="btn btn-red" (click)="fechar()">Cancelar</button>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <div class="overlay"></div>
+</section>

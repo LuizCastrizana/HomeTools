@@ -1,7 +1,7 @@
 import { Compra } from './../../interfaces/financas/Compra';
 import { Injectable } from "@angular/core";
+import { CreateCompraDto } from 'src/app/dto/financas/cartoes/createCompraDto';
 import { ReadCompraDto } from "src/app/dto/financas/cartoes/readCompraDto";
-
 
 @Injectable({
   providedIn: "root",
@@ -23,5 +23,18 @@ export class CompraMapper {
       Categoria: ReadCompraDto.Categoria,
     }
     return compra;
+  }
+
+  public static CompraToCreateCompraDto(compra: Compra): CreateCompraDto {
+    let CreateCompraDto: CreateCompraDto = {
+      Descricao: compra.Descricao,
+      ValorInteiro: compra.ValorInteiro,
+      ValorCentavos: compra.ValorCentavos,
+      DataCompra: compra.DataCompra,
+      QtdParcelas: compra.QtdParcelas,
+      CartaoId: compra.CartaoId,
+      CategoriaId: compra.Categoria.Id,
+    }
+    return CreateCompraDto;
   }
 }

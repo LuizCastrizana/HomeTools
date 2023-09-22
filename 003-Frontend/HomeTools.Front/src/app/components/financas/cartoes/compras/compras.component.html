@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="btn-novo">
-          <button type="button" title="Nova Compra" id="btnNovaCompra" class="btn" routerLink="incluir-compra">
+          <button type="button" title="Nova Compra" id="btnNovaCompra" class="btn" (click)="exibirModalFormulario(false)">
             <img src="../../../../assets/img/plus-icon.png">
           </button>
         </div>
@@ -66,8 +66,7 @@
         <td class="center">
           <div class="acoes">
             <span class="acoes-item">
-              <button type="button" title="Editar" id="btnEditar{{compra.Id}}" class="btn btn-sm"
-                routerLink="editar-compra/{{compra.Id}}">
+              <button type="button" title="Editar" id="btnEditar{{compra.Id}}" class="btn btn-sm" (click)="exibirModalFormulario(true, compra)">
                 <img src="../../../../assets/img/pencil-icon.png">
               </button>
             </span>
@@ -91,3 +90,5 @@
     <app-paginador [DadosPaginador]="DadosPaginador" (messageEvent)="receiveMessage($event)"></app-paginador>
   </div>
 </div>
+<app-modal-formulario [(Compra)]="CompraAcao!" [Edicao]="AcaoEditar" [CartaoId]="Cartao.Id" (EventoEdicao)="receiveMessageFormulario($event)"></app-modal-formulario>
+<app-modal-excluir [DadosModalExcluir]="DadosModalExcluir" (ExcluirRegistro)="receiveMessageExcluir($event)"></app-modal-excluir>

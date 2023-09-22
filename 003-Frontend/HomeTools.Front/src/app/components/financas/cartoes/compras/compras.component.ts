@@ -1,3 +1,4 @@
+import { DadosModalExcluir } from './../../../../interfaces/dadosModalExcluir';
 import { DadosFeedbackAlerta } from 'src/app/interfaces/dadosFeedbackAlerta';
 import { CompraService } from './../../../../services/Financas/cartao/compra.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
@@ -11,6 +12,7 @@ import { FeedbackService } from 'src/app/services/feedback.service';
 import { RespostaApiService } from 'src/app/services/resposta-api.service';
 import { TipoAlertaEnum } from 'src/app/enums/tipoAlertaEnum';
 import { ReadCompraDto } from 'src/app/dto/financas/cartoes/readCompraDto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-compras',
@@ -20,7 +22,8 @@ import { ReadCompraDto } from 'src/app/dto/financas/cartoes/readCompraDto';
 export class ComprasComponent implements OnInit {
   @Input() Cartao = {} as Cartao;
   @Output() CartaoChange = new EventEmitter<Cartao>();
-  CompraAcao: Compra = {} as Compra;
+  CompraAcao?: Compra = {} as Compra;
+  AcaoEditar: boolean = false;
 
   Ordem: string = '';
   NomeCampo: string = '';
@@ -33,10 +36,13 @@ export class ComprasComponent implements OnInit {
 
   DadosPaginados: DadosPaginados<Compra> = {} as DadosPaginados<Compra>;
 
+  DadosModalExcluir: DadosModalExcluir = {} as DadosModalExcluir;
+
   constructor(
     private compraService: CompraService,
     private feedbackService: FeedbackService,
-    private respostaApiService: RespostaApiService
+    private respostaApiService: RespostaApiService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -52,8 +58,8 @@ export class ComprasComponent implements OnInit {
   listarCompras() {
     this.compraService.buscarPorCartaoId(this.Cartao.Id.toString()).subscribe({
       next: (retornoDaApi) => {
+        this.Cartao.Compras = [];
         retornoDaApi.valor.forEach((compra) => {
-          this.Cartao.Compras = [];
           this.Cartao.Compras.push(CompraMapper.CompraDtoToCompra(compra));
         });
         this.ordenarCompras();
@@ -254,13 +260,73 @@ export class ComprasComponent implements OnInit {
       .map((itemPagina) => itemPagina.Item);
   }
 
+  exibirModalFormulario(Edicao: boolean, CompraAcao?: Compra) {
+    this.CompraAcao = CompraAcao != undefined ? CompraAcao : ({} as Compra);
+    this.AcaoEditar = Edicao;
+    document.getElementById('modalFormularioCompra')!.style.display = 'block';
+  }
   exibirModalExcluir(CompraAcao: Compra) {
     this.CompraAcao = CompraAcao;
-    document.getElementById('modalExcluirCompra')!.style.display = 'block';
+    this.DadosModalExcluir = {
+      IdRegistro: CompraAcao.Id,
+      NomeRegistro: CompraAcao.Descricao,
+    };
+    document.getElementById('modalExcluir')!.style.display = 'block';
   }
 
   receiveMessage($event: DadosPaginador) {
     this.DadosPaginador = $event;
     this.paginarCompras();
   }
+
+  receiveMessageExcluir($event: DadosModalExcluir) {
+    this.DadosModalExcluir = $event;
+    this.compraService.excluir(this.DadosModalExcluir.IdRegistro.toString()).subscribe({
+      next: (retornoApi) => {
+        this.respostaApiService.tratarRespostaApi(retornoApi);
+        this.listarCompras();
+        document.getElementById('modalExcluir')!.style.display = 'none';
+        window.scroll(0,0);
+      },
+      error: (err) => {
+        this.respostaApiService.tratarRespostaApi(err);
+        document.getElementById('modalExcluir')!.style.display = 'none';
+        window.scroll(0,0);
+      }
+    });
+  }
+
+  receiveMessageFormulario($eventEdicao: boolean) {
+    if ($eventEdicao) {
+      this.compraService
+          .atualizar(
+            this.CompraAcao!.Id.toString(),
+            CompraMapper.CompraToCreateCompraDto(this.CompraAcao!)
+          )
+          .subscribe({
+            next: (result) => {
+              this.respostaApiService.tratarRespostaApi(result);
+              this.listarCompras();
+            },
+            error: (err) => {
+              this.respostaApiService.tratarRespostaApi(err);
+            }
+          });
+    } else {
+      this.compraService
+          .incluir(CompraMapper.CompraToCreateCompraDto(this.CompraAcao!))
+          .subscribe({
+            next: (result) => {
+              this.respostaApiService.tratarRespostaApi(result);
+              this.listarCompras();
+            },
+            error: (err) => {
+              this.respostaApiService.tratarRespostaApi(err);
+            }
+          });
+    }
+    document.getElementById('modalFormularioCompra')!.style.display = 'none';
+    window.scroll(0,0);
+  }
+
 }
