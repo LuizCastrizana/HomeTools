@@ -71,7 +71,7 @@ export class AssinaturasComponent implements OnInit {
   }
 
   buscarAssinaturas() {
-    let busca = (document.getElementById('txtBusca') as HTMLInputElement).value;
+    let busca = (document.getElementById('txtBuscaAssinaturas') as HTMLInputElement).value;
     this.Cartao.Assinaturas = [];
     this.assinaturaService.buscar(busca).subscribe({
       next: (respostaApi) => {

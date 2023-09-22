@@ -77,7 +77,7 @@ export class ComprasComponent implements OnInit {
   }
 
   buscarCompras() {
-    let busca = (document.getElementById('txtBusca') as HTMLInputElement).value;
+    let busca = (document.getElementById('txtBuscaCompra') as HTMLInputElement).value;
     this.Cartao.Compras = [];
     this.compraService.buscar(busca).subscribe({
       next: (respostaApi) => {
