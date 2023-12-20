@@ -8,6 +8,7 @@
         public int ValorCentavos { get; set; }
         public DateTime DataCompra { get; set; }
         public int QtdParcelas { get; set; }
+        public bool Paga { get; set; }
         public int CartaoId { get; set; }
         public ReadCategoriaDTO Categoria { get; set; }
     }

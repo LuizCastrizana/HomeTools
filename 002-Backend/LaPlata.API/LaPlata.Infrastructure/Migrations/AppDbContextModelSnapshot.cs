@@ -172,6 +172,9 @@ namespace LaPlata.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<bool?>("Paga")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<int>("QtdParcelas")
                         .HasColumnType("int");
 

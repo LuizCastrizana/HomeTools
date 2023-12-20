@@ -19,6 +19,8 @@ namespace LaPlata.Domain.DTOs
         [Range(0, int.MaxValue, ErrorMessage = "Valor inválido")]
         public int? QtdParcelas { get; set; }
 
+        public bool? Paga { get; set; }
+
         public int? CartaoId { get; set; }
         
         [Range(1, int.MaxValue, ErrorMessage = "Valor inválido")]

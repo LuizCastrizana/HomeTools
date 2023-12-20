@@ -16,6 +16,7 @@ namespace LaPlata.Domain.Models
         public DateTime DataCompra { get; set; }
         [Required]
         public int QtdParcelas { get; set; }
+        public bool? Paga { get; set; }
         public virtual Cartao Cartao { get; set; }
         [Required]
         public int CartaoId { get; set; }
