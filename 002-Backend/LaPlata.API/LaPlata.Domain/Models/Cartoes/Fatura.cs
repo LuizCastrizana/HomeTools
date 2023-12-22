@@ -20,6 +20,7 @@ namespace LaPlata.Domain.Models
         public decimal? TotalComprasParceladas { get; set; }
         public decimal? TotalCompras { get; set; }
         public decimal? TotalAssinaturas { get; set; }
+        public bool? Paga { get; set; }
         public virtual List<CompraFatura>? ComprasFatura { get; set; }
         public virtual List<AssinaturaFatura>? AssinaturasFatura { get; set; }
     }
