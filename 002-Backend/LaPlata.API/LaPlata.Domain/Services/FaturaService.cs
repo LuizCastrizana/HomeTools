@@ -69,9 +69,9 @@ namespace LaPlata.Domain.Services
                 if (resultadoValidacao.Valido)
                 {
                     // Obter fatura existente
-                    fatura = _context.Obter(x => x.CartaoId == fatura.CartaoId && x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
+                    var faturaExistente = _context.Obter(x => x.CartaoId == fatura.CartaoId && x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
 
-                    if (fatura == null)
+                    if (faturaExistente == null)
                     {
 
                         #region Incluir fatura
@@ -212,6 +212,7 @@ namespace LaPlata.Domain.Services
                         #endregion
 
                     }
+                    fatura = faturaExistente;
                     retorno.Valor = _mapper.Map<ReadFaturaDTO>(fatura);
                     retorno.Mensagem = "Fatura incluída com sucesso.";
                     retorno.Status = EnumStatusResposta.SUCESSO; 
@@ -227,17 +228,19 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
-                foreach (var item in comprasFatura)
+                if (fatura != null && fatura.Id > 0)
                 {
-                    _contextCompraFatura.Excluir(item, true);
-                }
-                foreach (var item in assinaturasFatura)
-                {
-                    _contextAssinaturaFatura.Excluir(item, true);
-                }
-                if (fatura.Id > 0)
+                    _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                    foreach (var item in comprasFatura)
+                    {
+                        _contextCompraFatura.Excluir(item, true);
+                    }
+                    foreach (var item in assinaturasFatura)
+                    {
+                        _contextAssinaturaFatura.Excluir(item, true);
+                    }
                     _context.Excluir(fatura, true);
+                }
                 throw;
             }
         }
