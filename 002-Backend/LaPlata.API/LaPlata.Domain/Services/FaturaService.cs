@@ -63,6 +63,18 @@ namespace LaPlata.Domain.Services
                     resultadoValidacao.Mensagens.Add("Cartão não encontrado");
                     resultadoValidacao.Valido = false;
                 }
+                // Validar mês
+                if (fatura.Mes < 1 || fatura.Mes > 12)
+                {
+                    resultadoValidacao.Mensagens.Add("Mês inválido");
+                    resultadoValidacao.Valido = false;
+                }
+                // Validar ano
+                if (fatura.Ano < 1920 || fatura.Ano > (DateTime.Now.Year + 5))
+                {
+                    resultadoValidacao.Mensagens.Add("Ano inválido");
+                    resultadoValidacao.Valido = false;
+                }
 
                 #endregion
 
@@ -88,7 +100,7 @@ namespace LaPlata.Domain.Services
                                 .AddDays(cartao.DiaVencimento == 31 ? cartao.DiaVencimento - 2 : cartao.DiaVencimento - 1);
 
                             if (_context.Adicionar(fatura) == 0)
-                                throw new Exception("Não foi possível incluir a fatura.");
+                                throw new Exception("Nenhum registro incluído no banco de dados.");
                         }
                         catch (Exception e)
                         {
@@ -104,16 +116,16 @@ namespace LaPlata.Domain.Services
                             // Obter compras da fatura
                             var compras = _contextCompra.Obter(x =>
                                 // Compras feitas no mesmo ano da fatura e antes do dia do fechamento
-                                ((x.DataCompra.Day <= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas - 1 >= fatura.Mes))
+                                ((x.DataCompra.Day < cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas - 1 >= fatura.Mes))
                                 ||
                                 // Compras feitas no mesmo ano da fatura e depois do dia do fechamento
-                                ((x.DataCompra.Day > cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas >= fatura.Mes))
+                                ((x.DataCompra.Day >= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas >= fatura.Mes))
                                 ||
                                 // Compras feitas no ano anterior a fatura e antes do dia do fechamento
-                                ((x.DataCompra.Day <= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((13 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas))
+                                ((x.DataCompra.Day < cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((13 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas))
                                 ||
                                 // Compras feitas no ano anterior a fatura e depois do dia do fechamento
-                                ((x.DataCompra.Day > cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((12 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas)))
+                                ((x.DataCompra.Day >= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((12 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas)))
                                 .ToList();
 
                             foreach (var item in compras)
@@ -333,6 +345,45 @@ namespace LaPlata.Domain.Services
                 _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
+        }
+
+        public RespostaServico<ReadFaturaDTO> PagarFatura(int id)
+        {
+            return new RespostaServico<ReadFaturaDTO>();
+        }
+
+        public RespostaServico<string> GerarFaturas()
+        {
+            var retorno = new RespostaServico<string>();
+            var contadorFaturas = 0;
+            try 
+            {
+                var cartoes = _contextCartao.Obter(x => x.Ativo && x.DiaFechamento == DateTime.Now.Day).ToList();
+                foreach (var cartao in cartoes)
+                {
+                    var faturas = _context.Obter(x => x.CartaoId == cartao.Id && x.Mes == DateTime.Now.Month && x.Ano == DateTime.Now.Year).ToList();
+                    if (faturas.Count == 0)
+                    {
+                        var fatura = new Fatura()
+                        {
+                            CartaoId = cartao.Id,
+                            Mes = DateTime.Now.Month,
+                            Ano = DateTime.Now.Year
+                        };
+                        IncluirFatura(_mapper.Map<CreateFaturaDTO>(fatura));
+                        contadorFaturas++;
+                    }
+                }
+                retorno.Status = EnumStatusResposta.SUCESSO;
+                retorno.Mensagem = "Faturas geradas com sucesso.";
+                retorno.Valor = "Qtd de faturas geradas: " + contadorFaturas.ToString();
+            }
+            catch (Exception ex)
+            {
+                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                throw;
+            }
+            return retorno;
         }
     }
 }
