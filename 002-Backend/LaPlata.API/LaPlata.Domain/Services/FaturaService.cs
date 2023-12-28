@@ -80,10 +80,13 @@ namespace LaPlata.Domain.Services
 
                 if (resultadoValidacao.Valido)
                 {
-                    // Obter fatura existente
                     var faturaExistente = _context.Obter(x => x.CartaoId == fatura.CartaoId && x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
 
-                    if (faturaExistente == null)
+                    if (faturaExistente != null)
+                    {
+                        fatura = faturaExistente;
+                    }
+                    else
                     {
 
                         #region Incluir fatura
@@ -224,7 +227,7 @@ namespace LaPlata.Domain.Services
                         #endregion
 
                     }
-                    fatura = faturaExistente;
+
                     retorno.Valor = _mapper.Map<ReadFaturaDTO>(fatura);
                     retorno.Mensagem = "Fatura incluída com sucesso.";
                     retorno.Status = EnumStatusResposta.SUCESSO; 
