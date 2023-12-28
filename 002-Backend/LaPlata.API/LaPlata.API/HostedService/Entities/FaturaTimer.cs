@@ -4,13 +4,14 @@ namespace LaPlata.API.HostedService.Entities
 {
     public class FaturaTimer
     {
-        IFaturaService _faturaService;
+        private readonly IFaturaService _faturaService;
+        private readonly int _intervalo;
         private Timer _timer;
-        private readonly int _intervalo = Convert.ToInt32(TimeSpan.FromHours(24));
 
         public FaturaTimer(IFaturaService faturaService)
         {
             _faturaService = faturaService;
+            _intervalo = Convert.ToInt32(TimeSpan.FromHours(24).TotalMilliseconds);
         }
         public void IniciarTimer()
         {
@@ -19,7 +20,7 @@ namespace LaPlata.API.HostedService.Entities
                 if (_timer != null)
                     _timer.Dispose();
 
-                var tempoEspera = Convert.ToInt32((DateTime.Today.AddDays(1).AddMinutes(2) - DateTime.Now).TotalMilliseconds);
+                var tempoEspera = Convert.ToInt32((DateTime.Today.AddDays(1).AddMinutes(5) - DateTime.Now).TotalMilliseconds);
                 _timer = new Timer(ExecutarTarefa, null, tempoEspera, _intervalo);
             }
             catch (Exception ex)

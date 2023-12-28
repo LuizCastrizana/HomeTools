@@ -1,4 +1,5 @@
 ﻿using LaPlata.API.HostedService.Entities;
+using LaPlata.Domain.Interfaces;
 
 namespace LaPlata.API.HostedService
 {
@@ -6,9 +7,9 @@ namespace LaPlata.API.HostedService
     {
         private readonly FaturaTimer _timer;
 
-        public GerarFaturasHostedService(FaturaTimer faturaTimer)
+        public GerarFaturasHostedService(IFaturaService service)
         {
-            _timer = faturaTimer;
+            _timer = new FaturaTimer(service);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
