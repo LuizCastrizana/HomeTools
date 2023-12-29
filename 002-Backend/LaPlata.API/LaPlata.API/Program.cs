@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddHostedService<GerarFaturasHostedService>();
+//builder.Services.AddHostedService<GerarFaturasHostedService>();
 builder.Services.AddCors();
 
 builder.Services.ConfigureServicesInjections()

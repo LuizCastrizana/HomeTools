@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaPlata.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230911123854_inluindo-mes-referencia-pagamento")]
-    partial class inluindomesreferenciapagamento
+    [Migration("20231228174634_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -174,6 +174,9 @@ namespace LaPlata.Infrastructure.Migrations
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool?>("Paga")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("QtdParcelas")
                         .HasColumnType("int");
@@ -363,6 +366,9 @@ namespace LaPlata.Infrastructure.Migrations
 
                     b.Property<int>("Mes")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("Paga")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<decimal?>("TotalAssinaturas")
                         .HasColumnType("decimal(18,2)");
