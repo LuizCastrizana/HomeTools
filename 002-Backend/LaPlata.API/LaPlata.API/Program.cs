@@ -1,5 +1,4 @@
 using LaPlata.API;
-using LaPlata.API.HostedService;
 using LaPlata.Domain.BackgroundServices;
 using LaPlata.Domain.Configuration;
 using LaPlata.Infrastructure.Configuration;
