@@ -1,5 +1,5 @@
 using LaPlata.API;
-using LaPlata.API.HostedService;
+using LaPlata.Domain.BackgroundServices;
 using LaPlata.Domain.Configuration;
 using LaPlata.Infrastructure.Configuration;
 
@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddHostedService<GerarFaturasHostedService>();
+builder.Services.AddHostedService<GerarFaturasBGService>();
 builder.Services.AddCors();
 
 builder.Services.ConfigureServicesInjections()
