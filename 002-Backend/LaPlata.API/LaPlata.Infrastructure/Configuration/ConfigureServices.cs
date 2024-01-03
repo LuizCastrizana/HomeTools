@@ -23,7 +23,7 @@ namespace LaPlata.Infrastructure.Configuration
             services.AddTransient<IContext<PagamentoContaVariavel>, PagamentoContaVariavelContext>();
             services.AddTransient<IContext<PagamentoConta>, PagamentoContaContext>();
             services.AddTransient<IContext<Categoria>, CategoriaContext>();
-            services.AddTransient<IContext<LogErro>, LogErroContext>();
+            services.AddTransient<IContext<Log>, LogContext>();
 
             return services;
         }

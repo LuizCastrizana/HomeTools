@@ -389,7 +389,7 @@ namespace LaPlata.Infrastructure.Migrations
                     b.ToTable("Faturas");
                 });
 
-            modelBuilder.Entity("LaPlata.Domain.Models.LogErro", b =>
+            modelBuilder.Entity("LaPlata.Domain.Models.Log", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

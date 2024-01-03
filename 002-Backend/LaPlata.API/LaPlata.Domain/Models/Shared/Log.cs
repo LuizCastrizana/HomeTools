@@ -2,7 +2,7 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class LogErro : AuditableModel
+    public class Log : AuditableModel
     {
         [Key]
         [Required]
@@ -15,7 +15,7 @@ namespace LaPlata.Domain.Models
         public string Mensagem { get; set; }
         public string? DtoJson { get; set; }
 
-        public LogErro()
+        public Log()
         {
             Id = 0;
             Servico = string.Empty;
@@ -23,7 +23,7 @@ namespace LaPlata.Domain.Models
             Mensagem = string.Empty;
         }
 
-        public LogErro(string servico, string metodo, string mensagem, string? dtojson = null)
+        public Log(string servico, string metodo, string mensagem, string? dtojson = null)
         {
             Servico = servico;
             Metodo = metodo;

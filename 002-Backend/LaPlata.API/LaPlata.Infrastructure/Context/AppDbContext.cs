@@ -108,7 +108,7 @@ namespace LaPlata.Infrastructure.Context
         public DbSet<PagamentoContaVariavel> PagamentosContaVariavel { get; set; }
 		public DbSet<PagamentoConta> PagamentosConta { get; set; }
 		public DbSet<Categoria> Categorias { get; set; }
-		public DbSet<LogErro> LogsErro { get; set; }
+		public DbSet<Log> Logs { get; set; }
 
         #endregion
 

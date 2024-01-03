@@ -18,7 +18,7 @@ namespace LaPlata.Domain.Services
         private readonly IContext<Cartao> _contextCartao;
         private readonly IContext<CompraFatura> _contextCompraFatura;
         private readonly IContext<AssinaturaFatura> _contextAssinaturaFatura;
-        private readonly IContext<LogErro> _contextLogErro;
+        private readonly IContext<Log> _contextLogErro;
         private readonly IMapper _mapper;
 
         public FaturaService(
@@ -28,7 +28,7 @@ namespace LaPlata.Domain.Services
             IContext<Cartao> contextCartao, 
             IContext<CompraFatura> contextCompraFatura, 
             IContext<AssinaturaFatura> contextAssinaturaFatura,
-            IContext<LogErro> contextLogErro,
+            IContext<Log> contextLogErro,
             IMapper mapper)
         {
             _context = context;
@@ -245,7 +245,7 @@ namespace LaPlata.Domain.Services
             {
                 if (fatura != null && fatura.Id > 0)
                 {
-                    _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                    _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                     foreach (var item in comprasFatura)
                     {
                         _contextCompraFatura.Excluir(item, true);
@@ -273,7 +273,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -298,7 +298,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -345,7 +345,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -383,7 +383,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new LogErro(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
             return retorno;
