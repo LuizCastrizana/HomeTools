@@ -1,7 +1,7 @@
-using LaPlata.API;
-using LaPlata.Domain.BackgroundServices;
+using LaPlata.API.Configuration;
 using LaPlata.Domain.Configuration;
 using LaPlata.Infrastructure.Configuration;
+using LaPlata.Domain.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

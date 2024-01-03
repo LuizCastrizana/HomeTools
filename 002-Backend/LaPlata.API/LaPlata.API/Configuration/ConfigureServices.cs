@@ -1,7 +1,7 @@
 ﻿using LaPlata.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LaPlata.API
+namespace LaPlata.API.Configuration
 {
     public static class ConfigureServices
     {
