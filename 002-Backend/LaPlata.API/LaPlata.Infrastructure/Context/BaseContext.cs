@@ -27,6 +27,11 @@ namespace LaPlata.Infrastructure.Context
             return _dbSet.Where(predicate).Where(x => x.Ativo);
         }
 
+        public async Task<List<T>> ObterAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).Where(x => x.Ativo).ToListAsync();
+        }
+
         public int Excluir(T obj, bool exclusaoFisica = false)
         {
             if (exclusaoFisica)
@@ -42,14 +47,29 @@ namespace LaPlata.Infrastructure.Context
             return _dbContext.SaveChanges();
         }
 
+        public async Task<int> ExcluirAsync(T obj, bool exclusaoFisica = false)
+        {
+            if (exclusaoFisica)
+            {
+                _dbSet.Attach(obj);
+                _dbSet.Remove(obj);
+            }
+            else
+            {
+                obj.Ativo = false;
+            }
+
+            return await _dbContext.SaveChangesAsync();
+        }
+
         public int SalvarAlteracoes()
         {
             return _dbContext.SaveChanges();
         }
 
-        public Task<int> SalvarAlteracoesAsync()
+        public async Task<int> SalvarAlteracoesAsync()
         {
-            return _dbContext.SaveChangesAsync();
+            return await _dbContext.SaveChangesAsync();
         }
     }
 }
