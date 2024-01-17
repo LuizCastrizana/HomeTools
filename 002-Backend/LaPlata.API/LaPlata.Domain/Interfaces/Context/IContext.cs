@@ -5,11 +5,17 @@ namespace LaPlata.Domain.Interfaces
     public interface IContext<T>
     {
         /// <summary>
-        /// Inclui um objeto no context.
+        /// Inclui um objeto no banco de dados.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>Número de registros afetados.</returns>
         int Adicionar(T obj);
+        /// <summary>
+        /// Inclui um objeto no banco de dados.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>Número de registros afetados.</returns>
+        Task<int> AdicionarAsync(T obj);
         /// <summary>
         /// Obtem uma lista de objetos de acordo com o predicado.
         /// </summary>

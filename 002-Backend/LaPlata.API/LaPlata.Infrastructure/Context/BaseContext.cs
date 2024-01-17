@@ -22,6 +22,12 @@ namespace LaPlata.Infrastructure.Context
             return _dbContext.SaveChanges();
         }
 
+        public async Task<int> AdicionarAsync(T obj)
+        {
+            _dbSet.Add(obj);
+            return await _dbContext.SaveChangesAsync();
+        }
+
         public IEnumerable<T> Obter(Expression<Func<T, bool>> predicate)
         {
             return _dbSet.Where(predicate).Where(x => x.Ativo);
