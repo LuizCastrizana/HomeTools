@@ -3,11 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class ContaVariavel : AuditableModel
+    public class ContaVariavel : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Descricao { get; set; }
         [Required]

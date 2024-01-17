@@ -3,11 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class PagamentoConta : AuditableModel
+    public class PagamentoConta : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public DateTime DataPagamento { get; set; }
         public virtual Conta Conta { get; set; }

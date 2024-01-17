@@ -2,11 +2,8 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Log : AuditableModel
+    public class Log : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Servico { get; set; }
         [Required]

@@ -2,11 +2,8 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Cartao : AuditableModel
+    public class Cartao : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Nome { get; set; }
         [Required]

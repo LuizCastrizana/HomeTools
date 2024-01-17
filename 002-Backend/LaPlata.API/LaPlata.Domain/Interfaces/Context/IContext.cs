@@ -17,15 +17,20 @@ namespace LaPlata.Domain.Interfaces
         /// <returns>Lista de objetos.</returns>
         IEnumerable<T> Obter(Expression<Func<T, bool>> predicate);
         /// <summary>
-        /// Salva as alterações no context.
-        /// </summary>
-        /// <returns>Número de registros afetados.</returns>
-        int SalvarAlteracoes();
-        /// <summary>
-        /// Exclui um objeto do context.
+        /// Exclui um objeto do banco de dados.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>Número de registros excluidos.</returns>
         int Excluir(T obj, bool exclusaoFisica = false);
+        /// <summary>
+        /// Salva as alterações no banco de dados.
+        /// </summary>
+        /// <returns>Número de registros afetados.</returns>
+        int SalvarAlteracoes();
+        /// <summary>
+        /// Salva as alterações no banco de dados.
+        /// </summary>
+        /// <returns>Número de registros afetados.</returns>
+        Task<int> SalvarAlteracoesAsync();
     }
 }

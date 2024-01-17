@@ -2,11 +2,8 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Assinatura : AuditableModel
+    public class Assinatura : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Descricao { get; set; }
         [Required]

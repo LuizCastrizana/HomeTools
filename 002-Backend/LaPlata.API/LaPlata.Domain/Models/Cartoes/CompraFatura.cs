@@ -2,11 +2,8 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class CompraFatura : AuditableModel
+    public class CompraFatura : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         public virtual Fatura Fatura { get; set; }
         [Required]
         public int FaturaId { get; set; }

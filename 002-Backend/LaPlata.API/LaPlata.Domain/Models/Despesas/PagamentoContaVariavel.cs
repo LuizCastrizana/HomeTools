@@ -3,11 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class PagamentoContaVariavel : AuditableModel
+    public class PagamentoContaVariavel : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public int ValorInteiro { get; set; }
         public int? ValorCentavos { get; set; }

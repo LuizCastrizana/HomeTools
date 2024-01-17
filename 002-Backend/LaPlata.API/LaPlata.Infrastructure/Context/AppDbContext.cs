@@ -132,7 +132,7 @@ namespace LaPlata.Infrastructure.Context
 
             foreach (var item in entidadesCriadas)
 			{
-                var herdaBaseModel = item as AuditableModel;
+                var herdaBaseModel = item as BaseModel;
                 if (herdaBaseModel != null)
 				{
                     herdaBaseModel.DataInclusao = DateTime.Now;
@@ -146,7 +146,7 @@ namespace LaPlata.Infrastructure.Context
 
             foreach (var item in entidadesAtualizadas)
 			{
-                var herdaBaseModel = item as AuditableModel;
+                var herdaBaseModel = item as BaseModel;
                 if (herdaBaseModel != null)
 				{
                     herdaBaseModel.DataAlteracao = DateTime.Now;

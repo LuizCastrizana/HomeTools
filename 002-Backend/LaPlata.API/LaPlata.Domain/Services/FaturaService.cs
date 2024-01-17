@@ -44,20 +44,19 @@ namespace LaPlata.Domain.Services
         {
             var retorno = new RespostaServico<ReadFaturaDTO>();
             var fatura = new Fatura();
+            var resultadoValidacao = new ResultadoValidacao(true);
             var comprasIncluidas = new List<CompraFatura>();
             var assinaturasIncluidas = new List<AssinaturaFatura>();
-            Cartao? cartao = null;
+            Cartao? cartao;
 
             try
             {
                 fatura = _mapper.Map<Fatura>(DTO);
+                cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
 
                 #region Validações
 
-                var resultadoValidacao = new ResultadoValidacao(true);
-
                 // Validar cartão
-                cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
                 if (cartao == null)
                 {
                     resultadoValidacao.Mensagens.Add("Cartão não encontrado");
@@ -88,7 +87,6 @@ namespace LaPlata.Domain.Services
                     }
                     else
                     {
-
                         #region Incluir fatura
 
                         try
@@ -108,8 +106,7 @@ namespace LaPlata.Domain.Services
                             throw new Exception("Erro ao incluir fatura: " + e.Message, e);
                         }
 
-                        #endregion
-
+                        #endregion                        
                     }
 
                     fatura.AssinaturasFatura ??= new List<AssinaturaFatura>();
@@ -182,7 +179,7 @@ namespace LaPlata.Domain.Services
 
                     #endregion
 
-                    #region Atualizar totais
+                    #region Atualizar total
 
                     try
                     {
@@ -395,6 +392,7 @@ namespace LaPlata.Domain.Services
             }
             return parcela;
         }
+
         #endregion
     }
 }

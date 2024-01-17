@@ -2,11 +2,8 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Compra : AuditableModel
+    public class Compra : BaseModel
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
         [Required]
         public string Descricao { get; set; }
         [Required]

@@ -1,47 +1,11 @@
-﻿using LaPlata.Domain.Interfaces;
-using LaPlata.Domain.Models;
-using System.Linq.Expressions;
+﻿using LaPlata.Domain.Models;
 
 namespace LaPlata.Infrastructure.Context
 {
-    public class ContaVariavelContext : IContext<ContaVariavel>
+    public class ContaVariavelContext : BaseContext<ContaVariavel>
     {
-        private readonly AppDbContext _appDbContext;
-
-        public ContaVariavelContext(AppDbContext context)
+        public ContaVariavelContext(AppDbContext context) : base(context)
         {
-            _appDbContext = context;
-        }
-
-        public int Adicionar(ContaVariavel obj)
-        {
-            _appDbContext.ContasVariaveis.Add(obj);
-            return _appDbContext.SaveChanges();
-        }
-
-        public IEnumerable<ContaVariavel> Obter(Expression<Func<ContaVariavel, bool>> predicate)
-        {
-            return _appDbContext.ContasVariaveis.Where(predicate).Where(x => x.Ativo);
-        }
-
-        public int SalvarAlteracoes()
-        {
-            return _appDbContext.SaveChanges();
-        }
-
-        public int Excluir(ContaVariavel obj, bool exclusaoFisica = false)
-        {
-            if (exclusaoFisica)
-            {
-                _appDbContext.ContasVariaveis.Attach(obj);
-                _appDbContext.ContasVariaveis.Remove(obj);
-            }
-            else
-            {
-                obj.Ativo = false;
-            }
-
-            return _appDbContext.SaveChanges();
         }
     }
 }
