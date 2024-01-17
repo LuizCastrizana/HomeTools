@@ -5,7 +5,6 @@ using LaPlata.Domain.Interfaces;
 using LaPlata.Domain.Models;
 using LaPlata.Domain.Models.Comum;
 using Newtonsoft.Json;
-using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace LaPlata.Domain.Services
@@ -41,12 +40,13 @@ namespace LaPlata.Domain.Services
             _mapper = mapper;
         }
 
-        public RespostaServico<ReadFaturaDTO> IncluirFatura(CreateFaturaDTO DTO)
+        public RespostaServico<ReadFaturaDTO> IncluirOuAtualizarFatura(CreateFaturaDTO DTO)
         {
             var retorno = new RespostaServico<ReadFaturaDTO>();
             var fatura = new Fatura();
-            var comprasFatura = new ConcurrentBag<CompraFatura>();
-            var assinaturasFatura = new ConcurrentBag<AssinaturaFatura>();
+            var comprasIncluidas = new List<CompraFatura>();
+            var assinaturasIncluidas = new List<AssinaturaFatura>();
+            Cartao? cartao = null;
 
             try
             {
@@ -57,7 +57,7 @@ namespace LaPlata.Domain.Services
                 var resultadoValidacao = new ResultadoValidacao(true);
 
                 // Validar cartão
-                var cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
+                cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
                 if (cartao == null)
                 {
                     resultadoValidacao.Mensagens.Add("Cartão não encontrado");
@@ -91,10 +91,6 @@ namespace LaPlata.Domain.Services
 
                         #region Incluir fatura
 
-                        decimal totalCompras = 0;
-                        decimal totalParcelas = 0;
-                        decimal totalAssinaturas = 0;
-
                         try
                         {
                             fatura.Vencimento = new DateTime()
@@ -104,6 +100,8 @@ namespace LaPlata.Domain.Services
 
                             if (_context.Adicionar(fatura) == 0)
                                 throw new Exception("Nenhum registro incluído no banco de dados.");
+
+                            fatura.Cartao = cartao;
                         }
                         catch (Exception e)
                         {
@@ -112,124 +110,95 @@ namespace LaPlata.Domain.Services
 
                         #endregion
 
-                        #region Incluir compras
-
-                        try
-                        {
-                            // Obter compras da fatura
-                            var compras = _contextCompra.Obter(x =>
-                                // Compras feitas no mesmo ano da fatura e antes do dia do fechamento
-                                ((x.DataCompra.Day < cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas - 1 >= fatura.Mes))
-                                ||
-                                // Compras feitas no mesmo ano da fatura e depois do dia do fechamento
-                                ((x.DataCompra.Day >= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas >= fatura.Mes))
-                                ||
-                                // Compras feitas no ano anterior a fatura e antes do dia do fechamento
-                                ((x.DataCompra.Day < cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((13 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas))
-                                ||
-                                // Compras feitas no ano anterior a fatura e depois do dia do fechamento
-                                ((x.DataCompra.Day >= cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((12 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas)))
-                                .ToList();
-
-                            foreach (var item in compras)
-                            {
-                                // Definir parcela
-                                var parcela = 1;
-                                if (item.DataCompra.Year == fatura.Ano)
-                                {
-                                    if (item.DataCompra.Day <= cartao.DiaFechamento)
-                                        parcela = fatura.Mes - item.DataCompra.Month + 1;
-                                    else
-                                        parcela = fatura.Mes - item.DataCompra.Month;
-                                }
-                                else
-                                {
-                                    if (item.DataCompra.Day <= cartao.DiaFechamento)
-                                        parcela = (13 - item.DataCompra.Month) + fatura.Mes;
-                                    else
-                                        parcela = (12 - item.DataCompra.Month) + fatura.Mes;
-                                }
-
-                                // Incluir compra na fatura
-                                var compraFatura = new CompraFatura()
-                                {
-                                    FaturaId = fatura.Id,
-                                    CompraId = item.Id,
-                                    Parcela = parcela,
-                                    ValorParcela = (item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100)) / item.QtdParcelas
-                                };
-                                if (_contextCompraFatura.Adicionar(compraFatura) == 0)
-                                    throw new Exception("Não foi possível incluir uma compra.");
-                                comprasFatura.Add(compraFatura);
-
-                                if (item.QtdParcelas > 1)
-                                    totalParcelas += compraFatura.ValorParcela;
-                                else
-                                    totalCompras += compraFatura.ValorParcela;
-                            }
-
-                            fatura.ComprasFatura = comprasFatura.ToList();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao incluir compras na fatura: " + e.Message, e);
-                        }
-
-                        #endregion
-
-                        #region Incluir assinaturas
-
-                        // Obter assinaturas e incluir na fatura
-                        try
-                        {
-                            var assinaturas = _contextAssinatura.Obter(x => x.CartaoId == fatura.CartaoId).ToList();
-
-                            foreach (var item in assinaturas)
-                            {
-                                // Incluir assinaturas na fatura
-                                var assinaturaFatura = new AssinaturaFatura()
-                                {
-                                    FaturaId = fatura.Id,
-                                    AssinaturaId = item.Id
-                                };
-
-                                if (_contextAssinaturaFatura.Adicionar(assinaturaFatura) == 0)
-                                    throw new Exception("Não foi possível incluir uma assinatura.");
-                                assinaturasFatura.Add(assinaturaFatura);
-
-                                totalAssinaturas += item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100);
-                            }
-
-                            fatura.AssinaturasFatura = assinaturasFatura.ToList();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao incluir assinaturas na fatura: " + e.Message, e);
-                        }
-
-                        #endregion
-
-                        #region Atualizar totais
-
-                        try
-                        {
-                            fatura.TotalAssinaturas = totalAssinaturas;
-                            fatura.TotalCompras = totalCompras;
-                            fatura.TotalComprasParceladas = totalParcelas;
-                            fatura.TotalFatura = totalAssinaturas + totalCompras + totalParcelas;
-                            _context.SalvarAlteracoes();
-                        }
-                        catch (Exception e)
-                        {
-                            throw new Exception("Erro ao atualizar valores da fatura: " + e.Message, e);
-                        }
-
-                        #endregion
-
                     }
 
+                    fatura.AssinaturasFatura ??= new List<AssinaturaFatura>();
+                    fatura.ComprasFatura ??= new List<CompraFatura>();
+
+                    #region Incluir compras
+
+                    try
+                    {
+                        var comprasIncluir = ObterComprasAIncluir(fatura);
+
+                        foreach (var item in comprasIncluir)
+                        {
+                            var parcela = DefinirParcela(item, fatura);
+
+                            // Incluir compra na fatura
+                            var compraFatura = new CompraFatura()
+                            {
+                                FaturaId = fatura.Id,
+                                CompraId = item.Id,
+                                Parcela = parcela,
+                                ValorParcela = (item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100)) / item.QtdParcelas
+                            };
+                            if (_contextCompraFatura.Adicionar(compraFatura) == 0)
+                                throw new Exception("Não foi possível incluir uma compra.");
+
+                            if (item.QtdParcelas > 1)
+                                fatura.TotalComprasParceladas += compraFatura.ValorParcela;
+                            else
+                                fatura.TotalCompras += compraFatura.ValorParcela;
+
+                            comprasIncluidas.Add(compraFatura);
+                            fatura.ComprasFatura.Add(compraFatura);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao incluir compras na fatura: " + e.Message, e);
+                    }
+
+                    #endregion
+
+                    #region Incluir assinaturas
+
+                    try
+                    {
+                        var assinaturasIncluir = _contextAssinatura.Obter(x => x.CartaoId == fatura.CartaoId && x.AssinaturasFatura.All(x => x.FaturaId != fatura.Id)).ToList();
+
+                        foreach (var item in assinaturasIncluir)
+                        {
+                            var assinaturaFatura = new AssinaturaFatura()
+                            {
+                                FaturaId = fatura.Id,
+                                AssinaturaId = item.Id
+                            };
+
+                            if (_contextAssinaturaFatura.Adicionar(assinaturaFatura) == 0)
+                                throw new Exception("Não foi possível incluir uma assinatura.");
+
+                            fatura.TotalAssinaturas += item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100);
+
+                            assinaturasIncluidas.Add(assinaturaFatura);
+                            fatura.AssinaturasFatura.Add(assinaturaFatura);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao incluir assinaturas na fatura: " + e.Message, e);
+                    }
+
+                    #endregion
+
+                    #region Atualizar totais
+
+                    try
+                    {
+                        fatura.TotalFatura = fatura.TotalAssinaturas + fatura.TotalCompras + fatura.TotalComprasParceladas;
+
+                        _context.SalvarAlteracoes();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao atualizar valores da fatura: " + e.Message, e);
+                    }
+
+                    #endregion
+
                     retorno.Valor = _mapper.Map<ReadFaturaDTO>(fatura);
-                    retorno.Mensagem = "Fatura incluída com sucesso.";
+                    retorno.Mensagem = "Fatura incluída ou atualizada com sucesso.";
                     retorno.Status = EnumStatusResposta.SUCESSO; 
                 }
                 else
@@ -243,23 +212,11 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                if (fatura != null && fatura.Id > 0)
-                {
-                    _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
-                    foreach (var item in comprasFatura)
-                    {
-                        _contextCompraFatura.Excluir(item, true);
-                    }
-                    foreach (var item in assinaturasFatura)
-                    {
-                        _contextAssinaturaFatura.Excluir(item, true);
-                    }
-                    _context.Excluir(fatura, true);
-                }
+                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
-
+        
         public RespostaServico<List<ReadFaturaDTO>> ObterFaturas(string? busca)
         {
             try
@@ -364,16 +321,16 @@ namespace LaPlata.Domain.Services
                 var cartoes = _contextCartao.Obter(x => x.Ativo && x.DiaFechamento == DateTime.Now.Day).ToList();
                 foreach (var cartao in cartoes)
                 {
-                    var faturas = _context.Obter(x => x.CartaoId == cartao.Id && x.Mes == DateTime.Now.Month && x.Ano == DateTime.Now.Year).ToList();
-                    if (faturas.Count == 0)
+                    var faturaAtual = _context.Obter(x => x.CartaoId == cartao.Id && x.Mes == DateTime.Now.Month && x.Ano == DateTime.Now.Year).ToList();
+                    if (faturaAtual.Count == 0)
                     {
-                        var fatura = new Fatura()
+                        var fatura = new CreateFaturaDTO()
                         {
                             CartaoId = cartao.Id,
                             Mes = DateTime.Now.Month,
                             Ano = DateTime.Now.Year
                         };
-                        IncluirFatura(_mapper.Map<CreateFaturaDTO>(fatura));
+                        IncluirOuAtualizarFatura(fatura);
                         contadorFaturas++;
                     }
                 }
@@ -388,5 +345,56 @@ namespace LaPlata.Domain.Services
             }
             return retorno;
         }
+
+        #region Métodos privados
+
+        private List<Compra> ObterComprasAIncluir(Fatura fatura)
+        {
+            var compras = new List<Compra>();
+
+            // Obter compras da fatura
+            var comprasFatura = _contextCompraFatura.Obter(x => x.FaturaId == fatura.Id).ToList();
+
+            // Obter compras do cartão
+            var comprasCartao = _contextCompra.Obter(x =>
+                                // Compras feitas no mesmo ano da fatura e antes do dia do fechamento
+                                ((x.DataCompra.Day < fatura.Cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas - 1 >= fatura.Mes))
+                                ||
+                                // Compras feitas no mesmo ano da fatura e depois do dia do fechamento
+                                ((x.DataCompra.Day >= fatura.Cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas >= fatura.Mes))
+                                ||
+                                // Compras feitas no ano anterior a fatura e antes do dia do fechamento
+                                ((x.DataCompra.Day < fatura.Cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((13 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas))
+                                ||
+                                // Compras feitas no ano anterior a fatura e depois do dia do fechamento
+                                ((x.DataCompra.Day >= fatura.Cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano - 1) && ((12 - x.DataCompra.Month) + fatura.Mes <= x.QtdParcelas)))
+                                .ToList();
+
+            // Obter compras que não estão na fatura
+            compras = comprasCartao.Where(x => !comprasFatura.Any(y => y.CompraId == x.Id)).ToList();
+
+            return compras;
+        }
+
+        private int DefinirParcela(Compra compra, Fatura fatura)
+        {
+            var parcela = 1;
+            if (compra.DataCompra.Year == fatura.Ano)
+            {
+                if (compra.DataCompra.Day <= fatura.Cartao.DiaFechamento)
+                    parcela = fatura.Mes - compra.DataCompra.Month + 1;
+                else
+                    parcela = fatura.Mes - compra.DataCompra.Month;
+            }
+            else
+            {
+                if (compra.DataCompra.Day <= fatura.Cartao.DiaFechamento)
+                    parcela = (13 - compra.DataCompra.Month) + fatura.Mes;
+                else
+                    parcela = (12 - compra.DataCompra.Month) + fatura.Mes;
+            }
+            return parcela;
+        }
+        #endregion
     }
 }

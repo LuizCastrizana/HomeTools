@@ -22,7 +22,20 @@ namespace LaPlata.API.Controllers.Cartoes
         {
             try
             {
-                return this.TratarRespostaServico(_service.IncluirFatura(DTO));
+                return this.TratarRespostaServico(_service.IncluirOuAtualizarFatura(DTO));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new RespostaApi<string>(e.Message));
+            }
+        }
+
+        [HttpPost("atualizarFatura")]
+        public IActionResult AtualizarFatura([FromBody] CreateFaturaDTO DTO)
+        {
+            try
+            {
+                return this.TratarRespostaServico(_service.IncluirOuAtualizarFatura(DTO));
             }
             catch (Exception e)
             {
