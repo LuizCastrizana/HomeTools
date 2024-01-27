@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LaPlata.API.CrossCutting\LaPlata.API.CrossCutting.csproj" />
     <ProjectReference Include="..\LaPlata.Domain\LaPlata.Domain.csproj" />
     <ProjectReference Include="..\LaPlata.Infrastructure\LaPlata.Infrastructure.csproj" />
   </ItemGroup>

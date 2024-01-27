@@ -1,14 +1,34 @@
-﻿using LaPlata.Domain.Interfaces;
+﻿using AutoMapper;
+using LaPlata.Domain.Interfaces;
 using LaPlata.Domain.Models;
+using LaPlata.Domain.Services;
 using LaPlata.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data;
 
-namespace LaPlata.Infrastructure.Configuration
+namespace LaPlata.API.CrossCutting.Ioc
 {
-    public static class ConfigureServices
+    public static class DependencyResolver
     {
+        public static IServiceCollection ConfigureServicesInjections(this IServiceCollection services)
+        {
+            services.AddTransient<ICartaoService, CartaoService>();
+            services.AddTransient<IAssinaturaService, AssinaturaService>();
+            services.AddTransient<ICompraService, CompraService>();
+            services.AddTransient<IFaturaService, FaturaService>();
+            services.AddTransient<IDespesaService, DespesaService>();
+            services.AddTransient<IContaService, ContaService>();
+            services.AddTransient<IContaVariavelService, ContaVariavelService>();
+            services.AddTransient<IPagamentoContaVariavelService, PagamentoContaVariavelService>();
+            services.AddTransient<IPagamentoContaService, PagamentoContaService>();
+            services.AddTransient<IRelatorioService, RelatorioService>();
+            services.AddTransient<ICategoriaService, CategoriaService>();
+
+            return services;
+        }
+
         public static IServiceCollection ConfigureRepositoriesInjections(this IServiceCollection services)
         {
             services.AddTransient<IContext<Cartao>, CartaoContext>();

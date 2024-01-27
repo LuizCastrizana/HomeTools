@@ -1,14 +1,23 @@
 using LaPlata.API.Configuration;
-using LaPlata.Domain.Configuration;
-using LaPlata.Infrastructure.Configuration;
 using LaPlata.Domain.BackgroundServices;
+using AutoMapper;
+using LaPlata.API.CrossCutting.AutoMapper;
+using LaPlata.API.CrossCutting.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+var autoMappercfg = new MapperConfiguration(config =>
+{
+    config.AllowNullDestinationValues = false;
+    config.AddMaps(AppDomain.CurrentDomain.GetAssemblies());
+    config.AddProfile(new AutoMapperConfig());
+});
+builder.Services.AddSingleton(autoMappercfg.CreateMapper());
+
 builder.Services.AddHostedService<GerarFaturasBGService>();
 builder.Services.AddCors();
 

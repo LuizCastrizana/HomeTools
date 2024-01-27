@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaPlata.Domain", "LaPlata.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaPlata.Infrastructure", "LaPlata.Infrastructure\LaPlata.Infrastructure.csproj", "{E2F926A7-7CA3-405F-B2C8-D7F79286CDF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaPlata.API.CrossCutting", "LaPlata.API.CrossCutting\LaPlata.API.CrossCutting.csproj", "{480A3F5D-D59B-4028-B938-28D6DE0464EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E2F926A7-7CA3-405F-B2C8-D7F79286CDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2F926A7-7CA3-405F-B2C8-D7F79286CDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2F926A7-7CA3-405F-B2C8-D7F79286CDF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480A3F5D-D59B-4028-B938-28D6DE0464EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480A3F5D-D59B-4028-B938-28D6DE0464EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480A3F5D-D59B-4028-B938-28D6DE0464EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480A3F5D-D59B-4028-B938-28D6DE0464EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{54B59356-B487-4F18-B100-420132BD643E} = {39EE8ABF-BAA3-4F21-962F-4EE01FC55045}
 		{9D604E61-7F8E-45BC-B999-86305C0984D7} = {C332206E-FBDB-40D7-AA54-83BE3DD2901F}
 		{E2F926A7-7CA3-405F-B2C8-D7F79286CDF4} = {E63D4EFA-150F-404E-AC8F-59B39D2AEA62}
+		{480A3F5D-D59B-4028-B938-28D6DE0464EA} = {E63D4EFA-150F-404E-AC8F-59B39D2AEA62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7A46530-7B0E-45E9-941D-AA6402136782}
