@@ -2,7 +2,7 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Log : BaseModel
+    public class Log : ModelBase
     {
         [Required]
         public string Servico { get; set; }

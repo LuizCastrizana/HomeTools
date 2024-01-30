@@ -2,7 +2,7 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class CompraFatura : BaseModel
+    public class CompraFatura : ModelBase
     {
         public virtual Fatura Fatura { get; set; }
         [Required]

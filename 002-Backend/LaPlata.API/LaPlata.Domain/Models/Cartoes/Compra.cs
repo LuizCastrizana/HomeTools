@@ -2,7 +2,7 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Compra : BaseModel
+    public class Compra : ModelBase
     {
         [Required]
         public string Descricao { get; set; }

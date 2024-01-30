@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class Categoria : BaseModel
+    public class Categoria : ModelBase
     {
         [Required]
         public string Descricao { get; set; }

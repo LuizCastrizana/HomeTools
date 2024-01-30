@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
 using LaPlata.Domain.Models;
 using LaPlata.Domain.Models.Comum;
 using Newtonsoft.Json;
@@ -11,32 +12,26 @@ namespace LaPlata.Domain.Services
 {
     public class FaturaService : IFaturaService
     {
-        private readonly IContext<Fatura> _context;
-        private readonly IContext<Compra> _contextCompra;
-        private readonly IContext<Assinatura> _contextAssinatura;
-        private readonly IContext<Cartao> _contextCartao;
-        private readonly IContext<CompraFatura> _contextCompraFatura;
-        private readonly IContext<AssinaturaFatura> _contextAssinaturaFatura;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IFaturaRepository _faturaRepository;
+        private readonly ICartaoRepository _cartaoRepository;
+        private readonly IRepository<CompraFatura> _compraFaturaRepository;
+        private readonly IRepository<AssinaturaFatura> _assinaturaFaturaRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
         public FaturaService(
-            IContext<Fatura> context, 
-            IContext<Compra> contextCompra, 
-            IContext<Assinatura> contextAssinatura, 
-            IContext<Cartao> contextCartao, 
-            IContext<CompraFatura> contextCompraFatura, 
-            IContext<AssinaturaFatura> contextAssinaturaFatura,
-            IContext<Log> contextLogErro,
+            IFaturaRepository faturaRepository, 
+            ICartaoRepository cartaoRepository, 
+            IRepository<CompraFatura> compraFaturaRepository, 
+            IRepository<AssinaturaFatura> assinaturaFaturaRepository,
+            IRepository<Log> logErroRepository,
             IMapper mapper)
         {
-            _context = context;
-            _contextCompra = contextCompra;
-            _contextAssinatura = contextAssinatura;
-            _contextCartao = contextCartao;
-            _contextCompraFatura = contextCompraFatura;
-            _contextAssinaturaFatura = contextAssinaturaFatura;
-            _contextLogErro = contextLogErro;
+            _faturaRepository = faturaRepository;
+            _cartaoRepository = cartaoRepository;
+            _compraFaturaRepository = compraFaturaRepository;
+            _assinaturaFaturaRepository = assinaturaFaturaRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -52,7 +47,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 fatura = _mapper.Map<Fatura>(DTO);
-                cartao = _contextCartao.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
+                cartao = _cartaoRepository.Obter(x => x.Id == fatura.CartaoId).FirstOrDefault();
 
                 #region Validações
 
@@ -79,12 +74,13 @@ namespace LaPlata.Domain.Services
 
                 if (resultadoValidacao.Valido)
                 {
-                    var faturaExistente = _context.Obter(x => x.CartaoId == fatura.CartaoId && x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
+                    Fatura? faturaExistente = null;
+
+                    if (cartao.Faturas != null && cartao.Faturas.Count > 0)
+                        faturaExistente = cartao.Faturas.Where(x => x.Mes == fatura.Mes && x.Ano == fatura.Ano).FirstOrDefault();
 
                     if (faturaExistente != null)
-                    {
                         fatura = faturaExistente;
-                    }
                     else
                     {
                         #region Incluir fatura
@@ -96,7 +92,7 @@ namespace LaPlata.Domain.Services
                                 .AddMonths(fatura.Mes)
                                 .AddDays(cartao.DiaVencimento == 31 ? cartao.DiaVencimento - 2 : cartao.DiaVencimento - 1);
 
-                            if (_context.Adicionar(fatura) == 0)
+                            if (_faturaRepository.Adicionar(fatura) == 0)
                                 throw new Exception("Nenhum registro incluído no banco de dados.");
 
                             fatura.Cartao = cartao;
@@ -106,9 +102,9 @@ namespace LaPlata.Domain.Services
                             throw new Exception("Erro ao incluir fatura: " + e.Message, e);
                         }
 
-                        #endregion                        
+                        #endregion
                     }
-
+                    
                     fatura.AssinaturasFatura ??= new List<AssinaturaFatura>();
                     fatura.ComprasFatura ??= new List<CompraFatura>();
 
@@ -116,7 +112,7 @@ namespace LaPlata.Domain.Services
 
                     try
                     {
-                        var comprasIncluir = ObterComprasAIncluir(fatura);
+                        var comprasIncluir = ObterComprasAIncluir(fatura, cartao);
 
                         foreach (var item in comprasIncluir)
                         {
@@ -130,7 +126,7 @@ namespace LaPlata.Domain.Services
                                 Parcela = parcela,
                                 ValorParcela = (item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100)) / item.QtdParcelas
                             };
-                            if (_contextCompraFatura.Adicionar(compraFatura) == 0)
+                            if (_compraFaturaRepository.Adicionar(compraFatura) == 0)
                                 throw new Exception("Não foi possível incluir uma compra.");
 
                             if (item.QtdParcelas > 1)
@@ -153,7 +149,7 @@ namespace LaPlata.Domain.Services
 
                     try
                     {
-                        var assinaturasIncluir = _contextAssinatura.Obter(x => x.CartaoId == fatura.CartaoId && x.AssinaturasFatura.All(x => x.FaturaId != fatura.Id)).ToList();
+                        var assinaturasIncluir = cartao.Assinaturas.Where(x => x.CartaoId == fatura.CartaoId && x.AssinaturasFatura.All(x => x.FaturaId != fatura.Id)).ToList();
 
                         foreach (var item in assinaturasIncluir)
                         {
@@ -163,7 +159,7 @@ namespace LaPlata.Domain.Services
                                 AssinaturaId = item.Id
                             };
 
-                            if (_contextAssinaturaFatura.Adicionar(assinaturaFatura) == 0)
+                            if (_assinaturaFaturaRepository.Adicionar(assinaturaFatura) == 0)
                                 throw new Exception("Não foi possível incluir uma assinatura.");
 
                             fatura.TotalAssinaturas += item.ValorInteiro + (Convert.ToDecimal(item.ValorCentavos) / 100);
@@ -185,7 +181,7 @@ namespace LaPlata.Domain.Services
                     {
                         fatura.TotalFatura = fatura.TotalAssinaturas + fatura.TotalCompras + fatura.TotalComprasParceladas;
 
-                        _context.SalvarAlteracoes();
+                        _faturaRepository.SalvarAlteracoes();
                     }
                     catch (Exception e)
                     {
@@ -209,7 +205,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -220,14 +216,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadFaturaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Cartao.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _faturaRepository.Obter(x => x.Cartao.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadFaturaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -237,7 +233,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadFaturaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _faturaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadFaturaDTO>(model);
@@ -252,7 +248,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -262,14 +258,14 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadFaturaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _faturaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     if (model.ComprasFatura != null)
                     {
                         Parallel.ForEach(model.ComprasFatura, item =>
                         {
-                            if (_contextCompraFatura.Excluir(item) == 0)
+                            if (_compraFaturaRepository.Excluir(item) == 0)
                                 throw new Exception("Erro ao exlcuir uma compra da fatura.");
                         });
                     }
@@ -277,12 +273,12 @@ namespace LaPlata.Domain.Services
                     {
                         Parallel.ForEach(model.AssinaturasFatura, item =>
                         {
-                            if (_contextAssinaturaFatura.Excluir(item) == 0)
+                            if (_assinaturaFaturaRepository.Excluir(item) == 0)
                                 throw new Exception("Erro ao exlcuir uma assinatura da fatura.");
                         });
                     }
 
-                    if (_context.Excluir(model) == 0)
+                    if (_faturaRepository.Excluir(model) == 0)
                         throw new Exception("Não foi possível excluir a fatura.");
 
                     retorno.Valor = _mapper.Map<ReadFaturaDTO>(model);
@@ -299,7 +295,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -315,10 +311,10 @@ namespace LaPlata.Domain.Services
             var contadorFaturas = 0;
             try 
             {
-                var cartoes = _contextCartao.Obter(x => x.Ativo && x.DiaFechamento == DateTime.Now.Day).ToList();
+                var cartoes = _cartaoRepository.Obter(x => x.Ativo && x.DiaFechamento == DateTime.Now.Day).ToList();
                 foreach (var cartao in cartoes)
                 {
-                    var faturaAtual = _context.Obter(x => x.CartaoId == cartao.Id && x.Mes == DateTime.Now.Month && x.Ano == DateTime.Now.Year).ToList();
+                    var faturaAtual = _faturaRepository.Obter(x => x.CartaoId == cartao.Id && x.Mes == DateTime.Now.Month && x.Ano == DateTime.Now.Year).ToList();
                     if (faturaAtual.Count == 0)
                     {
                         var fatura = new CreateFaturaDTO()
@@ -337,7 +333,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
             return retorno;
@@ -345,15 +341,15 @@ namespace LaPlata.Domain.Services
 
         #region Métodos privados
 
-        private List<Compra> ObterComprasAIncluir(Fatura fatura)
+        private List<Compra> ObterComprasAIncluir(Fatura fatura, Cartao cartao)
         {
             var compras = new List<Compra>();
 
             // Obter compras da fatura
-            var comprasFatura = _contextCompraFatura.Obter(x => x.FaturaId == fatura.Id).ToList();
+            var comprasFatura = fatura.ComprasFatura.Where(x => x.FaturaId == fatura.Id).ToList();
 
             // Obter compras do cartão
-            var comprasCartao = _contextCompra.Obter(x =>
+            var comprasCartao = cartao.Compras.Where(x =>
                                 // Compras feitas no mesmo ano da fatura e antes do dia do fechamento
                                 ((x.DataCompra.Day < fatura.Cartao.DiaFechamento) && (x.DataCompra.Year == fatura.Ano) && (x.DataCompra.Month + x.QtdParcelas - 1 >= fatura.Mes))
                                 ||

@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Despesas;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -10,14 +11,14 @@ namespace LaPlata.Domain.Services
 {
     public class ContaVariavelService : IContaVariavelService
     {
-        private readonly IContext<ContaVariavel> _context;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IContaVariavelRepository _contaVariavelRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public ContaVariavelService(IContext<ContaVariavel> context, IContext<PagamentoContaVariavel> contextPagamento, IContext<Log> contextLogErro, IMapper mapper)
+        public ContaVariavelService(IContaVariavelRepository contaVariavelRepository, IRepository<PagamentoContaVariavel> contextPagamento, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextLogErro = contextLogErro;
+            _contaVariavelRepository = contaVariavelRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadContaVariavelDTO>();
                 var model = _mapper.Map<ContaVariavel>(DTO);
-                if (_context.Adicionar(model) == 0)
+                if (_contaVariavelRepository.Adicionar(model) == 0)
                     throw new Exception("Nenhum registro incluído no banco de dados.");
                 retorno.Valor = _mapper.Map<ReadContaVariavelDTO>(model);
                 retorno.Mensagem = "Registro incluído com sucesso.";
@@ -36,7 +37,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -47,14 +48,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadContaVariavelDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _contaVariavelRepository.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadContaVariavelDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -64,7 +65,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadContaVariavelDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _contaVariavelRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadContaVariavelDTO>(model);
@@ -79,7 +80,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -89,11 +90,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadContaVariavelDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _contaVariavelRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_contaVariavelRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadContaVariavelDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -109,7 +110,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -119,10 +120,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadContaVariavelDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _contaVariavelRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_contaVariavelRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadContaVariavelDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -138,7 +139,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

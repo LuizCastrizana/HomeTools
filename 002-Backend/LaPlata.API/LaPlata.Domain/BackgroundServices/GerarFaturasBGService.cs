@@ -8,13 +8,13 @@ namespace LaPlata.Domain.BackgroundServices
 {
     public class GerarFaturasBGService : BackgroundService
     {
-        private readonly IFaturaService _service;
-        private readonly IContext<Log> _logContext;
+        private readonly IFaturaService _faturaService;
+        private readonly IRepository<Log> _logRepository;
 
-        public GerarFaturasBGService(IFaturaService service, IContext<Log> logContext)
+        public GerarFaturasBGService(IFaturaService faturaService, IRepository<Log> logRepository)
         {
-            _service = service;
-            _logContext = logContext;
+            _faturaService = faturaService;
+            _logRepository = logRepository;
         }
 
         protected async override Task ExecuteAsync(CancellationToken cancellingToken)
@@ -25,9 +25,9 @@ namespace LaPlata.Domain.BackgroundServices
 
                 try
                 {
-                    _logContext.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Iniciando geração de faturas."));
+                    _logRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Iniciando geração de faturas."));
 
-                    var resposta = _service.GerarFaturas();
+                    var resposta = _faturaService.GerarFaturas();
 
                     if (resposta != null)
                     {
@@ -36,11 +36,11 @@ namespace LaPlata.Domain.BackgroundServices
                             // Se retornou sucesso altera intervalo para executar novamente no dia seguinte a 00:05
                             intervalo = Convert.ToInt32((DateTime.Today.AddDays(1).AddMinutes(5) - DateTime.Now).TotalMilliseconds);
 
-                            _logContext.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Sucesso! " + resposta.Valor));
+                            _logRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Sucesso! " + resposta.Valor));
                         }
                         else
                         {
-                            _logContext.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Erro: " + resposta.Mensagem));
+                            _logRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Erro: " + resposta.Mensagem));
                         }
                     }
 
@@ -48,7 +48,7 @@ namespace LaPlata.Domain.BackgroundServices
                 }
                 catch (Exception ex)
                 {
-                    _logContext.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Erro: " + ex.Message));
+                    _logRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, "Erro: " + ex.Message));
                 }
             }
         }

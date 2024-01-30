@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Despesas;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -10,16 +11,16 @@ namespace LaPlata.Domain.Services
 {
     public class PagamentoContaService : IPagamentoContaService
     {
-        private readonly IContext<PagamentoConta> _context;
-        private readonly IContext<Conta> _contextConta;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IPagamentoContaRepository _pagamentoContaRepository;
+        private readonly IContaRepository _contaRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public PagamentoContaService(IContext<PagamentoConta> context, IContext<Conta> contextConta, IContext<Log> contextLogErro, IMapper mapper)
+        public PagamentoContaService(IPagamentoContaRepository pagamentoContaRepository, IContaRepository contaRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextConta = contextConta;
-            _contextLogErro = contextLogErro;
+            _pagamentoContaRepository = pagamentoContaRepository;
+            _contaRepository = contaRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -29,10 +30,10 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadPagamentoContaDTO>();
                 var model = _mapper.Map<PagamentoConta>(DTO);
-                var modelConta = _contextConta.Obter(x => x.Id == model.ContaId).FirstOrDefault();
+                var modelConta = _contaRepository.Obter(x => x.Id == model.ContaId).FirstOrDefault();
                 if (modelConta != null)
                 {
-                    if (_context.Adicionar(model) == 0)
+                    if (_pagamentoContaRepository.Adicionar(model) == 0)
                         throw new Exception("Nenhum registro incluído no banco de dados.");
                     model.Conta = modelConta;
                     retorno.Valor = _mapper.Map<ReadPagamentoContaDTO>(model);
@@ -49,7 +50,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -60,14 +61,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadPagamentoContaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Conta.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _pagamentoContaRepository.Obter(x => x.Conta.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadPagamentoContaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -77,7 +78,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadPagamentoContaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _pagamentoContaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadPagamentoContaDTO>(model);
@@ -92,7 +93,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -102,11 +103,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadPagamentoContaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _pagamentoContaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_pagamentoContaRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadPagamentoContaDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -121,7 +122,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -131,10 +132,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadPagamentoContaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _pagamentoContaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_pagamentoContaRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados..");
                     retorno.Valor = _mapper.Map<ReadPagamentoContaDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -149,7 +150,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

@@ -1,12 +1,12 @@
-﻿using AutoMapper;
-using LaPlata.Domain.Interfaces;
-using LaPlata.Domain.Models;
+﻿using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
+using LaPlata.Domain.Interfaces.Repositories.Despesas;
 using LaPlata.Domain.Services;
 using LaPlata.Infrastructure.Context;
+using LaPlata.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data;
 
 namespace LaPlata.API.CrossCutting.Ioc
 {
@@ -31,19 +31,19 @@ namespace LaPlata.API.CrossCutting.Ioc
 
         public static IServiceCollection ConfigureRepositoriesInjections(this IServiceCollection services)
         {
-            services.AddTransient<IContext<Cartao>, CartaoContext>();
-            services.AddTransient<IContext<Assinatura>, AssinaturaContext>();
-            services.AddTransient<IContext<Compra>, CompraContext>();
-            services.AddTransient<IContext<Fatura>, FaturaContext>();
-            services.AddTransient<IContext<CompraFatura>, CompraFaturaContext>();
-            services.AddTransient<IContext<AssinaturaFatura>, AssinaturaFaturaContext>();
-            services.AddTransient<IContext<Despesa>, DespesaContext>();
-            services.AddTransient<IContext<Conta>, ContaContext>();
-            services.AddTransient<IContext<ContaVariavel>, ContaVariavelContext>();
-            services.AddTransient<IContext<PagamentoContaVariavel>, PagamentoContaVariavelContext>();
-            services.AddTransient<IContext<PagamentoConta>, PagamentoContaContext>();
-            services.AddTransient<IContext<Categoria>, CategoriaContext>();
-            services.AddTransient<IContext<Log>, LogContext>();
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddTransient<IFaturaRepository, FaturaRepository>();
+            services.AddTransient<ICartaoRepository, CartaoRepository>();
+            services.AddTransient<IAssinaturaRepository, AssinaturaRepository>();
+            services.AddTransient<ICompraRepository, CompraRepository>();
+
+            services.AddTransient<IDespesaRepository, DespesaRepository>();
+            services.AddTransient<IContaRepository, ContaRepository>();
+            services.AddTransient<IContaVariavelRepository, ContaVariavelRepository>();
+            services.AddTransient<IPagamentoContaVariavelRepository, PagamentoContaVariavelRepository>();
+            services.AddTransient<IPagamentoContaRepository, PagamentoContaRepository>();
+
 
             return services;
         }
@@ -52,7 +52,9 @@ namespace LaPlata.API.CrossCutting.Ioc
         {
             services.AddDbContext<AppDbContext>(opts =>
             {
-                opts.UseLazyLoadingProxies().UseMySQL(configurationBuilder.GetConnectionString("LaPlataConnection"));
+                opts
+                //.UseLazyLoadingProxies()
+                .UseMySQL(configurationBuilder.GetConnectionString("LaPlataConnection"));
             }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 
             return services;

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class PagamentoContaVariavel : BaseModel
+    public class PagamentoContaVariavel : ModelBase
     {
         [Required]
         public int ValorInteiro { get; set; }

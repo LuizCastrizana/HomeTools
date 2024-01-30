@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace LaPlata.Domain.Models
 {
-    public class PagamentoConta : BaseModel
+    public class PagamentoConta : ModelBase
     {
         [Required]
         public DateTime DataPagamento { get; set; }

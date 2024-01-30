@@ -6,21 +6,22 @@ using LaPlata.Domain.Models;
 using System.Reflection;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
 
 namespace LaPlata.Domain.Services
 {
     public class AssinaturaService : IAssinaturaService
     {
-        private readonly IContext<Assinatura> _context;
-        private readonly IContext<Cartao> _contextCartao;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IAssinaturaRepository _assinaturaRepository;
+        private readonly ICartaoRepository _cartaoRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public AssinaturaService(IContext<Assinatura> context, IContext<Cartao> contextCartao, IContext<Log> contextLogErro, IMapper mapper)
+        public AssinaturaService(IAssinaturaRepository assinaturaRepository, ICartaoRepository cartaoRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextCartao = contextCartao;
-            _contextLogErro = contextLogErro;
+            _assinaturaRepository = assinaturaRepository;
+            _cartaoRepository = cartaoRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -30,10 +31,10 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadAssinaturaDTO>();
                 var model = _mapper.Map<Assinatura>(DTO);
-                var modelCartao = _contextCartao.Obter(x => x.Id == model.CartaoId).FirstOrDefault();
+                var modelCartao = _cartaoRepository.Obter(x => x.Id == model.CartaoId).FirstOrDefault();
                 if (modelCartao != null)
                 {
-                    if (_context.Adicionar(model) == 0)
+                    if (_assinaturaRepository.Adicionar(model) == 0)
                         throw new Exception("Nenhum registro incluído no banco de dados.");
                     model.Cartao = modelCartao;
                     retorno.Valor = _mapper.Map<ReadAssinaturaDTO>(model);
@@ -50,7 +51,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -61,14 +62,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadAssinaturaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _assinaturaRepository.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadAssinaturaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -78,14 +79,14 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<List<ReadAssinaturaDTO>>();
-                var model = _context.Obter(predicate).ToList();
+                var model = _assinaturaRepository.Obter(predicate).ToList();
                 retorno.Valor = _mapper.Map<List<ReadAssinaturaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -95,7 +96,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadAssinaturaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _assinaturaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadAssinaturaDTO>(model);
@@ -110,7 +111,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -120,11 +121,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadAssinaturaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _assinaturaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_assinaturaRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadAssinaturaDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -139,7 +140,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -149,10 +150,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadAssinaturaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _assinaturaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_assinaturaRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados..");
                     retorno.Valor = _mapper.Map<ReadAssinaturaDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -167,7 +168,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Despesas;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -10,14 +11,14 @@ namespace LaPlata.Domain.Services
 {
     public class DespesaService : IDespesaService
     {
-        private readonly IContext<Despesa> _context;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IDespesaRepository _despesaRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public DespesaService(IContext<Despesa> context, IContext<Log> contextLogErro, IMapper mapper)
+        public DespesaService(IDespesaRepository despesaRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextLogErro = contextLogErro;
+            _despesaRepository = despesaRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadDespesaDTO>();
                 var model = _mapper.Map<Despesa>(DTO);
-                if (_context.Adicionar(model) == 0)
+                if (_despesaRepository.Adicionar(model) == 0)
                     throw new Exception("Nenhum registro incluído no banco de dados.");
                 retorno.Valor = _mapper.Map<ReadDespesaDTO>(model);
                 retorno.Mensagem = "Registro incluído com sucesso.";
@@ -36,7 +37,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -47,14 +48,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadDespesaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _despesaRepository.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadDespesaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -64,7 +65,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadDespesaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _despesaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadDespesaDTO>(model);
@@ -79,7 +80,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -89,11 +90,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadDespesaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _despesaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_despesaRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadDespesaDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -109,7 +110,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -119,10 +120,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadDespesaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _despesaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_despesaRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadDespesaDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -138,7 +139,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

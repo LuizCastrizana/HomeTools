@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace LaPlata.Domain.DTOs
+﻿namespace LaPlata.Domain.DTOs
 {
     public class ReadPagamentoContaVariavelDTO
     {

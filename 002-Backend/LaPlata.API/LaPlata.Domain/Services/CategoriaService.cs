@@ -10,14 +10,14 @@ namespace LaPlata.Domain.Services
 {
     public class CategoriaService : ICategoriaService
     {
-        private readonly IContext<Categoria> _context;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly IRepository<Categoria> _categoriaRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public CategoriaService(IContext<Categoria> context, IContext<Log> contextLogErro, IMapper mapper)
+        public CategoriaService(IRepository<Categoria> categoriaRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextLogErro = contextLogErro;
+            _categoriaRepository = categoriaRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +27,7 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadCategoriaDTO>();
                 var model = _mapper.Map<Categoria>(DTO);
-                if (_context.Adicionar(model) == 0)
+                if (_categoriaRepository.Adicionar(model) == 0)
                     throw new Exception("Nenhum registro incluído no banco de dados.");
                 retorno.Valor = _mapper.Map<ReadCategoriaDTO>(model);
                 retorno.Mensagem = "Registro incluído com sucesso.";
@@ -36,7 +36,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -47,14 +47,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadCategoriaDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _categoriaRepository.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCategoriaDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -64,7 +64,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCategoriaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _categoriaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadCategoriaDTO>(model);
@@ -79,7 +79,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -89,11 +89,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCategoriaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _categoriaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     model.Descricao = descricao;
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_categoriaRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadCategoriaDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -109,7 +109,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(descricao)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(descricao)));
                 throw;
             }
         }
@@ -119,10 +119,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCategoriaDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _categoriaRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_categoriaRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadCategoriaDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -138,7 +138,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

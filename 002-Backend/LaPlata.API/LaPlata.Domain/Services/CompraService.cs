@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
 using System.Linq.Expressions;
@@ -11,16 +12,16 @@ namespace LaPlata.Domain.Services
 {
     public class CompraService : ICompraService
     {
-        private readonly IContext<Compra> _context;
-        private readonly IContext<Cartao> _contextCartao;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly ICompraRepository _compraRepository;
+        private readonly ICartaoRepository _cartaoRepository;
+        private readonly IRepository<Log> _logErroRepository;
         private readonly IMapper _mapper;
 
-        public CompraService(IContext<Compra> context, IContext<Cartao> contextCartao, IContext<Log> contextLogErro, IMapper mapper)
+        public CompraService(ICompraRepository compraRepository, ICartaoRepository cartaoRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextCartao = contextCartao;
-            _contextLogErro = contextLogErro;
+            _compraRepository = compraRepository;
+            _cartaoRepository = cartaoRepository;
+            _logErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -30,10 +31,10 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadCompraDTO>();
                 var model = _mapper.Map<Compra>(DTO);
-                var modelCartao = _contextCartao.Obter(x => x.Id == model.CartaoId).FirstOrDefault();
+                var modelCartao = _cartaoRepository.Obter(x => x.Id == model.CartaoId).FirstOrDefault();
                 if (modelCartao != null)
                 {
-                    if (_context.Adicionar(model) == 0)
+                    if (_compraRepository.Adicionar(model) == 0)
                         throw new Exception("Nenhum registro incluído no banco de dados.");
                     model.Cartao = modelCartao;
                     retorno.Valor = _mapper.Map<ReadCompraDTO>(model);
@@ -50,7 +51,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -61,14 +62,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadCompraDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _compraRepository.Obter(x => x.Descricao.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCompraDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -78,14 +79,14 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<List<ReadCompraDTO>>();
-                var model = _context.Obter(predicate).ToList();
+                var model = _compraRepository.Obter(predicate).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCompraDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -95,7 +96,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCompraDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _compraRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadCompraDTO>(model);
@@ -110,7 +111,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -120,11 +121,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCompraDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _compraRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_compraRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadCompraDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -139,7 +140,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -149,10 +150,10 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCompraDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _compraRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
-                    if (_context.Excluir(model) == 0)
+                    if (_compraRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadCompraDTO>(model);
                     retorno.Mensagem = "Registro excluído com sucesso.";
@@ -167,7 +168,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

@@ -1,10 +1,8 @@
 ﻿using LaPlata.API.Extensions;
 using LaPlata.Domain.DTOs;
-using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
 using LaPlata.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace LaPlata.API.Controllers.Despesas
 {

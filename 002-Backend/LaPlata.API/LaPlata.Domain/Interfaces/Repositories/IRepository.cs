@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using LaPlata.Domain.Models;
+using System.Linq.Expressions;
 
 namespace LaPlata.Domain.Interfaces
 {
-    public interface IContext<T>
+    public interface IRepository<T> where T : ModelBase
     {
         /// <summary>
         /// Inclui um objeto no banco de dados.

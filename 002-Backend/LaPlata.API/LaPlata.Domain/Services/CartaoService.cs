@@ -2,6 +2,7 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
 using LaPlata.Domain.Models;
 using Newtonsoft.Json;
 using System.Reflection;
@@ -10,14 +11,14 @@ namespace LaPlata.Domain.Services
 {
     public class CartaoService : ICartaoService
     {
-        private readonly IContext<Cartao> _context;
-        private readonly IContext<Log> _contextLogErro;
+        private readonly ICartaoRepository _cartaoRepository;
+        private readonly IRepository<Log> _LogErroRepository;
         private readonly IMapper _mapper;
 
-        public CartaoService(IContext<Cartao> context, IContext<Log> contextLogErro, IMapper mapper)
+        public CartaoService(ICartaoRepository cartaoRepository, IRepository<Log> logErroRepository, IMapper mapper)
         {
-            _context = context;
-            _contextLogErro = contextLogErro;
+            _cartaoRepository = cartaoRepository;
+            _LogErroRepository = logErroRepository;
             _mapper = mapper;
         }
 
@@ -27,7 +28,7 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<ReadCartaoDTO>();
                 var model = _mapper.Map<Cartao>(DTO);
-                if (_context.Adicionar(model) == 0)
+                if (_cartaoRepository.Adicionar(model) == 0)
                     throw new Exception("Nenhum registro incluído no banco de dados.");
                 retorno.Valor = _mapper.Map<ReadCartaoDTO>(model);
                 retorno.Mensagem = "Registro incluído com sucesso.";
@@ -36,7 +37,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _LogErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -47,14 +48,14 @@ namespace LaPlata.Domain.Services
             {
                 var retorno = new RespostaServico<List<ReadCartaoDTO>>();
                 busca = busca ?? string.Empty;
-                var model = _context.Obter(x => x.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
+                var model = _cartaoRepository.Obter(x => x.Nome.ToUpper().Contains(busca.ToUpper())).ToList();
                 retorno.Valor = _mapper.Map<List<ReadCartaoDTO>>(model);
                 retorno.Status = EnumStatusResposta.SUCESSO;
                 return retorno;
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _LogErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -64,7 +65,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCartaoDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _cartaoRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     retorno.Valor = _mapper.Map<ReadCartaoDTO>(model);
@@ -79,7 +80,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _LogErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }
@@ -89,11 +90,11 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<ReadCartaoDTO>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _cartaoRepository.Obter(x => x.Id == id).FirstOrDefault();
                 if (model != null)
                 {
                     _mapper.Map(DTO, model);
-                    if (_context.SalvarAlteracoes() == 0)
+                    if (_cartaoRepository.SalvarAlteracoes() == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Valor = _mapper.Map<ReadCartaoDTO>(model);
                     retorno.Mensagem = "Registro atualizado com sucesso.";
@@ -108,7 +109,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
+                _LogErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message, JsonConvert.SerializeObject(DTO)));
                 throw;
             }
         }
@@ -118,7 +119,7 @@ namespace LaPlata.Domain.Services
             try
             {
                 var retorno = new RespostaServico<int>();
-                var model = _context.Obter(x => x.Id == id).FirstOrDefault();
+                var model = _cartaoRepository.Obter(x => x.Id == id).FirstOrDefault();
                 
                 #region Validações
 
@@ -153,7 +154,7 @@ namespace LaPlata.Domain.Services
                 if (exclusaoValida)
                 {
                     model ??= new Cartao();
-                    if (_context.Excluir(model) == 0)
+                    if (_cartaoRepository.Excluir(model) == 0)
                         throw new Exception("Nenhum registro alterado no banco de dados.");
                     retorno.Mensagem = "Registro excluído com sucesso.";
                     retorno.Status = EnumStatusResposta.SUCESSO;
@@ -168,7 +169,7 @@ namespace LaPlata.Domain.Services
             }
             catch (Exception ex)
             {
-                _contextLogErro.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                _LogErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
                 throw;
             }
         }

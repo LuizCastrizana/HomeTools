@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LaPlata.Domain.Models
+﻿namespace LaPlata.Domain.Models
 {
     public class RespostaApi<T>
     {

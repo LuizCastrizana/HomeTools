@@ -2,24 +2,31 @@
 using LaPlata.Domain.DTOs;
 using LaPlata.Domain.Enums;
 using LaPlata.Domain.Interfaces;
+using LaPlata.Domain.Interfaces.Repositories.Cartoes;
+using LaPlata.Domain.Interfaces.Repositories.Despesas;
 using LaPlata.Domain.Models;
 
 namespace LaPlata.Domain.Services
 {
     public class RelatorioService : IRelatorioService
     {
-        private readonly IContext<Despesa> _contextDespesa;
-        private readonly IContext<PagamentoConta> _contextConta;
-        private readonly IContext<PagamentoContaVariavel> _contextContaVariavel;
-        private readonly IContext<Fatura> _contextFatura;
+        private readonly IDespesaRepository _despesaRepository;
+        private readonly IPagamentoContaRepository _pagamentoContaRepository;
+        private readonly IPagamentoContaVariavelRepository _pagamentoContaVariavelRepository;
+        private readonly IFaturaRepository _faturaRepository;
         private readonly IMapper _mapper;
 
-        public RelatorioService(IContext<Despesa> contextDespesa, IContext<PagamentoConta> contextConta, IContext<PagamentoContaVariavel> contextContaVariavel, IContext<Fatura> contextFatura, IMapper mapper)
+        public RelatorioService(
+            IDespesaRepository despesaRepository, 
+            IPagamentoContaRepository pagamentoContaRepository, 
+            IPagamentoContaVariavelRepository pagamentoContaVariavelRepository, 
+            IFaturaRepository faturaRepository, 
+            IMapper mapper)
         {
-            _contextDespesa = contextDespesa;
-            _contextConta = contextConta;
-            _contextContaVariavel = contextContaVariavel;
-            _contextFatura = contextFatura;
+            _despesaRepository = despesaRepository;
+            _pagamentoContaRepository = pagamentoContaRepository;
+            _pagamentoContaVariavelRepository = pagamentoContaVariavelRepository;
+            _faturaRepository = faturaRepository;
             _mapper = mapper;
         }
 
@@ -33,10 +40,10 @@ namespace LaPlata.Domain.Services
 
                 foreach (var item in DTO)
                 {
-                    var despesas = _contextDespesa.Obter(x => x.DataDespesa.Month == item.Mes && x.DataDespesa.Year == item.Ano).ToList();
-                    var pagamentosConta = _contextConta.Obter(x => x.DataPagamento.Month == item.Mes && x.DataPagamento.Year == item.Ano).ToList();
-                    var pagamentosContaVariavel = _contextContaVariavel.Obter(x => x.DataPagamento.Month == item.Mes && x.DataPagamento.Year == item.Ano).ToList();
-                    var faturas = _contextFatura.Obter(x => x.Mes == item.Mes && x.Ano == item.Ano).ToList();
+                    var despesas = _despesaRepository.Obter(x => x.DataDespesa.Month == item.Mes && x.DataDespesa.Year == item.Ano).ToList();
+                    var pagamentosConta = _pagamentoContaRepository.Obter(x => x.DataPagamento.Month == item.Mes && x.DataPagamento.Year == item.Ano).ToList();
+                    var pagamentosContaVariavel = _pagamentoContaVariavelRepository.Obter(x => x.DataPagamento.Month == item.Mes && x.DataPagamento.Year == item.Ano).ToList();
+                    var faturas = _faturaRepository.Obter(x => x.Mes == item.Mes && x.Ano == item.Ano).ToList();
 
                     var despesasMes = new DespesasMesDTO
                     {

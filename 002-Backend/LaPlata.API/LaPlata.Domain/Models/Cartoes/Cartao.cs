@@ -2,7 +2,7 @@
 
 namespace LaPlata.Domain.Models
 {
-    public class Cartao : BaseModel
+    public class Cartao : ModelBase
     {
         [Required]
         public string Nome { get; set; }
