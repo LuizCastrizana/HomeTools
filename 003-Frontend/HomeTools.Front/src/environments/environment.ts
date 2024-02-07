@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  laPlataApiAdress: 'https://6jhsc3jq-7012.brs.devtunnels.ms'
+  laPlataApiAdress: 'https://w5f84m8k-7012.brs.devtunnels.ms'
   // laPlataApiAdress: 'https://localhost:7012'
 };
 
