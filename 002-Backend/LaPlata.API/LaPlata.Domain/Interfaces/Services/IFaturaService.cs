@@ -9,7 +9,7 @@ namespace LaPlata.Domain.Interfaces
         RespostaServico<List<ReadFaturaDTO>> ObterFaturas(string? busca);
         RespostaServico<ReadFaturaDTO> ObterFatura(int id);
         RespostaServico<ReadFaturaDTO> ExcluirFatura(int id);
-        RespostaServico<ReadFaturaDTO> PagarFatura(int id);
+        RespostaServico<ReadFaturaDTO> RealizarPagamentoFatura(int id);
         RespostaServico<string> GerarFaturas();
     }
 }

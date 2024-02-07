@@ -6,6 +6,7 @@ using LaPlata.Domain.Interfaces.Repositories.Cartoes;
 using LaPlata.Domain.Models;
 using LaPlata.Domain.Models.Comum;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 using System.Reflection;
 
 namespace LaPlata.Domain.Services
@@ -300,9 +301,45 @@ namespace LaPlata.Domain.Services
             }
         }
 
-        public RespostaServico<ReadFaturaDTO> PagarFatura(int id)
+        public RespostaServico<ReadFaturaDTO> RealizarPagamentoFatura(int id)
         {
-            return new RespostaServico<ReadFaturaDTO>();
+            try
+            {
+                var retorno = new RespostaServico<ReadFaturaDTO>();
+
+                var fatura = _faturaRepository.Obter(x => x.Id == id).FirstOrDefault();
+
+                if (fatura != null)
+                {
+                    fatura.Paga = true;
+
+                    var compras = new ConcurrentBag<CompraFatura>(fatura.ComprasFatura);
+
+                    Parallel.ForEach(compras, item =>
+                    {
+                        item.Compra.Paga = true;
+                    });
+
+                    if (_faturaRepository.SalvarAlteracoes() == 0)
+                        throw new Exception("Nenhum registro alterado no banco de dados.");
+
+                    retorno.Valor = _mapper.Map<ReadFaturaDTO>(fatura);
+                    retorno.Mensagem = "Fatura paga com sucesso.";
+                    retorno.Status = EnumStatusResposta.SUCESSO;
+                }
+                else
+                {
+                    retorno.Erros = new List<string>() { "Registro não encontrado" };
+                    retorno.Status = EnumStatusResposta.VALIDACAO_REJEITADA;
+                }
+
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                _logErroRepository.Adicionar(new Log(this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message));
+                throw;
+            }
         }
 
         public RespostaServico<string> GerarFaturas()

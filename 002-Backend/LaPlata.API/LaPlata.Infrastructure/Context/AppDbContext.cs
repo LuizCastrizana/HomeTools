@@ -114,17 +114,17 @@ namespace LaPlata.Infrastructure.Context
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
-            SetAuditableModel();
+            SetModelBase();
 			return base.SaveChangesAsync(cancellationToken);
 		}
 
 		public override int SaveChanges()
 		{
-			SetAuditableModel();
+			SetModelBase();
 			return base.SaveChanges();
 		}
 
-		private void SetAuditableModel()
+		private void SetModelBase()
 		{
             var entidadesCriadas = this.ChangeTracker.Entries()
                                    .Where(x => x.State == EntityState.Added)
@@ -132,11 +132,11 @@ namespace LaPlata.Infrastructure.Context
 
             foreach (var item in entidadesCriadas)
 			{
-                var herdaBaseModel = item as ModelBase;
-                if (herdaBaseModel != null)
+                var herdaModelBase = item as ModelBase;
+                if (herdaModelBase != null)
 				{
-                    herdaBaseModel.DataInclusao = DateTime.Now;
-                    herdaBaseModel.Ativo = true;
+                    herdaModelBase.DataInclusao = DateTime.Now;
+                    herdaModelBase.Ativo = true;
                 }
             }
 
@@ -146,10 +146,10 @@ namespace LaPlata.Infrastructure.Context
 
             foreach (var item in entidadesAtualizadas)
 			{
-                var herdaBaseModel = item as ModelBase;
-                if (herdaBaseModel != null)
+                var herdaModelBase = item as ModelBase;
+                if (herdaModelBase != null)
 				{
-                    herdaBaseModel.DataAlteracao = DateTime.Now;
+                    herdaModelBase.DataAlteracao = DateTime.Now;
                 }
             }
         }
